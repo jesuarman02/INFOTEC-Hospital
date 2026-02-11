@@ -1,0 +1,62 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042807"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombreVialidad",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "numExterior",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "numInterior",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "telefono",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "15"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "Direccion",
+  "relationships": [
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "tipoVialidad",
+      "relationshipName": "tipoVialidad",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "codigo",
+      "otherEntityName": "codigoPostal",
+      "relationshipName": "codigoPostalInfo",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "entidadFederativa",
+      "relationshipName": "entidadFederativa",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

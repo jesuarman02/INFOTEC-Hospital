@@ -1,0 +1,140 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042806"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "tipoVivienda",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "materialVivienda",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "numeroHabitaciones",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "numeroHabitantes",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "serviciosDisponibles",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "ingresoMensual",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "ingresoMensualHogar",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "gastoMensual",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "personasDependientes",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "apoyosGubernamentales",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    },
+    {
+      "fieldName": "ocupacionActual",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "condicionLaboral",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "tipoEmpleo",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "lugarTrabajo",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "150"
+    },
+    {
+      "fieldName": "tiempoEmpleado",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "gradoMaximoEstudios",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "aniosEstudio",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "estudia",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldName": "institucionMedica",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "tipoAfiliacion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "numeroAfiliacion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "30"
+    },
+    {
+      "fieldName": "medioTransporte",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "tiempoTraslado",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "fechaActualizacion",
+      "fieldType": "LocalDate"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "InfoSocioeconomica",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

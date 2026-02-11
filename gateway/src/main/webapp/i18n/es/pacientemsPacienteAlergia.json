@@ -1,0 +1,32 @@
+{
+  "gatewayApp": {
+    "pacientemsPacienteAlergia": {
+      "home": {
+        "title": "Paciente Alergias",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Paciente Alergia",
+        "createOrEditLabel": "Crear o editar Paciente Alergia",
+        "notFound": "Ningún Paciente Alergias encontrado"
+      },
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Paciente Alergia { id }?"
+      },
+      "detail": {
+        "title": "Paciente Alergia"
+      },
+      "id": "ID",
+      "fechaDeteccion": "Fecha Deteccion",
+      "reaccion": "Reaccion",
+      "gravedad": "Gravedad",
+      "paciente": "Paciente",
+      "alergia": "Alergia"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsPacienteAlergia": {
+      "created": "Un nuevo Paciente Alergia ha sido creado con el identificador { param }",
+      "updated": "Un Paciente Alergia ha sido actualizado con el identificador { param }",
+      "deleted": "Un Paciente Alergia ha sido eliminado con el identificador { param }"
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042502"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "ingredienteActivo",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "presentacion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "Medicamento",
+  "relationships": [
+    {
+      "otherEntityName": "pacienteMedicamento",
+      "otherEntityRelationshipName": "medicamento",
+      "relationshipName": "pacientes",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

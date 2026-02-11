@@ -1,0 +1,10 @@
+{
+  "gatewayApp": {
+    "GradoAlergia": {
+      "null": "",
+      "LEVE": "LEVE",
+      "MODERADA": "MODERADA",
+      "SEVERA": "SEVERA"
+    }
+  }
+}

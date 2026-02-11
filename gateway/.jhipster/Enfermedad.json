@@ -1,0 +1,42 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042810"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "tipo",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "codigoCIE",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "10"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "Enfermedad",
+  "relationships": [
+    {
+      "otherEntityName": "pacienteEnfermedad",
+      "otherEntityRelationshipName": "enfermedad",
+      "relationshipName": "pacientes",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

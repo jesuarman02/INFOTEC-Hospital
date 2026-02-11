@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity Direccion.
+    -->
+    <changeSet id="20260116042457-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="tipo_vialidad_id"
+                                 baseTableName="direccion"
+                                 constraintName="fk_direccion__tipo_vialidad_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tipo_vialidad"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="codigo_postal_info_id"
+                                 baseTableName="direccion"
+                                 constraintName="fk_direccion__codigo_postal_info_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="codigo_postal"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="entidad_federativa_id"
+                                 baseTableName="direccion"
+                                 constraintName="fk_direccion__entidad_federativa_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="entidad_federativa"
+                                 />
+    </changeSet>
+</databaseChangeLog>

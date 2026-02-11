@@ -1,0 +1,58 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042815"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "dosis",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "frecuencia",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "fechaInicio",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fechaFin",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "activo",
+      "fieldType": "Boolean"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "PacienteMedicamento",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "paciente",
+      "otherEntityRelationshipName": "misMedicamentos",
+      "relationshipName": "paciente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "medicamento",
+      "otherEntityRelationshipName": "pacientes",
+      "relationshipName": "medicamento",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

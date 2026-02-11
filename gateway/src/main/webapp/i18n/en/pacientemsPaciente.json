@@ -1,0 +1,44 @@
+{
+  "gatewayApp": {
+    "pacientemsPaciente": {
+      "home": {
+        "title": "Pacientes",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Paciente",
+        "createOrEditLabel": "Create or edit a Paciente",
+        "notFound": "No Pacientes found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Paciente { id }?"
+      },
+      "detail": {
+        "title": "Paciente"
+      },
+      "id": "ID",
+      "ecu": "Ecu",
+      "nombre": "Nombre",
+      "apellidoPaterno": "Apellido Paterno",
+      "apellidoMaterno": "Apellido Materno",
+      "sexo": "Sexo",
+      "nacionalidad": "Nacionalidad",
+      "fechaNacimiento": "Fecha Nacimiento",
+      "estadoCivil": "Estado Civil",
+      "curp": "Curp",
+      "direccion": "Direccion",
+      "infoSocioeconomica": "Info Socioeconomica",
+      "historialGeneral": "Historial General",
+      "signosVitales": "Signos Vitales",
+      "misEnfermedades": "Mis Enfermedades",
+      "misAlergias": "Mis Alergias",
+      "misMedicamentos": "Mis Medicamentos",
+      "entidadNacimiento": "Entidad Nacimiento"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsPaciente": {
+      "created": "A new Paciente is created with identifier { param }",
+      "updated": "A Paciente is updated with identifier { param }",
+      "deleted": "A Paciente is deleted with identifier { param }"
+    }
+  }
+}

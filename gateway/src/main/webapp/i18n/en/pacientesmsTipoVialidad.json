@@ -1,0 +1,28 @@
+{
+  "gatewayApp": {
+    "pacientesmsTipoVialidad": {
+      "home": {
+        "title": "Tipo Vialidads",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Tipo Vialidad",
+        "createOrEditLabel": "Create or edit a Tipo Vialidad",
+        "notFound": "No Tipo Vialidads found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Tipo Vialidad { id }?"
+      },
+      "detail": {
+        "title": "Tipo Vialidad"
+      },
+      "id": "ID",
+      "nombre": "Nombre"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientesmsTipoVialidad": {
+      "created": "A new Tipo Vialidad is created with identifier { param }",
+      "updated": "A Tipo Vialidad is updated with identifier { param }",
+      "deleted": "A Tipo Vialidad is deleted with identifier { param }"
+    }
+  }
+}

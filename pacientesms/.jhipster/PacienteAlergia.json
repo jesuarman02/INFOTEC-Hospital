@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042504"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "fechaDeteccion",
+      "fieldType": "LocalDate"
+    },
+    {
+      "fieldName": "reaccion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "150"
+    },
+    {
+      "fieldName": "gravedad",
+      "fieldType": "GradoAlergia",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "LEVE,MODERADA,SEVERA"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "PacienteAlergia",
+  "relationships": [
+    {
+      "otherEntityName": "paciente",
+      "otherEntityRelationshipName": "misAlergias",
+      "relationshipName": "paciente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "alergia",
+      "otherEntityRelationshipName": "pacientes",
+      "relationshipName": "alergia",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

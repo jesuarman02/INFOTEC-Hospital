@@ -1,0 +1,32 @@
+{
+  "gatewayApp": {
+    "pacientemsPacienteEnfermedad": {
+      "home": {
+        "title": "Paciente Enfermedads",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Paciente Enfermedad",
+        "createOrEditLabel": "Crear o editar Paciente Enfermedad",
+        "notFound": "Ningún Paciente Enfermedads encontrado"
+      },
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Paciente Enfermedad { id }?"
+      },
+      "detail": {
+        "title": "Paciente Enfermedad"
+      },
+      "id": "ID",
+      "fechaDiagnostico": "Fecha Diagnostico",
+      "estado": "Estado",
+      "notas": "Notas",
+      "paciente": "Paciente",
+      "enfermedad": "Enfermedad"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsPacienteEnfermedad": {
+      "created": "Un nuevo Paciente Enfermedad ha sido creado con el identificador { param }",
+      "updated": "Un Paciente Enfermedad ha sido actualizado con el identificador { param }",
+      "deleted": "Un Paciente Enfermedad ha sido eliminado con el identificador { param }"
+    }
+  }
+}

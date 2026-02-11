@@ -1,0 +1,37 @@
+{
+  "gatewayApp": {
+    "pacientemsSignosVitales": {
+      "home": {
+        "title": "Signos Vitales",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Signos Vitales",
+        "createOrEditLabel": "Crear o editar Signos Vitales",
+        "notFound": "Ningún Signos Vitales encontrado"
+      },
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Signos Vitales { id }?"
+      },
+      "detail": {
+        "title": "Signos Vitales"
+      },
+      "id": "ID",
+      "fechaRegistro": "Fecha Registro",
+      "frecuenciaCardiaca": "Frecuencia Cardiaca",
+      "tensionArterial": "Tension Arterial",
+      "frecuenciaRespiratoria": "Frecuencia Respiratoria",
+      "temperatura": "Temperatura",
+      "saturacionOxigeno": "Saturacion Oxigeno",
+      "peso": "Peso",
+      "estatura": "Estatura",
+      "imc": "Imc",
+      "paciente": "Paciente"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsSignosVitales": {
+      "created": "Un nuevo Signos Vitales ha sido creado con el identificador { param }",
+      "updated": "Un Signos Vitales ha sido actualizado con el identificador { param }",
+      "deleted": "Un Signos Vitales ha sido eliminado con el identificador { param }"
+    }
+  }
+}

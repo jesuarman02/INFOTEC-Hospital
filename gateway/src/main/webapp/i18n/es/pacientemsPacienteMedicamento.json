@@ -1,0 +1,34 @@
+{
+  "gatewayApp": {
+    "pacientemsPacienteMedicamento": {
+      "home": {
+        "title": "Paciente Medicamentos",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Paciente Medicamento",
+        "createOrEditLabel": "Crear o editar Paciente Medicamento",
+        "notFound": "Ningún Paciente Medicamentos encontrado"
+      },
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Paciente Medicamento { id }?"
+      },
+      "detail": {
+        "title": "Paciente Medicamento"
+      },
+      "id": "ID",
+      "dosis": "Dosis",
+      "frecuencia": "Frecuencia",
+      "fechaInicio": "Fecha Inicio",
+      "fechaFin": "Fecha Fin",
+      "activo": "Activo",
+      "paciente": "Paciente",
+      "medicamento": "Medicamento"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsPacienteMedicamento": {
+      "created": "Un nuevo Paciente Medicamento ha sido creado con el identificador { param }",
+      "updated": "Un Paciente Medicamento ha sido actualizado con el identificador { param }",
+      "deleted": "Un Paciente Medicamento ha sido eliminado con el identificador { param }"
+    }
+  }
+}

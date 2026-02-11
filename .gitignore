@@ -1,0 +1,57 @@
+# --- Dependencias y Build (Java & Node) ---
+# Ignora node_modules en cualquier subcarpeta
+**/node_modules/
+# Ignora la carpeta target (donde se compila Java) en cualquier subcarpeta
+**/target/
+# Ignora la carpeta build (si usaran Gradle)
+**/build/
+# Ignora la carpeta dist (donde se compila el frontend)
+**/dist/
+
+# --- Archivos de Sistema y Entorno ---
+.DS_Store
+Thumbs.db
+# Archivos de logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- IDEs y Editores (Configuraciones locales) ---
+# VS Code
+.vscode/
+# IntelliJ IDEA
+.idea/
+*.iml
+# Eclipse
+.classpath
+.project
+.settings/
+.sts4-cache/
+
+# --- Seguridad y Secretos ---
+# Archivos de variables de entorno locales (con claves privadas)
+.env
+.env.local
+*.pem
+*.key
+*.p12
+
+# --- Archivos temporales de JHipster/Java ---
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# --- Archivos de backup del sistema ---
+*~
+*.swp
+*.swo
+
+# --- Excepciones (Opcional) ---
+# Si quisieras forzar la subida de algo específico, se usa !
+# !gateway/src/main/resources/config/tls/keystore.p12 (Ejemplo)

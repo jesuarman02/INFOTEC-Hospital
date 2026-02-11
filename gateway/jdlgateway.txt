@@ -1,0 +1,5 @@
+Script started on 2026-01-16 00:03:35-06:00 [TERM="xterm-256color" TTY="/dev/pts/4" COLUMNS="173" LINES="39"]
+[?2004h(base) ]0;armando@armando: ~/hospital/gateway[01;32marmando@armando[00m:[01;34m~/hospital/gateway[00m$ exit
+[?2004lexit
+
+Script done on 2026-01-16 00:03:38-06:00 [COMMAND_EXIT_CODE="0"]

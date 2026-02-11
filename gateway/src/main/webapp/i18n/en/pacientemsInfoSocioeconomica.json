@@ -1,0 +1,52 @@
+{
+  "gatewayApp": {
+    "pacientemsInfoSocioeconomica": {
+      "home": {
+        "title": "Info Socioeconomicas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Info Socioeconomica",
+        "createOrEditLabel": "Create or edit a Info Socioeconomica",
+        "notFound": "No Info Socioeconomicas found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Info Socioeconomica { id }?"
+      },
+      "detail": {
+        "title": "Info Socioeconomica"
+      },
+      "id": "ID",
+      "tipoVivienda": "Tipo Vivienda",
+      "materialVivienda": "Material Vivienda",
+      "numeroHabitaciones": "Numero Habitaciones",
+      "numeroHabitantes": "Numero Habitantes",
+      "serviciosDisponibles": "Servicios Disponibles",
+      "ingresoMensual": "Ingreso Mensual",
+      "ingresoMensualHogar": "Ingreso Mensual Hogar",
+      "gastoMensual": "Gasto Mensual",
+      "personasDependientes": "Personas Dependientes",
+      "apoyosGubernamentales": "Apoyos Gubernamentales",
+      "ocupacionActual": "Ocupacion Actual",
+      "condicionLaboral": "Condicion Laboral",
+      "tipoEmpleo": "Tipo Empleo",
+      "lugarTrabajo": "Lugar Trabajo",
+      "tiempoEmpleado": "Tiempo Empleado",
+      "gradoMaximoEstudios": "Grado Maximo Estudios",
+      "aniosEstudio": "Anios Estudio",
+      "estudia": "Estudia",
+      "institucionMedica": "Institucion Medica",
+      "tipoAfiliacion": "Tipo Afiliacion",
+      "numeroAfiliacion": "Numero Afiliacion",
+      "medioTransporte": "Medio Transporte",
+      "tiempoTraslado": "Tiempo Traslado",
+      "fechaActualizacion": "Fecha Actualizacion",
+      "paciente": "Paciente"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsInfoSocioeconomica": {
+      "created": "A new Info Socioeconomica is created with identifier { param }",
+      "updated": "A Info Socioeconomica is updated with identifier { param }",
+      "deleted": "A Info Socioeconomica is deleted with identifier { param }"
+    }
+  }
+}

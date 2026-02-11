@@ -1,0 +1,32 @@
+{
+  "gatewayApp": {
+    "pacientemsHistorialMedico": {
+      "home": {
+        "title": "Historial Medicos",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Historial Medico",
+        "createOrEditLabel": "Create or edit a Historial Medico",
+        "notFound": "No Historial Medicos found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Historial Medico { id }?"
+      },
+      "detail": {
+        "title": "Historial Medico"
+      },
+      "id": "ID",
+      "antecedentesQuirurgicos": "Antecedentes Quirurgicos",
+      "esquemaVacunacion": "Esquema Vacunacion",
+      "habitos": "Habitos",
+      "observacionesGenerales": "Observaciones Generales",
+      "paciente": "Paciente"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientemsHistorialMedico": {
+      "created": "A new Historial Medico is created with identifier { param }",
+      "updated": "A Historial Medico is updated with identifier { param }",
+      "deleted": "A Historial Medico is deleted with identifier { param }"
+    }
+  }
+}

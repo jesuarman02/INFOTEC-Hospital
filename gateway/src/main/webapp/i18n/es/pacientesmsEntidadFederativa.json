@@ -1,0 +1,30 @@
+{
+  "gatewayApp": {
+    "pacientesmsEntidadFederativa": {
+      "home": {
+        "title": "Entidad Federativas",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Entidad Federativa",
+        "createOrEditLabel": "Crear o editar Entidad Federativa",
+        "notFound": "Ningún Entidad Federativas encontrado"
+      },
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Entidad Federativa { id }?"
+      },
+      "detail": {
+        "title": "Entidad Federativa"
+      },
+      "id": "ID",
+      "clave": "Clave",
+      "nombre": "Nombre",
+      "abreviatura": "Abreviatura"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientesmsEntidadFederativa": {
+      "created": "Un nuevo Entidad Federativa ha sido creado con el identificador { param }",
+      "updated": "Un Entidad Federativa ha sido actualizado con el identificador { param }",
+      "deleted": "Un Entidad Federativa ha sido eliminado con el identificador { param }"
+    }
+  }
+}

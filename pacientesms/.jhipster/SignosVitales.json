@@ -1,0 +1,64 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042459"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "fechaRegistro",
+      "fieldType": "Instant",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "frecuenciaCardiaca",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "tensionArterial",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "10"
+    },
+    {
+      "fieldName": "frecuenciaRespiratoria",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "temperatura",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "saturacionOxigeno",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldName": "peso",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "estatura",
+      "fieldType": "BigDecimal"
+    },
+    {
+      "fieldName": "imc",
+      "fieldType": "BigDecimal"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "SignosVitales",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityName": "paciente",
+      "otherEntityRelationshipName": "signosVitales",
+      "relationshipName": "paciente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

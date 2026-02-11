@@ -1,0 +1,36 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042811"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "Alergia",
+  "relationships": [
+    {
+      "otherEntityName": "pacienteAlergia",
+      "otherEntityRelationshipName": "alergia",
+      "relationshipName": "pacientes",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

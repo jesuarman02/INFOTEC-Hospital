@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <!--
+        Added the constraints for entity Paciente.
+    -->
+    <changeSet id="20260116042455-2" author="jhipster">
+
+        <addForeignKeyConstraint baseColumnNames="direccion_id"
+                                 baseTableName="paciente"
+                                 constraintName="fk_paciente__direccion_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="direccion"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="info_socioeconomica_id"
+                                 baseTableName="paciente"
+                                 constraintName="fk_paciente__info_socioeconomica_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="info_socioeconomica"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="historial_general_id"
+                                 baseTableName="paciente"
+                                 constraintName="fk_paciente__historial_general_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="historial_medico"
+                                 />
+
+        <addForeignKeyConstraint baseColumnNames="entidad_nacimiento_id"
+                                 baseTableName="paciente"
+                                 constraintName="fk_paciente__entidad_nacimiento_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="entidad_federativa"
+                                 />
+    </changeSet>
+</databaseChangeLog>

@@ -1,0 +1,42 @@
+{
+  "gatewayApp": {
+    "pacientesmsCodigoPostal": {
+      "home": {
+        "title": "Codigo Postals",
+        "refreshListLabel": "Refrescar lista",
+        "createLabel": "Crear nuevo Codigo Postal",
+        "createOrEditLabel": "Crear o editar Codigo Postal",
+        "notFound": "Ningún Codigo Postals encontrado"
+      },
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Codigo Postal { id }?"
+      },
+      "detail": {
+        "title": "Codigo Postal"
+      },
+      "id": "ID",
+      "codigo": "Codigo",
+      "asentamiento": "Asentamiento",
+      "tipoAsentamiento": "Tipo Asentamiento",
+      "municipio": "Municipio",
+      "estado": "Estado",
+      "ciudad": "Ciudad",
+      "codigoPostalAdministracion": "Codigo Postal Administracion",
+      "claveEstado": "Clave Estado",
+      "claveOficina": "Clave Oficina",
+      "claveCP": "Clave CP",
+      "claveTipoAsentamiento": "Clave Tipo Asentamiento",
+      "claveMunicipio": "Clave Municipio",
+      "idAsentamientoCons": "Id Asentamiento Cons",
+      "zona": "Zona",
+      "claveCiudad": "Clave Ciudad"
+    }
+  },
+  "pacientesmsApp": {
+    "pacientesmsCodigoPostal": {
+      "created": "Un nuevo Codigo Postal ha sido creado con el identificador { param }",
+      "updated": "Un Codigo Postal ha sido actualizado con el identificador { param }",
+      "deleted": "Un Codigo Postal ha sido eliminado con el identificador { param }"
+    }
+  }
+}

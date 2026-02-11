@@ -1,0 +1,124 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042455"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "ecu",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "100"
+    },
+    {
+      "fieldName": "apellidoPaterno",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "apellidoMaterno",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    },
+    {
+      "fieldName": "sexo",
+      "fieldType": "Sexo",
+      "fieldValidateRules": ["required"],
+      "fieldValues": "M,F"
+    },
+    {
+      "fieldName": "nacionalidad",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "40"
+    },
+    {
+      "fieldName": "fechaNacimiento",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "estadoCivil",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "curp",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength", "unique"],
+      "fieldValidateRulesMaxlength": "18"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "Paciente",
+  "pagination": "pagination",
+  "relationships": [
+    {
+      "otherEntityField": "nombreVialidad",
+      "otherEntityName": "direccion",
+      "relationshipName": "direccion",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "infoSocioeconomica",
+      "relationshipName": "infoSocioeconomica",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "historialMedico",
+      "relationshipName": "historialGeneral",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-one"
+    },
+    {
+      "otherEntityName": "signosVitales",
+      "otherEntityRelationshipName": "paciente",
+      "relationshipName": "signosVitales",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "pacienteEnfermedad",
+      "otherEntityRelationshipName": "paciente",
+      "relationshipName": "misEnfermedades",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "pacienteAlergia",
+      "otherEntityRelationshipName": "paciente",
+      "relationshipName": "misAlergias",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "pacienteMedicamento",
+      "otherEntityRelationshipName": "paciente",
+      "relationshipName": "misMedicamentos",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "entidadFederativa",
+      "relationshipName": "entidadNacimiento",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

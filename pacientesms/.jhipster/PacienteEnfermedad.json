@@ -1,0 +1,49 @@
+{
+  "annotations": {
+    "changelogDate": "20260116042503"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "fechaDiagnostico",
+      "fieldType": "LocalDate",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "estado",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "20"
+    },
+    {
+      "fieldName": "notas",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "PacienteEnfermedad",
+  "relationships": [
+    {
+      "otherEntityName": "paciente",
+      "otherEntityRelationshipName": "misEnfermedades",
+      "relationshipName": "paciente",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "otherEntityField": "nombre",
+      "otherEntityName": "enfermedad",
+      "otherEntityRelationshipName": "pacientes",
+      "relationshipName": "enfermedad",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

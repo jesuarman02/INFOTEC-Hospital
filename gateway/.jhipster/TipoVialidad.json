@@ -1,0 +1,22 @@
+{
+  "annotations": {
+    "changelogDate": "20260127204918"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientesms",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
+    {
+      "fieldName": "nombre",
+      "fieldType": "String",
+      "fieldValidateRules": ["required", "maxlength"],
+      "fieldValidateRulesMaxlength": "50"
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "TipoVialidad",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

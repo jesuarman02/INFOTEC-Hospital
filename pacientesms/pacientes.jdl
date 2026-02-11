@@ -1,0 +1,134 @@
+// ENUMS
+enum Sexo { M, F }
+enum GradoAlergia { LEVE, MODERADA, SEVERA }
+
+// ENTIDADES
+entity Paciente {
+    ecu Integer required
+    nombre String required maxlength(100)
+    apellidoPaterno String required maxlength(50)
+    apellidoMaterno String maxlength(50)
+    sexo Sexo required
+    nacionalidad String maxlength(40)
+    fechaNacimiento LocalDate required
+    entidadNacimiento String maxlength(50)
+    estadoCivil String maxlength(20)
+    curp String required maxlength(18) unique
+}
+
+entity InfoSocioeconomica {
+    tipoVivienda String maxlength(50)
+    materialVivienda String maxlength(100)
+    numeroHabitaciones Integer
+    numeroHabitantes Integer
+    serviciosDisponibles String maxlength(255)
+    ingresoMensual BigDecimal
+    ingresoMensualHogar BigDecimal
+    gastoMensual BigDecimal
+    personasDependientes Integer
+    apoyosGubernamentales String maxlength(255)
+    ocupacionActual String maxlength(100)
+    condicionLaboral String maxlength(50)
+    tipoEmpleo String maxlength(50)
+    lugarTrabajo String maxlength(150)
+    tiempoEmpleado String maxlength(50)
+    gradoMaximoEstudios String maxlength(50)
+    aniosEstudio Integer
+    estudia Boolean
+    institucionMedica String maxlength(100)
+    tipoAfiliacion String maxlength(50)
+    numeroAfiliacion String maxlength(30)
+    medioTransporte String maxlength(50)
+    tiempoTraslado Integer
+    fechaActualizacion LocalDate
+}
+
+entity Direccion {
+    vialidad String maxlength(30)
+    nombreVialidad String maxlength(100)
+    numExterior String maxlength(20)
+    numInterior String maxlength(20)
+    codigoPostal String maxlength(5)
+    estado String maxlength(50)
+    alcaldiaMunicipio String maxlength(80)
+    localidadColonia String maxlength(100)
+    telefono String maxlength(15)
+}
+
+entity Enfermedad {
+    nombre String required maxlength(100)
+    tipo String maxlength(20)
+    codigoCIE String maxlength(10)
+}
+
+entity Alergia {
+    nombre String required maxlength(100)
+    descripcion String maxlength(255)
+}
+
+entity Medicamento {
+    nombre String required maxlength(100)
+    ingredienteActivo String maxlength(100)
+    presentacion String maxlength(50)
+}
+
+entity PacienteEnfermedad {
+    fechaDiagnostico LocalDate required
+    estado String maxlength(20)
+    notas String maxlength(255)
+}
+
+entity PacienteAlergia {
+    fechaDeteccion LocalDate
+    reaccion String maxlength(150)
+    gravedad GradoAlergia required
+}
+
+entity PacienteMedicamento {
+    dosis String maxlength(50)
+    frecuencia String maxlength(50)
+    fechaInicio LocalDate required
+    fechaFin LocalDate
+    activo Boolean
+}
+
+entity HistorialMedico {
+    antecedentesQuirurgicos String maxlength(500)
+    esquemaVacunacion String maxlength(255)
+    habitos String maxlength(255)
+    observacionesGenerales TextBlob
+}
+
+entity SignosVitales {
+    fechaRegistro Instant required
+    frecuenciaCardiaca Integer
+    tensionArterial String maxlength(10)
+    frecuenciaRespiratoria Integer
+    temperatura BigDecimal
+    saturacionOxigeno Integer
+    peso BigDecimal
+    estatura BigDecimal
+    imc BigDecimal
+}
+
+// RELACIONES
+relationship OneToOne {
+    Paciente{direccion} to Direccion
+    Paciente{infoSocioeconomica} to InfoSocioeconomica
+    Paciente{historialGeneral} to HistorialMedico
+}
+
+relationship OneToMany {
+    Paciente{signosVitales} to SignosVitales{paciente}
+    Paciente{misEnfermedades} to PacienteEnfermedad{paciente}
+    Enfermedad{pacientes} to PacienteEnfermedad{enfermedad}
+    Paciente{misAlergias} to PacienteAlergia{paciente}
+    Alergia{pacientes} to PacienteAlergia{alergia}
+    Paciente{misMedicamentos} to PacienteMedicamento{paciente}
+    Medicamento{pacientes} to PacienteMedicamento{medicamento}
+}
+
+// CONFIGURACIÓN
+paginate Paciente, SignosVitales, PacienteMedicamento with pagination
+service all with serviceImpl
+microservice * with pacientems

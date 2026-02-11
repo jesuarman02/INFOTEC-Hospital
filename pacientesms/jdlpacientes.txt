@@ -1,0 +1,8 @@
+Script started on 2026-01-16 00:03:01-06:00 [TERM="xterm-256color" TTY="/dev/pts/1" COLUMNS="173" LINES="39"]
+[?2004h(base) ]0;armando@armando: ~/hospital/pacientesms[01;32marmando@armando[00m:[01;34m~/hospital/pacientesms[00m$ ls
+[?2004lcheckstyle.xml    [0m[01;32mmvnw[0m      [01;34mnode_modules[0m   [01;35mpacientes.png[0m  package-lock.json  README.md                 [01;34msrc[0m
+jdlpacientes.txt  mvnw.cmd  pacientes.jdl  package.json   pom.xml            sonar-project.properties  [01;34mtarget[0m
+[?2004h(base) ]0;armando@armando: ~/hospital/pacientesms[01;32marmando@armando[00m:[01;34m~/hospital/pacientesms[00m$ exit
+[?2004lexit
+
+Script done on 2026-01-16 00:03:12-06:00 [COMMAND_EXIT_CODE="0"]

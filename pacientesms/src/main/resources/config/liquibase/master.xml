@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <property name="now" value="current_timestamp" dbms="postgresql"/>
+    <property name="floatType" value="float4" dbms="postgresql"/>
+    <property name="clobType" value="clob" dbms="postgresql"/>
+    <property name="blobType" value="bytea" dbms="postgresql"/>
+    <property name="uuidType" value="uuid" dbms="postgresql"/>
+    <property name="datetimeType" value="datetime" dbms="postgresql"/>
+
+    <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042455_added_entity_Paciente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042456_added_entity_InfoSocioeconomica.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042457_added_entity_Direccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042458_added_entity_HistorialMedico.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042459_added_entity_SignosVitales.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042500_added_entity_Enfermedad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042501_added_entity_Alergia.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042502_added_entity_Medicamento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042503_added_entity_PacienteEnfermedad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042504_added_entity_PacienteAlergia.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042505_added_entity_PacienteMedicamento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260120221914_added_entity_EntidadFederativa.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260127204854_added_entity_TipoVialidad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260127204855_added_entity_CodigoPostal.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20260116042455_added_entity_constraints_Paciente.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042459_added_entity_constraints_SignosVitales.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042503_added_entity_constraints_PacienteEnfermedad.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042504_added_entity_constraints_PacienteAlergia.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042505_added_entity_constraints_PacienteMedicamento.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260116042457_added_entity_constraints_Direccion.xml" relativeToChangelogFile="false"/>
+    <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
+    <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
+</databaseChangeLog>
