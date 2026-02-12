@@ -98,7 +98,7 @@ export default defineComponent({
 .app-container {
   height: calc(100vh - 60px);
   overflow: hidden;
-  background-color: orange; /* Fondo blanco general */
+  background-color: rgb(255, 255, 255); /* Fondo blanco general */
 }
 
 /* =========================================
