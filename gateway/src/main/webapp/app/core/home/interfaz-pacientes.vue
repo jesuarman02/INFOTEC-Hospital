@@ -73,6 +73,9 @@
             <div class="card-body d-flex align-items-center justify-content-center">
               <h3 class="font-weight-bold text-uppercase">Tratamientos</h3>
             </div>
+          <header>
+            <h2>Hola armando</h2>
+          </header>
           </div>
         </div>
       </div>
