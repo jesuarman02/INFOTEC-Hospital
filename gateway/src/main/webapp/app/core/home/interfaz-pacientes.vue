@@ -30,6 +30,13 @@
     <div class="main-content flex-grow-1 p-4">
       <div class="row h-100">
         <div class="col-md-5 d-flex flex-column">
+
+          <!-- NUEVO APARTADO DOCTOR / ESPECIALIDAD -->
+          <div class="doctor-header d-flex align-items-center justify-content-between mb-2 px-2">
+            <div class="doctor-name">Dr. Nombre del Doctor</div>
+            <div class="specialty-name text-center">Especialidad Médica</div>
+          </div>
+
           <div class="card dashboard-card flex-grow-1 mb-4 shadow-sm custom-grey-card">
             <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
               <h2 class="font-weight-bold mb-3">ECU</h2>
@@ -57,6 +64,12 @@
         </div>
 
         <div class="col-md-7 d-flex flex-column">
+
+          <!-- BOTON AGREGAR PACIENTE -->
+          <div class="d-flex justify-content-end mb-2">
+            <button class="btn agregar-paciente-btn">Agregar Paciente</button>
+          </div>
+
           <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
             <div class="card-body d-flex align-items-center justify-content-center">
               <h3 class="font-weight-bold text-uppercase">Causa de Ingreso</h3>
@@ -79,7 +92,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </div>  
   </div>
 </template>
 
@@ -153,7 +166,7 @@ export default defineComponent({
 
 .sidebar-list {
   width: 300px;
-  background-color: orange;
+  background-color: rgb(255, 255, 255);
   display: flex;
   flex-direction: column;
   border-right: 1px solid #e0e0e0;
@@ -218,11 +231,40 @@ export default defineComponent({
   box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
 }
 
+/* NUEVOS ESTILOS */
+.doctor-header {
+  font-weight: 100;
+  color: #333;
+}
+
+.doctor-name {
+  font-size: 32px;
+  font-weight: 700;
+  margin-left: 45px;
+}
+
+.specialty-name {
+  font-size: 32px;
+  font-weight: 1000;
+  margin-right: -350px;
+}
+
+.agregar-paciente-btn {
+  background-color: #611232;
+  color: white;
+  border-radius: 90px;
+  padding: 15px 48px;
+  font-weight: 5600;
+}
+
+.agregar-paciente-btn:hover {
+  background-color: #7a1a40;
+}
+
 /* Contenedor de iconos de signos vitales */
 .vital-icon-box {
   width: 60px;
   height: 60px;
-  /* background-color: white;  Opcional si quieres círculo blanco detrás */
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -230,10 +272,8 @@ export default defineComponent({
 }
 
 .vital-svg {
-  width: 40px; /* Tamaño grande para los iconos de abajo */
+  width: 40px;
   height: 40px;
-  /* Si tus iconos SVG son negros y los quieres negros, no pongas filtro. 
-     Si los quieres de otro color, usa filter. */
 }
 
 /* Tipografía de los bloques */
@@ -242,6 +282,6 @@ export default defineComponent({
 .dashboard-card h4,
 .dashboard-card h5 {
   color: #333;
-  font-family: 'Arial', sans-serif; /* Puedes cambiar por una fuente más gruesa si gustas */
+  font-family: 'Arial', sans-serif;
 }
 </style>
