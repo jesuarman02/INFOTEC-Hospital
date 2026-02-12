@@ -13,7 +13,7 @@
     </div>
 
     <div class="sidebar-list p-3 border-right">
-      <h5 class="title-pacientes mt-2 mb-3">PACIENTES</h5>
+      <h5 class="title-pacientes mt-2 mb-3">PACIENTESms</h5>
 
       <div class="search-container mb-4">
         <div class="input-group fancy-search">
