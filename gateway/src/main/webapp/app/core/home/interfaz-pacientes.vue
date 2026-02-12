@@ -150,7 +150,7 @@ export default defineComponent({
 
 .sidebar-list {
   width: 300px;
-  background-color: white;
+  background-color: orange;
   display: flex;
   flex-direction: column;
   border-right: 1px solid #e0e0e0;
