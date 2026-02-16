@@ -86,10 +86,25 @@
             <div class="card-body d-flex align-items-center justify-content-center">
               <h3 class="font-weight-bold text-uppercase">Tratamientos</h3>
             </div>
-          <header>
-            <h2>Hola armando</h2>
-          </header>
           </div>
+        </div>
+        <div>
+          <b-card no-body>
+            <b-tabs card>
+              <b-tab title="Datos del Paciente" active>
+                <b-card-text>datos como su curp etc</b-card-text>
+              </b-tab>
+              <b-tab title="Datos Medicos">
+                <b-card-text>como altura, peso, alergias</b-card-text>
+              </b-tab>
+              <b-tab title="Diagnostico">
+                <b-card-text>datoos de sus diagnósticos clinicos</b-card-text>
+              </b-tab>
+              <b-tab title="Datos del medico">
+                <b-card-text>datos del médico que atendió al paciente</b-card-text>
+              </b-tab>
+            </b-tabs>
+          </b-card>
         </div>
       </div>
     </div>  
