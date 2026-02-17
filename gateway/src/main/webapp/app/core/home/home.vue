@@ -4,7 +4,7 @@
       <span class="hipster img-fluid rounded"></span>
     </div>
     <div class="col-md-9">
-      <h1 class="display-4" v-text="t$('home.title')"></h1>
+    <h1 class="display-4">¡Bienvenido, Plataforma Inteligente de Gestión Hospitalaria!</h1>
       <p class="lead" v-text="t$('home.subtitle')"></p>
 
       <div>
@@ -22,7 +22,7 @@
           <router-link class="alert-link" to="/register" v-text="t$('global.messages.info.register.link')"></router-link>
         </div>
       </div>
-
+<!--
       <p v-text="t$('home.question')"></p>
 
       <ul>
@@ -60,6 +60,7 @@
         <span v-text="t$('home.like')"></span>
         <a href="https://github.com/jhipster/generator-jhipster" target="_blank" rel="noopener noreferrer" v-text="t$('home.github')"></a>!
       </p>
+      -->
     </div>
   </div>
 </template>
