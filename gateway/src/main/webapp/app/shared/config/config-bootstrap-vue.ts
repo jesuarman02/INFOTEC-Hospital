@@ -28,6 +28,7 @@ import {
   FormPlugin,
   BTabs,
   BTab,
+  VBToggle,
 } from 'bootstrap-vue';
 
 export function initBootstrapVue(vue) {
@@ -61,4 +62,5 @@ export function initBootstrapVue(vue) {
   vue.component('b-form', BForm);
   vue.component('b-tabs', BTabs);
   vue.component('b-tab', BTab);
+  vue.component('b-toggle', VBToggle);
 }
