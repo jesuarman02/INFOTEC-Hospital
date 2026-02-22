@@ -22,13 +22,18 @@
               <font-awesome-icon icon="search" class="text-muted search-icon" />
             </span>
           </div>
-          <input type="text" class="form-control border-0 bg-transparent search-input" placeholder="ECU, Nombre del Paciente" />
+          <input 
+  type="text" 
+  class="form-control border-0 bg-transparent search-input" 
+  placeholder="ECU, Nombre del Paciente" 
+  @keyup.enter="realizarBusqueda" 
+/>
         </div>
       </div>
     </div>
 
     <div class="main-content flex-grow-1 p-4">
-      <div class="row h-100">
+      <div v-if="busquedaRealizada" class="row h-100">
         <div class="col-md-5 d-flex flex-column">
 
           <!-- NUEVO APARTADO DOCTOR / ESPECIALIDAD -->
@@ -107,17 +112,32 @@
           </b-card>
         </div>
       </div>
-    </div>  
+      <div v-else class="d-flex flex-column align-items-center justify-content-center h-100 text-muted">
+    <font-awesome-icon icon="search" size="4x" class="mb-3 opacity-20" />
+    p-3000-0-0: Realice una búsqueda para ver los detalles del paciente.
+  </div>
+    </div> 
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue'; // Importamos ref
 
 export default defineComponent({
   name: 'InterfazPacientes',
   setup() {
-    return {};
+    // Variable para controlar si se muestra la info
+    const busquedaRealizada = ref(false);
+
+    // Función para activar la vista al presionar Enter o buscar
+    const realizarBusqueda = () => {
+      busquedaRealizada.value = true;
+    };
+
+    return {
+      busquedaRealizada,
+      realizarBusqueda
+    };
   },
 });
 </script>
