@@ -68,30 +68,6 @@
               <span v-text="t$('gatewayApp.pacientemsPaciente.curp')"></span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'curp'"></jhi-sort-indicator>
             </th>
-            <th scope="row" @click="changeOrder('direccion.nombreVialidad')">
-              <span v-text="t$('gatewayApp.pacientemsPaciente.direccion')"></span>
-              <jhi-sort-indicator
-                :current-order="propOrder"
-                :reverse="reverse"
-                :field-name="'direccion.nombreVialidad'"
-              ></jhi-sort-indicator>
-            </th>
-            <th scope="row" @click="changeOrder('infoSocioeconomica.id')">
-              <span v-text="t$('gatewayApp.pacientemsPaciente.infoSocioeconomica')"></span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'infoSocioeconomica.id'"></jhi-sort-indicator>
-            </th>
-            <th scope="row" @click="changeOrder('historialGeneral.id')">
-              <span v-text="t$('gatewayApp.pacientemsPaciente.historialGeneral')"></span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'historialGeneral.id'"></jhi-sort-indicator>
-            </th>
-            <th scope="row" @click="changeOrder('entidadNacimiento.nombre')">
-              <span v-text="t$('gatewayApp.pacientemsPaciente.entidadNacimiento')"></span>
-              <jhi-sort-indicator
-                :current-order="propOrder"
-                :reverse="reverse"
-                :field-name="'entidadNacimiento.nombre'"
-              ></jhi-sort-indicator>
-            </th>
             <th scope="row"></th>
           </tr>
         </thead>
@@ -109,34 +85,6 @@
             <td>{{ paciente.fechaNacimiento }}</td>
             <td>{{ paciente.estadoCivil }}</td>
             <td>{{ paciente.curp }}</td>
-            <td>
-              <div v-if="paciente.direccion && paciente.direccion.id">
-                <router-link :to="{ name: 'DireccionView', params: { direccionId: paciente.direccion.id } }">{{
-                  paciente.direccion.nombreVialidad
-                }}</router-link>
-              </div>
-            </td>
-            <td>
-              <div v-if="paciente.infoSocioeconomica && paciente.infoSocioeconomica.id">
-                <router-link :to="{ name: 'InfoSocioeconomicaView', params: { infoSocioeconomicaId: paciente.infoSocioeconomica.id } }">{{
-                  paciente.infoSocioeconomica.id
-                }}</router-link>
-              </div>
-            </td>
-            <td>
-              <div v-if="paciente.historialGeneral && paciente.historialGeneral.id">
-                <router-link :to="{ name: 'HistorialMedicoView', params: { historialMedicoId: paciente.historialGeneral.id } }">{{
-                  paciente.historialGeneral.id
-                }}</router-link>
-              </div>
-            </td>
-            <td>
-              <div v-if="paciente.entidadNacimiento && paciente.entidadNacimiento.id">
-                <router-link :to="{ name: 'EntidadFederativaView', params: { entidadFederativaId: paciente.entidadNacimiento.id } }">{{
-                  paciente.entidadNacimiento.nombre
-                }}</router-link>
-              </div>
-            </td>
             <td class="text-right">
               <div class="btn-group">
                 <router-link :to="{ name: 'PacienteView', params: { pacienteId: paciente.id } }" custom v-slot="{ navigate }">

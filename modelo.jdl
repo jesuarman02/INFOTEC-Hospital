@@ -71,7 +71,6 @@ entity Paciente {
     sexo Sexo required
     nacionalidad String maxlength(40)
     fechaNacimiento LocalDate required
-    // entidadNacimiento se maneja por relación
     estadoCivil String maxlength(20)
     curp String required maxlength(18) unique
 }
@@ -208,3 +207,9 @@ paginate Paciente, SignosVitales, PacienteMedicamento, CodigoPostal with paginat
 service all with serviceImpl
 microservice * with pacientesms
 dto * with mapstruct
+
+
+
+/*
+<option value="">- Estado civil -</option><option value="0">NO ESPECIFICADO</option><option value="8">NO APLICA</option><option value="9">SE IGNORA</option><option value="C">CASADO(A)</option><option value="D">DIVORCIADO(A)</option><option value="P">SEPARADO(A)</option><option value="S">SOLTERO(A)</option><option value="U">UNION LIBRE</option><option value="V">VIUDO(A)</option>
+*/

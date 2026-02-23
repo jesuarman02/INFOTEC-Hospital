@@ -1,10 +1,8 @@
-import { type IDireccion } from '@/shared/model/pacientems/direccion.model';
-import { type IInfoSocioeconomica } from '@/shared/model/pacientems/info-socioeconomica.model';
-import { type IHistorialMedico } from '@/shared/model/pacientems/historial-medico.model';
-// Ruta corregida según tu indicación (pacientesms)
-import { type IEntidadFederativa } from '@/shared/model/pacientesms/entidad-federativa.model';
-
 import { type Sexo } from '@/shared/model/enumerations/sexo.model';
+
+// Definimos los nuevos tipos estrictos (Enums) aquí mismo
+export type Nacionalidad = 'MEXICANA' | 'EXTRANJERA';
+export type EstadoCivil = 'NO_ESPECIFICADO' | 'NO_APLICA' | 'SE_IGNORA' | 'CASADO' | 'DIVORCIADO' | 'SEPARADO' | 'SOLTERO' | 'UNION_LIBRE' | 'VIUDO';
 
 export interface IPaciente {
   id?: number;
@@ -13,14 +11,10 @@ export interface IPaciente {
   apellidoPaterno?: string | null;
   apellidoMaterno?: string | null;
   sexo?: Sexo | null;
-  nacionalidad?: string | null;
+  nacionalidad?: Nacionalidad | null;
   fechaNacimiento?: Date | null;
-  estadoCivil?: string | null;
+  estadoCivil?: EstadoCivil | null;
   curp?: string | null;
-  direccion?: IDireccion | null;
-  infoSocioeconomica?: IInfoSocioeconomica | null;
-  historialGeneral?: IHistorialMedico | null;
-  entidadNacimiento?: IEntidadFederativa | null;
 }
 
 export class Paciente implements IPaciente {
@@ -31,13 +25,9 @@ export class Paciente implements IPaciente {
     public apellidoPaterno?: string | null,
     public apellidoMaterno?: string | null,
     public sexo?: Sexo | null,
-    public nacionalidad?: string | null,
+    public nacionalidad?: Nacionalidad | null,
     public fechaNacimiento?: Date | null,
-    public estadoCivil?: string | null,
-    public curp?: string | null,
-    public direccion?: IDireccion | null,
-    public infoSocioeconomica?: IInfoSocioeconomica | null,
-    public historialGeneral?: IHistorialMedico | null,
-    public entidadNacimiento?: IEntidadFederativa | null
+    public estadoCivil?: EstadoCivil | null,
+    public curp?: string | null
   ) {}
 }

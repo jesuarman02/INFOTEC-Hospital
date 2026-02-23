@@ -5,6 +5,8 @@ import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Objects;
 import mx.infotec.pacientesms.domain.enumeration.Sexo;
+import mx.infotec.pacientesms.domain.enumeration.Nacionalidad;
+import mx.infotec.pacientesms.domain.enumeration.EstadoCivil;
 
 /**
  * A DTO for the {@link mx.infotec.pacientesms.domain.Paciente} entity.
@@ -31,14 +33,14 @@ public class PacienteDTO implements Serializable {
     @NotNull(message = "must not be null")
     private Sexo sexo;
 
-    @Size(max = 40)
-    private String nacionalidad;
+    @NotNull(message = "must not be null")
+    private Nacionalidad nacionalidad;
 
     @NotNull(message = "must not be null")
     private LocalDate fechaNacimiento;
 
-    @Size(max = 20)
-    private String estadoCivil;
+    @NotNull(message = "must not be null")
+    private EstadoCivil estadoCivil;
 
     @NotNull(message = "must not be null")
     @Size(max = 18)
@@ -100,11 +102,11 @@ public class PacienteDTO implements Serializable {
         this.sexo = sexo;
     }
 
-    public String getNacionalidad() {
+    public Nacionalidad getNacionalidad() {
         return nacionalidad;
     }
 
-    public void setNacionalidad(String nacionalidad) {
+    public void setNacionalidad(Nacionalidad nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
 
@@ -116,11 +118,11 @@ public class PacienteDTO implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getEstadoCivil() {
+    public EstadoCivil getEstadoCivil() {
         return estadoCivil;
     }
 
-    public void setEstadoCivil(String estadoCivil) {
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
         this.estadoCivil = estadoCivil;
     }
 

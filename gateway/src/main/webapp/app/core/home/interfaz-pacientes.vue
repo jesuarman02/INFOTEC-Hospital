@@ -13,7 +13,7 @@
     </div>
 
     <div class="sidebar-list p-3 border-right">
-      <h5 class="title-pacientes mt-2 mb-3">PACIENTES</h5>
+      <h5 class="title-pacientes mt-2 mb-3">{{ $t('interfaz-pacientes.patients') }}</h5>
 
       <div class="search-container mb-4">
         <div class="input-group fancy-search">
@@ -31,9 +31,8 @@
       <div class="row h-100">
         <div class="col-md-5 d-flex flex-column">
 
-          <!-- NUEVO APARTADO DOCTOR / ESPECIALIDAD -->
           <div class="doctor-header d-flex align-items-center justify-content-between mb-2 px-2">
-            <div class="doctor-name">Dr. Nombre del Doctor</div>
+            <div class="doctor-name">{{ $t('interfaz-pacientes.dr') }}</div>
             <div class="specialty-name text-center">Especialidad Médica</div>
           </div>
 

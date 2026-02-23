@@ -1,0 +1,7 @@
+{
+    "interfaz-pacientes":{
+        "name":"Nombre",
+        "patients":"Pacientes",
+        "dr":"Dr. Nombre del Doctor"
+    }
+}

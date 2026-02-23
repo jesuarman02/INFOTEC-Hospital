@@ -5,6 +5,7 @@ import static mx.infotec.pacientesms.web.rest.TestUtil.createUpdateProxyForBean;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.is;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -14,6 +15,8 @@ import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import mx.infotec.pacientesms.IntegrationTest;
 import mx.infotec.pacientesms.domain.Paciente;
+import mx.infotec.pacientesms.domain.enumeration.EstadoCivil;
+import mx.infotec.pacientesms.domain.enumeration.Nacionalidad;
 import mx.infotec.pacientesms.domain.enumeration.Sexo;
 import mx.infotec.pacientesms.repository.EntityManager;
 import mx.infotec.pacientesms.repository.PacienteRepository;
@@ -55,17 +58,15 @@ class PacienteResourceIT {
     private static final String UPDATED_APELLIDO_MATERNO = "BBBBBBBBBB";
 
     private static final Sexo DEFAULT_SEXO = Sexo.M;
-    private static final Sexo UPDATED_SEXO = Sexo.F;
+    private static final Sexo UPDATED_SEXO = Sexo.M;
 
-    private static final String DEFAULT_NACIONALIDAD = "AAAAAAAAAA";
-    private static final String UPDATED_NACIONALIDAD = "BBBBBBBBBB";
-
+private static final Nacionalidad DEFAULT_NACIONALIDAD = Nacionalidad.MEXICANA;    
+private static final Nacionalidad UPDATED_NACIONALIDAD = Nacionalidad.EXTRANJERA;
     private static final LocalDate DEFAULT_FECHA_NACIMIENTO = LocalDate.ofEpochDay(0L);
     private static final LocalDate UPDATED_FECHA_NACIMIENTO = LocalDate.now(ZoneId.systemDefault());
 
-    private static final String DEFAULT_ESTADO_CIVIL = "AAAAAAAAAA";
-    private static final String UPDATED_ESTADO_CIVIL = "BBBBBBBBBB";
-
+private static final EstadoCivil DEFAULT_ESTADO_CIVIL = EstadoCivil.SOLTERO;
+private static final EstadoCivil UPDATED_ESTADO_CIVIL = EstadoCivil.CASADO;
     private static final String DEFAULT_CURP = "AAAAAAAAAA";
     private static final String UPDATED_CURP = "BBBBBBBBBB";
 
