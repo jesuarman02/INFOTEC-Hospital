@@ -12,27 +12,11 @@ public class PacienteTestSamples {
     private static final AtomicInteger intCount = new AtomicInteger(random.nextInt() + (2 * Short.MAX_VALUE));
 
     public static Paciente getPacienteSample1() {
-        return new Paciente()
-            .id(1L)
-            .ecu(1)
-            .nombre("nombre1")
-            .apellidoPaterno("apellidoPaterno1")
-            .apellidoMaterno("apellidoMaterno1")
-            .nacionalidad("nacionalidad1")
-            .estadoCivil("estadoCivil1")
-            .curp("curp1");
+        return new Paciente().id(1L).ecu(5).nombre("nombre1").apellidoPaterno("apellidoPaterno1").apellidoMaterno("apellidoMaterno1").curp("curp1");
     }
 
     public static Paciente getPacienteSample2() {
-        return new Paciente()
-            .id(2L)
-            .ecu(2)
-            .nombre("nombre2")
-            .apellidoPaterno("apellidoPaterno2")
-            .apellidoMaterno("apellidoMaterno2")
-            .nacionalidad("nacionalidad2")
-            .estadoCivil("estadoCivil2")
-            .curp("curp2");
+        return new Paciente().id(2L).ecu(2).nombre("nombre2").apellidoPaterno("apellidoPaterno2").apellidoMaterno("apellidoMaterno2").curp("curp2");
     }
 
     public static Paciente getPacienteRandomSampleGenerator() {
@@ -42,8 +26,6 @@ public class PacienteTestSamples {
             .nombre(UUID.randomUUID().toString())
             .apellidoPaterno(UUID.randomUUID().toString())
             .apellidoMaterno(UUID.randomUUID().toString())
-            .nacionalidad(UUID.randomUUID().toString())
-            .estadoCivil(UUID.randomUUID().toString())
             .curp(UUID.randomUUID().toString());
     }
 }

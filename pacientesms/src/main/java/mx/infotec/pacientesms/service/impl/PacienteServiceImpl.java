@@ -1,5 +1,7 @@
 package mx.infotec.pacientesms.service.impl;
-
+import mx.infotec.pacientesms.service.CurpValidator;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import mx.infotec.pacientesms.repository.PacienteRepository;
 import mx.infotec.pacientesms.service.PacienteService;
 import mx.infotec.pacientesms.service.dto.PacienteDTO;
@@ -33,13 +35,29 @@ public class PacienteServiceImpl implements PacienteService {
     @Override
     public Mono<PacienteDTO> save(PacienteDTO pacienteDTO) {
         LOG.debug("Request to save Paciente : {}", pacienteDTO);
-        return pacienteRepository.save(pacienteMapper.toEntity(pacienteDTO)).map(pacienteMapper::toDto);
+        
+        // --- INICIO VALIDACIÓN CURP ---
+        if (!CurpValidator.esValido(pacienteDTO.getCurp())) {
+            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "La CURP ingresada no es válida o tiene un formato incorrecto."));
+        }
+        // --- FIN VALIDACIÓN CURP ---
+
+        return pacienteRepository.save(pacienteMapper.toEntity(pacienteDTO))
+            .map(pacienteMapper::toDto);
     }
 
     @Override
     public Mono<PacienteDTO> update(PacienteDTO pacienteDTO) {
         LOG.debug("Request to update Paciente : {}", pacienteDTO);
-        return pacienteRepository.save(pacienteMapper.toEntity(pacienteDTO)).map(pacienteMapper::toDto);
+        
+        // --- INICIO VALIDACIÓN CURP ---
+        if (!CurpValidator.esValido(pacienteDTO.getCurp())) {
+            return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "La CURP ingresada no es válida o tiene un formato incorrecto."));
+        }
+        // --- FIN VALIDACIÓN CURP ---
+
+        return pacienteRepository.save(pacienteMapper.toEntity(pacienteDTO))
+            .map(pacienteMapper::toDto);
     }
 
     @Override
@@ -84,4 +102,5 @@ public class PacienteServiceImpl implements PacienteService {
         LOG.debug("Request to delete Paciente : {}", id);
         return pacienteRepository.deleteById(id);
     }
+    
 }

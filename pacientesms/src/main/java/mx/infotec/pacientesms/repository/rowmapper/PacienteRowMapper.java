@@ -4,6 +4,8 @@ import io.r2dbc.spi.Row;
 import java.time.LocalDate;
 import java.util.function.BiFunction;
 import mx.infotec.pacientesms.domain.Paciente;
+import mx.infotec.pacientesms.domain.enumeration.EstadoCivil;
+import mx.infotec.pacientesms.domain.enumeration.Nacionalidad;
 import mx.infotec.pacientesms.domain.enumeration.Sexo;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +34,9 @@ public class PacienteRowMapper implements BiFunction<Row, String, Paciente> {
         entity.setApellidoPaterno(converter.fromRow(row, prefix + "_apellido_paterno", String.class));
         entity.setApellidoMaterno(converter.fromRow(row, prefix + "_apellido_materno", String.class));
         entity.setSexo(converter.fromRow(row, prefix + "_sexo", Sexo.class));
-        entity.setNacionalidad(converter.fromRow(row, prefix + "_nacionalidad", String.class));
+        entity.setNacionalidad(converter.fromRow(row, prefix + "_nacionalidad", Nacionalidad.class));
         entity.setFechaNacimiento(converter.fromRow(row, prefix + "_fecha_nacimiento", LocalDate.class));
-        entity.setEstadoCivil(converter.fromRow(row, prefix + "_estado_civil", String.class));
+        entity.setEstadoCivil(converter.fromRow(row, prefix + "_estado_civil", EstadoCivil.class));
         entity.setCurp(converter.fromRow(row, prefix + "_curp", String.class));
         entity.setDireccionId(converter.fromRow(row, prefix + "_direccion_id", Long.class));
         entity.setInfoSocioeconomicaId(converter.fromRow(row, prefix + "_info_socioeconomica_id", Long.class));

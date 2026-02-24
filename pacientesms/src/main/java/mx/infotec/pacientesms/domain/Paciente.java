@@ -7,6 +7,8 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 import mx.infotec.pacientesms.domain.enumeration.Sexo;
+import mx.infotec.pacientesms.domain.enumeration.Nacionalidad;
+import mx.infotec.pacientesms.domain.enumeration.EstadoCivil;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
@@ -25,42 +27,58 @@ public class Paciente implements Serializable {
     @Column("id")
     private Long id;
 
-    @NotNull(message = "must not be null")
+    // ECU obligatorio y único (unicidad se define en la BD)
+    @NotNull
     @Column("ecu")
     private Integer ecu;
 
-    @NotNull(message = "must not be null")
-    @Size(max = 100)
+    // SOLO LETRAS, ESPACIOS Y ACENTOS. MIN 2, MAX 60
+    @NotNull
+    @Size(min = 2, max = 60)
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1 ]+$", message = "Solo se permiten letras")
     @Column("nombre")
     private String nombre;
 
-    @NotNull(message = "must not be null")
-    @Size(max = 50)
+    @NotNull
+    @Size(min = 2, max = 60)
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1 ]+$", message = "Solo se permiten letras")
     @Column("apellido_paterno")
     private String apellidoPaterno;
 
-    @Size(max = 50)
+    @Size(max = 60)
+    @Pattern(regexp = "^[a-zA-ZÀ-ÿ\\u00f1\\u00d1 ]+$", message = "Solo se permiten letras")
     @Column("apellido_materno")
     private String apellidoMaterno;
 
-    @NotNull(message = "must not be null")
+    // CAMBIO A ENUM
+    @NotNull
     @Column("sexo")
     private Sexo sexo;
 
-    @Size(max = 40)
+    // CAMBIO A ENUM
     @Column("nacionalidad")
-    private String nacionalidad;
+    private Nacionalidad nacionalidad;
 
-    @NotNull(message = "must not be null")
+    // DEBE SER FECHA PASADA
+    @NotNull
+    @Past(message = "La fecha de nacimiento debe ser en el pasado")
     @Column("fecha_nacimiento")
     private LocalDate fechaNacimiento;
 
-    @Size(max = 20)
+    // ENUM EstadoCivil
     @Column("estado_civil")
-    private String estadoCivil;
+    private EstadoCivil estadoCivil;
 
-    @NotNull(message = "must not be null")
-    @Size(max = 18)
+    // CURP con validación completa
+    @NotNull
+    @Size(min = 18, max = 18)
+    @Pattern(
+        regexp = "^[A-Z]{1}[AEIOU]{1}[A-Z]{2}[0-9]{2}(0[1-9]|1[0-2])" +
+                 "(0[1-9]|1[0-9]|2[0-9]|3[0-1])[HM]{1}" +
+                 "(AS|BC|BS|CC|CS|CH|CL|CM|DF|DG|GT|GR|HG|JC|MC|MN|MS|NT|NL|OC|PL|QT|QR|SP|SL|SR|TC|TS|TL|VZ|YN|ZS|NE)" +
+                 "[B-DF-HJ-NP-TV-Z]{3}[0-9A-Z]{1}[0-9]{1}$",
+        message = "Formato de CURP inválido"
+    )
     @Column("curp")
     private String curp;
 
@@ -184,18 +202,19 @@ public class Paciente implements Serializable {
         this.sexo = sexo;
     }
 
-    public String getNacionalidad() {
+    public Nacionalidad getNacionalidad() {
         return this.nacionalidad;
     }
 
-    public Paciente nacionalidad(String nacionalidad) {
+    public Paciente nacionalidad(Nacionalidad nacionalidad) {
         this.setNacionalidad(nacionalidad);
         return this;
     }
 
-    public void setNacionalidad(String nacionalidad) {
+    public void setNacionalidad(Nacionalidad nacionalidad) {
         this.nacionalidad = nacionalidad;
     }
+
 
     public LocalDate getFechaNacimiento() {
         return this.fechaNacimiento;
@@ -210,18 +229,19 @@ public class Paciente implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public String getEstadoCivil() {
+    public EstadoCivil getEstadoCivil() {
         return this.estadoCivil;
     }
 
-    public Paciente estadoCivil(String estadoCivil) {
+    public Paciente estadoCivil(EstadoCivil estadoCivil) {
         this.setEstadoCivil(estadoCivil);
         return this;
     }
 
-    public void setEstadoCivil(String estadoCivil) {
+    public void setEstadoCivil(EstadoCivil estadoCivil) {
         this.estadoCivil = estadoCivil;
     }
+
 
     public String getCurp() {
         return this.curp;

@@ -7,16 +7,14 @@ import PacienteService from './paciente.service';
 import { useValidation } from '@/shared/composables';
 import { useAlertService } from '@/shared/alert/alert.service';
 
-import DireccionService from '@/entities/pacientems/direccion/direccion.service';
-import { type IDireccion } from '@/shared/model/pacientems/direccion.model';
-import InfoSocioeconomicaService from '@/entities/pacientems/info-socioeconomica/info-socioeconomica.service';
-import { type IInfoSocioeconomica } from '@/shared/model/pacientems/info-socioeconomica.model';
-import HistorialMedicoService from '@/entities/pacientems/historial-medico/historial-medico.service';
-import { type IHistorialMedico } from '@/shared/model/pacientems/historial-medico.model';
-import EntidadFederativaService from '@/entities/pacientesms/entidad-federativa/entidad-federativa.service';
-import { type IEntidadFederativa } from '@/shared/model/pacientesms/entidad-federativa.model';
 import { type IPaciente, Paciente } from '@/shared/model/pacientems/paciente.model';
-import { Sexo } from '@/shared/model/enumerations/sexo.model';
+
+// EXPRESIÓN REGULAR: Solo letras mayúsculas, minúsculas, acentos y espacios.
+const soloLetrasRegex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/;
+const validadorSoloLetras = (value: string | null | undefined) => {
+  if (!value) return true; // Si está vacío, la regla "required" se encarga de quejarse
+  return soloLetrasRegex.test(value);
+};
 
 export default defineComponent({
   compatConfig: { MODE: 3 },
@@ -26,23 +24,6 @@ export default defineComponent({
     const alertService = inject('alertService', () => useAlertService(), true);
 
     const paciente: Ref<IPaciente> = ref(new Paciente());
-
-    const direccionService = inject('direccionService', () => new DireccionService());
-
-    const direccions: Ref<IDireccion[]> = ref([]);
-
-    const infoSocioeconomicaService = inject('infoSocioeconomicaService', () => new InfoSocioeconomicaService());
-
-    const infoSocioeconomicas: Ref<IInfoSocioeconomica[]> = ref([]);
-
-    const historialMedicoService = inject('historialMedicoService', () => new HistorialMedicoService());
-
-    const historialMedicos: Ref<IHistorialMedico[]> = ref([]);
-
-    const entidadFederativaService = inject('entidadFederativaService', () => new EntidadFederativaService());
-
-    const entidadFederativas: Ref<IEntidadFederativa[]> = ref([]);
-    const sexoValues: Ref<string[]> = ref(Object.keys(Sexo));
     const isSaving = ref(false);
     const currentLanguage = inject('currentLanguage', () => computed(() => navigator.language ?? 'es'), true);
 
@@ -51,46 +32,29 @@ export default defineComponent({
 
     const previousState = () => router.go(-1);
 
-    const retrievePaciente = async pacienteId => {
+    const retrievePaciente = async (pacienteId: number) => {
       try {
         const res = await pacienteService().find(pacienteId);
         paciente.value = res;
       } catch (error) {
-        alertService.showHttpError(error.response);
+        alertService.showHttpError((error as any).response);
       }
     };
 
     if (route.params?.pacienteId) {
-      retrievePaciente(route.params.pacienteId);
+      retrievePaciente(Number(route.params.pacienteId));
     }
-
-    const initRelationships = () => {
-      direccionService()
-        .retrieve()
-        .then(res => {
-          direccions.value = res.data;
-        });
-      infoSocioeconomicaService()
-        .retrieve()
-        .then(res => {
-          infoSocioeconomicas.value = res.data;
-        });
-      historialMedicoService()
-        .retrieve()
-        .then(res => {
-          historialMedicos.value = res.data;
-        });
-      entidadFederativaService()
-        .retrieve()
-        .then(res => {
-          entidadFederativas.value = res.data;
-        });
-    };
-
-    initRelationships();
 
     const { t: t$ } = useI18n();
     const validations = useValidation();
+
+
+    const onInputUpper = (event: Event, field: any) => {
+      const target = event.target as HTMLInputElement | null;
+      if (!target) return;
+      field.$model = target.value.toUpperCase();
+    };
+    
     const validationRules = {
       ecu: {
         required: validations.required(t$('entity.validation.required').toString()),
@@ -98,36 +62,35 @@ export default defineComponent({
       },
       nombre: {
         required: validations.required(t$('entity.validation.required').toString()),
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 100 }).toString(), 100),
+        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 60 }).toString(), 60),
+        minLength: validations.minLength(t$('entity.validation.minlength', { min: 2 }).toString(), 2),
+        soloLetras: validadorSoloLetras, // <-- NUEVA VALIDACIÓN
       },
       apellidoPaterno: {
         required: validations.required(t$('entity.validation.required').toString()),
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 50 }).toString(), 50),
+        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 60 }).toString(), 60),
+        minLength: validations.minLength(t$('entity.validation.minlength', { min: 2 }).toString(), 2),
+        soloLetras: validadorSoloLetras, // <-- NUEVA VALIDACIÓN
       },
       apellidoMaterno: {
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 50 }).toString(), 50),
+        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 60 }).toString(), 60),
+        soloLetras: validadorSoloLetras, // <-- NUEVA VALIDACIÓN
       },
       sexo: {
         required: validations.required(t$('entity.validation.required').toString()),
       },
-      nacionalidad: {
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 40 }).toString(), 40),
-      },
+      nacionalidad: {},
       fechaNacimiento: {
         required: validations.required(t$('entity.validation.required').toString()),
       },
-      estadoCivil: {
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 20 }).toString(), 20),
-      },
+      estadoCivil: {},
       curp: {
         required: validations.required(t$('entity.validation.required').toString()),
         maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 18 }).toString(), 18),
-      },
-      direccion: {},
-      infoSocioeconomica: {},
-      historialGeneral: {},
-      entidadNacimiento: {},
+        minLength: validations.minLength(t$('entity.validation.minlength', { min: 18 }).toString(), 18),
+      }
     };
+    
     const v$ = useVuelidate(validationRules, paciente as any);
     v$.value.$validate();
 
@@ -136,41 +99,49 @@ export default defineComponent({
       alertService,
       paciente,
       previousState,
-      sexoValues,
       isSaving,
       currentLanguage,
-      direccions,
-      infoSocioeconomicas,
-      historialMedicos,
-      entidadFederativas,
       v$,
       t$,
+      onInputUpper,
     };
   },
   created(): void {},
   methods: {
     save(): void {
+      // 1. Forzar la validación de todo el formulario
+      this.v$.$validate();
+      
+      // 2. Si hay errores, lanzamos la alerta flotante y detenemos el guardado
+      if (this.v$.$invalid) {
+        this.alertService.showError('Por favor, revise los campos en rojo. Faltan datos o tienen un formato incorrecto.');
+        return;
+      }
+
       this.isSaving = true;
+      
+      // Si todo está bien, lo mandamos a Java
+// Si todo está bien, lo mandamos a Java
       if (this.paciente.id) {
         this.pacienteService()
           .update(this.paciente)
           .then(param => {
             this.isSaving = false;
             this.previousState();
-            this.alertService.showInfo(this.t$('pacientesmsApp.pacientemsPaciente.updated', { param: param.id }));
+            // CAMBIO AQUÍ: Mensaje directo en español
+            this.alertService.showInfo('¡Los datos del paciente se han actualizado correctamente!');
           })
-          .catch(error => {
-            this.isSaving = false;
-            this.alertService.showHttpError(error.response);
-          });
+          // ... (catch se queda igual)
       } else {
         this.pacienteService()
           .create(this.paciente)
           .then(param => {
             this.isSaving = false;
             this.previousState();
-            this.alertService.showSuccess(this.t$('pacientesmsApp.pacientemsPaciente.created', { param: param.id }).toString());
+            // CAMBIO AQUÍ: Mensaje directo en español
+            this.alertService.showSuccess('¡Paciente registrado con éxito!');
           })
+          // ... (catch se queda igual)
           .catch(error => {
             this.isSaving = false;
             this.alertService.showHttpError(error.response);
