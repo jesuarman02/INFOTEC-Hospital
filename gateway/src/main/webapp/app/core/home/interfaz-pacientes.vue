@@ -1,16 +1,22 @@
-<template>
-  <div class="d-flex app-container">
-    <div class="sidebar-icons d-flex flex-column align-items-center py-4">
-      <div class="icon-wrapper active mb-4">
-        <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
-      </div>
-      <div class="icon-wrapper mb-4">
+  <template>
+    <div class="d-flex app-container">
+      <div class="sidebar-icons d-flex flex-column align-items-center py-4">
+        <div class="icon-wrapper mb-4 " @click="mostrarHeader = !mostrarHeader">
+          <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
+        </div>
+       <div class="icon-wrapper mb-4" @click="mostrarCalendario = true">
         <img src="/content/images/calendario.svg" class="sidebar-svg" alt="Calendario" />
       </div>
-      <div class="icon-wrapper mb-4">
-        <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
+        <div class="icon-wrapper mb-4" @click="mostrarSubirArchivos = true">
+          <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
+        </div>
       </div>
-    </div>
+    <div class="sidebar-list p-3 border-right"
+    :class="{ 'sidebar-collapsed': !mostrarHeader }"
+    >
+
+  <transition name="fade">
+    <div v-show="mostrarHeader">
 
     <div class="sidebar-list p-3 border-right">
       <h5 class="title-pacientes mt-2 mb-3">{{ $t('interfaz-pacientes.patients') }}</h5>
@@ -30,9 +36,13 @@
 />
         </div>
       </div>
-    </div>
 
-    <div class="main-content flex-grow-1 p-4">
+    </div>
+  </transition>
+
+</div>
+
+      <div class="main-content flex-grow-1 p-4">
       <div v-if="busquedaRealizada" class="row h-100">
         <div class="col-md-5 d-flex flex-column">
 
@@ -41,57 +51,147 @@
             <div class="specialty-name text-center">Especialidad Médica</div>
           </div>
 
-          <div class="card dashboard-card flex-grow-1 mb-4 shadow-sm custom-grey-card">
-            <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
-              <h2 class="font-weight-bold mb-3">ECU</h2>
-              <h4 class="mb-2">NOMBRE</h4>
-              <h5 class="mb-2 text-muted">EDAD</h5>
-              <h5 class="mb-2 text-muted">SEXO</h5>
-              <h5 class="mb-2 text-muted">DIRECCION</h5>
-              <h5 class="mb-0 text-muted">TELEFONO</h5>
-            </div>
-          </div>
+        <!-- NUEVO ENCABEZADO -->
+        <div class="top-info text-center">
+          <div class="top-doctor">{{ paciente.medico.nombre }}</div>
+          <div class="top-specialty">{{ paciente.medico.especialidad }}</div>
 
-          <div class="card dashboard-card mb-3 shadow-sm custom-grey-card" style="height: 120px">
-            <div class="card-body d-flex align-items-center justify-content-around">
-              <div class="vital-icon-box">
-                <img src="/content/images/regla-vertical.svg" class="vital-svg" alt="Talla" />
-              </div>
-              <div class="vital-icon-box">
-                <img src="/content/images/escala.svg" class="vital-svg" alt="Peso" />
-              </div>
-              <div class="vital-icon-box">
-                <img src="/content/images/corazon.svg" class="vital-svg" alt="Cardio" />
-              </div>
-            </div>
+          <div class="top-button-wrapper">
+            <button class="btn agregar-paciente-btn">AGREGAR PACIENTE</button>
           </div>
         </div>
+        <!-- FIN ENCABEZADO -->
 
-        <div class="col-md-7 d-flex flex-column">
+        <div class="row">
+          <div class="col-md-5 d-flex flex-column">
 
-          <!-- BOTON AGREGAR PACIENTE -->
-          <div class="d-flex justify-content-end mb-2">
-            <button class="btn agregar-paciente-btn">Agregar Paciente</button>
+            <div class="card dashboard-card flex-grow-1 mb-4 shadow-sm custom-grey-card">
+              <div class="card-title-custom">DATOS DEL PACIENTE</div>
+              <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
+                <div class="patient-icon">
+  <font-awesome-icon icon="user-injured" />
+</div>
+                <div class="patient-data">
+                    <div class="ecu-icon">
+    <img src="/content/images/user.svg" class="ecu-img" alt="ECU" />
+  </div>
+  <div class="data-row">
+    <span class="data-label">ECU -</span>
+    <span class="data-value">{{ paciente.ecu }}</span>
+  </div>
+
+  <div class="data-row">
+    <span class="data-label">Nombre:</span>
+    <span class="data-value">{{ paciente.nombre }}</span>
+  </div>
+
+  <div class="data-row">
+    <span class="data-label">Edad:</span>
+    <span class="data-value">{{ paciente.edad }}</span>
+  </div>
+
+  <div class="data-row">
+    <span class="data-label">Sexo:</span>
+    <span class="data-value">{{ paciente.sexo }}</span>
+  </div>
+
+  <div class="data-row">
+    <span class="data-label">Dirección:</span>
+    <span class="data-value">{{ paciente.direccion }}</span>
+  </div>
+
+  <div class="data-row">
+    <span class="data-label">Teléfono:</span>
+    <span class="data-value">{{ paciente.telefono }}</span>
+  </div>
+
+</div>
+              </div>
+            </div>
+
+            <div class="card dashboard-card mb-3 shadow-sm custom-grey-card" style="height: 120px">
+              <div class="card-body d-flex align-items-center justify-content-around">
+                <div class="vital-icon-box">
+                  <img src="/content/images/regla-vertical.svg" class="vital-svg" alt="Talla" />
+                </div>
+                <div class="vital-icon-box">
+                  <img src="/content/images/escala.svg" class="vital-svg" alt="Peso" />
+                </div>
+                <div class="vital-icon-box">
+                  <img src="/content/images/corazon.svg" class="vital-svg" alt="Cardio" />
+                </div>
+              </div>
+            </div>
           </div>
-
-          <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
-            <div class="card-body d-flex align-items-center justify-content-center">
-              <h3 class="font-weight-bold text-uppercase">Causa de Ingreso</h3>
+            <!--causa ingreso-->
+          <div class="col-md-7 d-flex flex-column">
+            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
+              <div class="card-title-custom">MOTIVO DE INGRESO</div>
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <h3 class="font-weight-bold text-uppercase">
+                {{ paciente.causaIngreso }}
+              </h3>
+              </div>
+            </div>
+            <!--estatus-->
+            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
+              <div class="card-title-custom">ESTADO ACTUAL</div>
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <h3 class="font-weight-bold text-uppercase">
+                  {{ paciente.estatus }}
+                </h3>
+              </div>
+            </div>
+            <!--trataminetos-->
+            <div class="card dashboard-card mb-3 shadow-sm custom-grey-card flex-fill">
+              <div class="card-title-custom">TRATAMIENTO</div>
+              <div class="card-body d-flex align-items-center justify-content-center">
+                <h3 class="font-weight-bold text-uppercase">
+                  {{ paciente.tratamientos }}
+                </h3>
+              </div>
             </div>
           </div>
 
-          <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
-            <div class="card-body d-flex align-items-center justify-content-center">
-              <h3 class="font-weight-bold text-uppercase">Estatus del Paciente</h3>
-            </div>
-          </div>
-
-          <div class="card dashboard-card mb-3 shadow-sm custom-grey-card flex-fill">
-            <div class="card-body d-flex align-items-center justify-content-center">
-              <h3 class="font-weight-bold text-uppercase">Tratamientos</h3>
-            </div>
+          <div>
+            <b-card no-body>
+              <b-tabs card>
+                <b-tab title="Datos del Paciente" active>
+                  <b-card-text>datos como su curp etc</b-card-text>
+                </b-tab>
+                <b-tab title="Datos Medicos">
+                  <b-card-text>como altura, peso, alergias</b-card-text>
+                </b-tab>
+                <b-tab title="Diagnostico">
+                  <b-card-text>datoos de sus diagnósticos clinicos</b-card-text>
+                </b-tab>
+                <b-tab title="Datos del medico">
+                  <b-card-text>datos del médico que atendió al paciente</b-card-text>
+                </b-tab>
+              </b-tabs>
+            </b-card>
           </div>
         </div>
+      </div>  
+    </div>
+    <!-- CALENDARIO MODAL -->
+  <div v-if="mostrarCalendario" class="calendar-overlay">
+    <div class="calendar-box">
+    <div class="calendar-header">
+      <span>Calendario</span>
+      <button class="close-btn" @click="mostrarCalendario = false">✕</button>
+    </div>
+    <input type="date" class="calendar-input" />
+  </div>
+</div>
+<!-- MODAL SUBIR ARCHIVOS -->
+<div v-if="mostrarSubirArchivos" class="upload-overlay">
+  <div class="upload-box">
+
+    <div class="upload-header">
+      <span>Subir Archivos Médicos</span>
+      <button class="close-btn" @click="mostrarSubirArchivos = false">✕</button>
+    </div>
         <div>
           <b-card  no-body>
             <b-tabs card>
@@ -399,6 +499,8 @@ export default defineComponent({
   setup() {
     // Variable para controlar si se muestra la info
     const busquedaRealizada = ref(false);
+    const mostrarCalendario = ref(false);
+    const mostrarSubirArchivos = ref(false);
 
     // Función para activar la vista al presionar Enter o buscar
     const realizarBusqueda = () => {
@@ -408,6 +510,8 @@ export default defineComponent({
     return {
       busquedaRealizada,
       realizarBusqueda
+      mostrarCalendario,
+      mostrarSubirArchivos
     };
   },
 });
@@ -423,172 +527,492 @@ export default defineComponent({
   background-color: rgb(255, 255, 255); /* Fondo blanco general */
 }
 
-/* =========================================
-   SIDEBARS (Estilos previos conservados)
-   ========================================= */
-.sidebar-icons {
-  width: 80px;
-  background-color: #611232;
-  flex-shrink: 0;
+    <div class="upload-body">
+      <input 
+        type="file" 
+        accept=".pdf,.jpg,.jpeg"
+        class="upload-input"
+      />
+      <p class="upload-text">
+        Formatos permitidos: PDF, JPG
+      </p>
+    </div>
+
+  </div>
+</div>
+  </template>
+
+
+    <script lang="ts">
+  import { defineComponent, reactive } from 'vue';
+  import { ref } from 'vue';
+  export default defineComponent({
+    name: 'InterfazPacientes',
+    setup() {
+
+  const mostrarCalendario = ref(false);
+  const mostrarHeader = ref(true);
+  const mostrarSubirArchivos = ref(false);
+  const paciente = reactive({
+    ecu: "ECU-000245",
+    nombre: "Juan Carlos Pérez López",
+    edad: 34,
+    sexo: "Masculino",
+    direccion: "Av. Reforma 123, CDMX",
+    telefono: "55 1234 5678",
+
+    causaIngreso: "Dolor abdominal agudo",
+    estatus: "En observación",
+    tratamientos: "Suero intravenoso y analgésicos",
+
+    datosPaciente: {
+      curp: "PELJ900101HDFRRN09",
+      fechaNacimiento: "01/01/1990",
+      estadoCivil: "Soltero",
+      ocupacion: "Ingeniero"
+    },
+
+    datosMedicos: {
+      altura: "1.75 m",
+      peso: "82 kg",
+      alergias: "Penicilina",
+      tipoSangre: "O+"
+    },
+
+    diagnostico: {
+      principal: "Gastritis aguda",
+      observaciones: "Requiere dieta blanda 7 días"
+    },
+
+    medico: {
+      nombre: "Dra. María Fernanda Torres",
+      cedula: "12345678",
+      especialidad: "Otorrinolaringologia"
+    }
+  });
+
+  return { paciente, mostrarCalendario, mostrarHeader, mostrarSubirArchivos  };
+}
+  });
+  </script>
+
+
+    <style scoped>
+
+    .app-container {
+     height: auto;
+     min-height: calc(100vh - 60px);
+     background-color: rgb(255, 255, 255);
+    }
+
+
+    .sidebar-icons {
+      width: 80px;
+      background-color: #611232;
+      flex-shrink: 0;
+    }
+
+    .icon-wrapper {
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      opacity: 0.7;
+    }
+
+    .icon-wrapper:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      opacity: 1;
+    }
+
+    .sidebar-svg {
+      width: 24px;
+      height: 24px;
+      filter: invert(1);
+      transition: transform 0.2s;
+    }
+
+    .icon-wrapper:hover .sidebar-svg {
+      transform: scale(1.1);
+    }
+
+    .icon-wrapper.active {
+      background-color: #eecbc4;
+      opacity: 1;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .icon-wrapper.active .sidebar-svg {
+      filter: none;
+    }
+
+    .sidebar-list {
+      width: 300px;
+      background-color: rgb(255, 255, 255);
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #e0e0e0;
+      transition: width 0.3s ease;
+    }
+    .sidebar-collapsed {
+     width: 80px;
+    }
+
+    .title-pacientes {
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #333;
+      font-family: 'Arial Black', sans-serif;
+    }
+
+    .fancy-search {
+      background-color: #f1f3f5;
+      border-radius: 25px;
+      padding: 5px;
+      transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border: 1px solid transparent;
+    }
+
+    .fancy-search:focus-within {
+      background-color: #ffffff;
+      border-color: #eecbc4;
+      box-shadow: 0 4px 12px rgba(97, 18, 50, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .search-input {
+      box-shadow: none !important;
+      font-size: 0.9rem;
+      color: #495057;
+    }
+
+    .search-icon {
+      transition: color 0.3s;
+    }
+
+    .fancy-search:focus-within .search-icon {
+      color: #611232 !important;
+    }
+
+
+    .main-content {
+    flex: 1;
+    min-height: 100vh; /* 🔥 pantalla completa */
+    position: relative;
+    overflow: hidden;  /* evita que el before se salga */
+    padding-bottom: 150px;
+    }
+    /* IMAGEN DE FONDO TIPO MARCA DE AGUA */
+  .main-content::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('/content/images/fondo.png');
+    background-repeat: no-repeat;
+    background-size: cover; /* 🔥 cubre toda la pantalla */
+    background-position: center;
+    opacity: 0.1; /* 🔥 ajusta transparencia aquí */
+    z-index: 0;
+  }    
+   
+    .custom-grey-card {
+      background-color: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(8px);
+      border-radius: 15px; 
+      border: 3px solid rgba(97,18,50,0.25);
+      box-shadow:
+      0 6px 15px rgba(0,0,0,0.08);
+      transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+    }
+
+    .custom-grey-card:hover {
+      transform: translateY(-3px);  
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
+    }
+
+
+    .doctor-header {
+      font-weight: 100;
+      color: #333;
+    }
+
+    .doctor-name {
+      font-size: 32px;
+      font-weight: 700;
+      margin-left: 45px;
+    }
+
+    .specialty-name {
+      font-size: 32px;
+      font-weight: 1000;
+      margin-right: -910px;
+    }
+
+    .agregar-paciente-btn {
+      background-color: #611232;
+      color: white;
+      border-radius: 90px;
+      padding: 15px 48px;
+      font-weight: 5600;
+    }
+
+    .agregar-paciente-btn:hover {
+      background-color: #7a1a40;
+    }
+
+
+    .vital-icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .vital-svg {
+      width: 40px;
+      height: 40px;
+    }
+
+
+    .dashboard-card h2,
+    .dashboard-card h3,
+    .dashboard-card h4,
+    .dashboard-card h5 {
+      color: #333;
+      font-family: 'Arial', sans-serif;
+    }
+    /* ===== NUEVO ORDEN SUPERIOR ===== */
+
+  .top-info{
+    width:100%;
+    margin-bottom:40px;
+    padding-left: 650px;
+    text-align: left;
+  }
+
+  .top-doctor{
+    font-size:38px;
+    font-weight:800;
+    color:#333;
+    margin-bottom:45x;
+  }
+
+  .top-specialty{
+    font-size:26px;
+    font-weight:500;
+    color:#555;
+  }
+
+  .top-button-wrapper{
+    margin-top:20px;
+  }
+
+
+  /* ocultar encabezado viejo */
+  .doctor-header{
+    display:none;
+  }
+  .col-md-5{
+    margin-top:0px;
+  }
+  .col-md-7 > .d-flex.justify-content-end.mb-2{
+    display:none;
+  }
+
+
+  /* bajar las cards */
+  .col-md-7 .dashboard-card{
+    margin-top:25px;
+  }
+
+  .col-md-7{
+    padding-top:10px;
+  }
+  /* ===== TITULOS FLOTANTES ===== */
+.dashboard-card{
+  position: relative;
+  padding-top: 35px;
 }
 
-.icon-wrapper {
-  width: 50px;
-  height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  opacity: 0.7;
+.card-title-custom{
+  position: absolute;
+  top: -12px;
+  left: 50px;
+  background: #611232;
+  color: white;
+  padding: 16px 18px;
+  border-radius: 80px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-.icon-wrapper:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  opacity: 1;
+/* ===== ICONO ECU PERSONALIZADO ===== */
+
+.ecu-icon{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin-bottom:20px;
 }
 
-.sidebar-svg {
-  width: 24px;
-  height: 24px;
-  filter: invert(1);
-  transition: transform 0.2s;
+.ecu-img{
+  width:210px;
+  height:150px;
+  object-fit:contain;
+  transition: transform 0.2s ease;
 }
 
-.icon-wrapper:hover .sidebar-svg {
+.ecu-img:hover{
   transform: scale(1.1);
 }
 
-.icon-wrapper.active {
-  background-color: #eecbc4;
-  opacity: 1;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+/* ===== NUEVO DISEÑO LIMPIO DATOS PACIENTE ===== */
+
+.patient-data{
+  width:100%;
+  max-width:450px;
+  margin-top:15px;
 }
 
-.icon-wrapper.active .sidebar-svg {
-  filter: none;
+.data-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 0;
 }
 
-.sidebar-list {
-  width: 300px;
-  background-color: rgb(255, 255, 255);
+.data-label{
+  font-size:20px;
+  font-weight:700;
+  color:#333;
+}
+
+.data-value{
+  font-size:22px;
+  font-weight:500;
+  color:#000;
+}
+/* ===== CALENDARIO OVERLAY ===== */
+
+.calendar-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.calendar-box{
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 320px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  animation: fadeIn 0.2s ease;
+}
+
+.calendar-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+}
+
+.close-btn{
+  border: none;
+  background: #611232;
+  color: white;
+  border-radius: 50%;
+  width: 28px;
+  height: 28px;
+  cursor: pointer;
+}
+
+.calendar-input{
+  width: 100%;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+}
+
+@keyframes fadeIn{
+  from { opacity:0; transform: scale(0.9); }
+  to { opacity:1; transform: scale(1); }
+}
+/* ===== MODAL SUBIR ARCHIVOS ===== */
+
+.upload-overlay{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.upload-box{
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  width: 400px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+  animation: fadeIn 0.2s ease;
+}
+
+.upload-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 700;
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.upload-body{
   display: flex;
   flex-direction: column;
-  border-right: 1px solid #e0e0e0;
-}
-
-.title-pacientes {
-  font-weight: 800;
-  letter-spacing: 1px;
-  color: #333;
-  font-family: 'Arial Black', sans-serif;
-}
-
-.fancy-search {
-  background-color: #f1f3f5;
-  border-radius: 25px;
-  padding: 5px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-  border: 1px solid transparent;
-}
-
-.fancy-search:focus-within {
-  background-color: #ffffff;
-  border-color: #eecbc4;
-  box-shadow: 0 4px 12px rgba(97, 18, 50, 0.15);
-  transform: translateY(-2px);
-}
-
-.search-input {
-  box-shadow: none !important;
-  font-size: 0.9rem;
-  color: #495057;
-}
-
-.search-icon {
-  transition: color 0.3s;
-}
-
-.fancy-search:focus-within .search-icon {
-  color: #611232 !important;
-}
-
-/* =========================================
-   DASHBOARD CARDS (Nuevo Diseño)
-   ========================================= */
-.main-content {
-  overflow-y: auto;
-  background-color: #ffffff; /* Aseguramos fondo limpio */
-}
-
-/* Tarjetas Grises estilo MOC */
-.custom-grey-card {
-  background-color: #e6e6e6; /* Color gris claro del MOC */
-  border: none; /* Sin bordes negros */
-  border-radius: 15px; /* Bordes redondeados */
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
-
-.custom-grey-card:hover {
-  transform: translateY(-3px); /* Efecto elevación al pasar mouse */
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1) !important;
-}
-
-/* NUEVOS ESTILOS */
-.doctor-header {
-  font-weight: 100;
-  color: #333;
-}
-
-.doctor-name {
-  font-size: 32px;
-  font-weight: 700;
-  margin-left: 45px;
-}
-
-.specialty-name {
-  font-size: 32px;
-  font-weight: 1000;
-  margin-right: -350px;
-}
-
-.agregar-paciente-btn {
-  background-color: #611232;
-  color: white;
-  border-radius: 90px;
-  padding: 15px 48px;
-  font-weight: 5600;
-}
-
-.agregar-paciente-btn:hover {
-  background-color: #7a1a40;
-}
-
-/* Contenedor de iconos de signos vitales */
-.vital-icon-box {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 15px;
 }
 
-.vital-svg {
-  width: 40px;
-  height: 40px;
+.upload-input{
+  border: 2px dashed #611232;
+  padding: 20px;
+  border-radius: 15px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
 }
 
-/* Tipografía de los bloques */
-.dashboard-card h2,
-.dashboard-card h3,
-.dashboard-card h4,
-.dashboard-card h5 {
-  color: #333;
-  font-family: 'Arial', sans-serif;
+.upload-text{
+  font-size: 13px;
+  color: #666;
 }
 .card {
   border-radius: 10px !important;
