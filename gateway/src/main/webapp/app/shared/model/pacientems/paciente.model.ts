@@ -11,6 +11,7 @@ export interface IPaciente {
   apellidoPaterno?: string | null;
   apellidoMaterno?: string | null;
   sexo?: Sexo | null;
+  embarazo?: string | null;
   nacionalidad?: Nacionalidad | null;
   fechaNacimiento?: Date | null;
   estadoCivil?: EstadoCivil | null;
@@ -25,6 +26,7 @@ export class Paciente implements IPaciente {
     public apellidoPaterno?: string | null,
     public apellidoMaterno?: string | null,
     public sexo?: Sexo | null,
+    public embarazo?: string | null,
     public nacionalidad?: Nacionalidad | null,
     public fechaNacimiento?: Date | null,
     public estadoCivil?: EstadoCivil | null,

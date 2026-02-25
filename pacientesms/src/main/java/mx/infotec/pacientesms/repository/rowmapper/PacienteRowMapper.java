@@ -34,6 +34,7 @@ public class PacienteRowMapper implements BiFunction<Row, String, Paciente> {
         entity.setApellidoPaterno(converter.fromRow(row, prefix + "_apellido_paterno", String.class));
         entity.setApellidoMaterno(converter.fromRow(row, prefix + "_apellido_materno", String.class));
         entity.setSexo(converter.fromRow(row, prefix + "_sexo", Sexo.class));
+        entity.setEmbarazo(converter.fromRow(row, prefix + "_embarazo", String.class));
         entity.setNacionalidad(converter.fromRow(row, prefix + "_nacionalidad", Nacionalidad.class));
         entity.setFechaNacimiento(converter.fromRow(row, prefix + "_fecha_nacimiento", LocalDate.class));
         entity.setEstadoCivil(converter.fromRow(row, prefix + "_estado_civil", EstadoCivil.class));

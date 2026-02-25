@@ -52,6 +52,9 @@
               <span v-text="t$('gatewayApp.pacientemsPaciente.sexo')"></span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'sexo'"></jhi-sort-indicator>
             </th>
+
+            <th scope="col"><span>Embarazo</span></th>
+
             <th scope="row" @click="changeOrder('nacionalidad')">
               <span v-text="t$('gatewayApp.pacientemsPaciente.nacionalidad')"></span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'nacionalidad'"></jhi-sort-indicator>
@@ -81,6 +84,7 @@
             <td>{{ paciente.apellidoPaterno }}</td>
             <td>{{ paciente.apellidoMaterno }}</td>
             <td v-text="t$('gatewayApp.Sexo.' + paciente.sexo)"></td>
+            <td>{{ paciente.embarazo }}</td>
             <td>{{ paciente.nacionalidad }}</td>
             <td>{{ paciente.fechaNacimiento }}</td>
             <td>{{ paciente.estadoCivil }}</td>

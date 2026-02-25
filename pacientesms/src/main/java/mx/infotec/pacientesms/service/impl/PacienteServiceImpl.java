@@ -32,12 +32,13 @@ public class PacienteServiceImpl implements PacienteService {
         this.pacienteMapper = pacienteMapper;
     }
 
-    @Override
+@Override
     public Mono<PacienteDTO> save(PacienteDTO pacienteDTO) {
         LOG.debug("Request to save Paciente : {}", pacienteDTO);
         
         // --- INICIO VALIDACIÓN CURP ---
-        if (!CurpValidator.esValido(pacienteDTO.getCurp())) {
+        // Si el CURP es nulo, o si NO empieza con 'EXTXX' y TAMPOCO es un CURP mexicano válido, lanzamos error.
+        if (pacienteDTO.getCurp() == null || (!pacienteDTO.getCurp().startsWith("EXTXX") && !CurpValidator.esValido(pacienteDTO.getCurp()))) {
             return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "La CURP ingresada no es válida o tiene un formato incorrecto."));
         }
         // --- FIN VALIDACIÓN CURP ---
@@ -51,7 +52,8 @@ public class PacienteServiceImpl implements PacienteService {
         LOG.debug("Request to update Paciente : {}", pacienteDTO);
         
         // --- INICIO VALIDACIÓN CURP ---
-        if (!CurpValidator.esValido(pacienteDTO.getCurp())) {
+        // Si el CURP es nulo, o si NO empieza con 'EXTXX' y TAMPOCO es un CURP mexicano válido, lanzamos error.
+        if (pacienteDTO.getCurp() == null || (!pacienteDTO.getCurp().startsWith("EXTXX") && !CurpValidator.esValido(pacienteDTO.getCurp()))) {
             return Mono.error(new ResponseStatusException(HttpStatus.BAD_REQUEST, "La CURP ingresada no es válida o tiene un formato incorrecto."));
         }
         // --- FIN VALIDACIÓN CURP ---

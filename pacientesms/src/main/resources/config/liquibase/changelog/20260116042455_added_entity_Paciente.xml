@@ -29,6 +29,8 @@
             <column name="sexo" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="embarazo" type="varchar(10)">
+            </column>
             <column name="nacionalidad" type="varchar(40)">
                 <constraints nullable="true" />
             </column>
@@ -79,6 +81,7 @@
             <column name="apellido_paterno" type="string"/>
             <column name="apellido_materno" type="string"/>
             <column name="sexo" type="string"/>
+            <column name="embarazo" type="varchar(10)"/>
             <column name="nacionalidad" type="string"/>
             <column name="fecha_nacimiento" type="date"/>
             <column name="estado_civil" type="string"/>
