@@ -55,6 +55,9 @@ public class Paciente implements Serializable {
     @Column("sexo")
     private Sexo sexo;
 
+    @Column("embarazo")
+    private String embarazo;
+
     // CAMBIO A ENUM
     @Column("nacionalidad")
     private Nacionalidad nacionalidad;
@@ -197,15 +200,26 @@ public class Paciente implements Serializable {
         this.setSexo(sexo);
         return this;
     }
-
     public void setSexo(Sexo sexo) {
         this.sexo = sexo;
+    }
+
+    public String getEmbarazo() {
+        return this.embarazo;
+    }
+
+    public Paciente embarazo(String embarazo) {
+        this.setEmbarazo(embarazo);
+        return this;
+    }
+
+    public void setEmbarazo(String embarazo) {
+        this.embarazo = embarazo;
     }
 
     public Nacionalidad getNacionalidad() {
         return this.nacionalidad;
     }
-
     public Paciente nacionalidad(Nacionalidad nacionalidad) {
         this.setNacionalidad(nacionalidad);
         return this;
@@ -497,6 +511,7 @@ public class Paciente implements Serializable {
             ", apellidoPaterno='" + getApellidoPaterno() + "'" +
             ", apellidoMaterno='" + getApellidoMaterno() + "'" +
             ", sexo='" + getSexo() + "'" +
+            ", embarazo='" + getEmbarazo() + "'" +
             ", nacionalidad='" + getNacionalidad() + "'" +
             ", fechaNacimiento='" + getFechaNacimiento() + "'" +
             ", estadoCivil='" + getEstadoCivil() + "'" +

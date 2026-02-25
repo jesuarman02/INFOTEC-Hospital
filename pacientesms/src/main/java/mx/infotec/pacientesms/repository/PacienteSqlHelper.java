@@ -16,6 +16,7 @@ public class PacienteSqlHelper {
         columns.add(Column.aliased("apellido_paterno", table, columnPrefix + "_apellido_paterno"));
         columns.add(Column.aliased("apellido_materno", table, columnPrefix + "_apellido_materno"));
         columns.add(Column.aliased("sexo", table, columnPrefix + "_sexo"));
+        columns.add(Column.aliased("embarazo", table, columnPrefix + "_embarazo"));
         columns.add(Column.aliased("nacionalidad", table, columnPrefix + "_nacionalidad"));
         columns.add(Column.aliased("fecha_nacimiento", table, columnPrefix + "_fecha_nacimiento"));
         columns.add(Column.aliased("estado_civil", table, columnPrefix + "_estado_civil"));

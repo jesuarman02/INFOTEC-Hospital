@@ -1,5 +1,5 @@
 export enum Sexo {
-  M = 'M',
+  H = 'H',
 
-  F = 'F',
+  M = 'M',
 }

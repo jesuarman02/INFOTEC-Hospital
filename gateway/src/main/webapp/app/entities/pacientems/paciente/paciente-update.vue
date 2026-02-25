@@ -111,6 +111,37 @@
               <small class="form-text text-danger" v-for="error of v$.sexo.$errors" :key="error.$uid">{{ error.$message }}</small>
             </div>
           </div>
+
+          
+
+          <div class="form-group" v-if="v$.sexo.$model === 'M'">            
+            <label class="form-control-label">¿Paciente está embarazada?</label>
+            <br>
+            <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="embarazo"
+                  id="embarazo_si"
+                  value="SI"
+                  v-model="paciente.embarazo" 
+                  required
+                />
+                <label class="form-check-label" for="embarazo_si">Sí</label>
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="radio"
+                  name="embarazo"
+                  id="embarazo_no"
+                  value="NO"
+                  v-model="paciente.embarazo"
+                  required
+                />
+                <label class="form-check-label" for="embarazo_no">No</label>
+              </div>
+          </div>
           
           <div class="form-group mt-3">
             <label class="form-control-label d-block" v-text="t$('gatewayApp.pacientemsPaciente.nacionalidad')"></label>
@@ -182,10 +213,10 @@
               name="curp"
               id="paciente-curp"
               data-cy="curp"
-              style="text-transform: uppercase;"
               :class="{ valid: !v$.curp.$invalid, invalid: v$.curp.$invalid }"
               v-model="v$.curp.$model"
               @input="onInputUpper($event, v$.curp)"
+              :readonly="v$.nacionalidad.$model === 'EXTRANJERA'"
               required
             />
             <div v-if="v$.curp.$anyDirty && v$.curp.$invalid">

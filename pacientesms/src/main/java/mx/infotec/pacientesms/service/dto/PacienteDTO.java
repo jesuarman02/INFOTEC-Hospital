@@ -34,6 +34,9 @@ public class PacienteDTO implements Serializable {
     private Sexo sexo;
 
     @NotNull(message = "must not be null")
+    private String embarazo;
+
+    @NotNull(message = "must not be null")
     private Nacionalidad nacionalidad;
 
     @NotNull(message = "must not be null")
@@ -100,6 +103,14 @@ public class PacienteDTO implements Serializable {
 
     public void setSexo(Sexo sexo) {
         this.sexo = sexo;
+    }
+
+    public String getEmbarazo() {
+        return embarazo;
+    }
+
+    public void setEmbarazo(String embarazo) {
+        this.embarazo = embarazo;
     }
 
     public Nacionalidad getNacionalidad() {
