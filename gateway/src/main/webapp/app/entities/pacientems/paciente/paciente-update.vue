@@ -100,21 +100,18 @@
           <div class="form-group">
             <label class="form-control-label d-block" v-text="t$('gatewayApp.pacientemsPaciente.sexo')"></label>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="sexo" id="sexoH" value="H" v-model="v$.sexo.$model" required>
-              <label class="form-check-label" for="sexoH">Hombre</label>
+              <input class="form-check-input" type="radio" name="sexo" id="sexoM" value="M" v-model="v$.sexo.$model" required>
+              <label class="form-check-label" for="sexoM">Hombre</label>
             </div>
             <div class="form-check form-check-inline">
-              <input class="form-check-input" type="radio" name="sexo" id="sexoM" value="M" v-model="v$.sexo.$model" required>
-              <label class="form-check-label" for="sexoM">Mujer</label>
+              <input class="form-check-input" type="radio" name="sexo" id="sexoF" value="F" v-model="v$.sexo.$model" required>
+              <label class="form-check-label" for="sexoF">Mujer</label>
             </div>
             <div v-if="v$.sexo.$anyDirty && v$.sexo.$invalid" class="d-block mt-1">
               <small class="form-text text-danger" v-for="error of v$.sexo.$errors" :key="error.$uid">{{ error.$message }}</small>
             </div>
           </div>
-
-          
-
-          <div class="form-group" v-if="v$.sexo.$model === 'M'">            
+          <div class="form-group" v-if="v$.sexo.$model === 'F'">            
             <label class="form-control-label">¿Paciente está embarazada?</label>
             <br>
             <div class="form-check form-check-inline">
@@ -128,8 +125,8 @@
                   required
                 />
                 <label class="form-check-label" for="embarazo_si">Sí</label>
-              </div>
-              <div class="form-check form-check-inline">
+            </div>
+            <div class="form-check form-check-inline">
                 <input
                   class="form-check-input"
                   type="radio"
@@ -140,9 +137,8 @@
                   required
                 />
                 <label class="form-check-label" for="embarazo_no">No</label>
-              </div>
+            </div>
           </div>
-          
           <div class="form-group mt-3">
             <label class="form-control-label d-block" v-text="t$('gatewayApp.pacientemsPaciente.nacionalidad')"></label>
             <div class="form-check form-check-inline">

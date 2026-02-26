@@ -100,9 +100,9 @@ export default defineComponent({
 
 // Vigilamos los cambios en el Sexo
     watch(() => paciente.value.sexo, (nuevoSexo) => {
-      if (nuevoSexo === 'H') { // <-- Cambiado a M (Masculino)
+      if (nuevoSexo === 'M') { // <-- Cambiado a M (Masculino)
         paciente.value.embarazo = 'N/A';
-      } else if (nuevoSexo === 'M') { // <-- Cambiado a F (Femenino)
+      } else if (nuevoSexo === 'F') { // <-- Cambiado a F (Femenino)
         if (paciente.value.embarazo === 'N/A' || !paciente.value.embarazo) {
           paciente.value.embarazo = ''; 
         }
@@ -138,9 +138,9 @@ export default defineComponent({
   methods: {
   save(): void {
       // --- INICIO DEL BLINDAJE DE EMBARAZO ---
-      if (this.paciente.sexo === 'H') { // <-- Cambiado a M (Masculino)
+      if (this.paciente.sexo === 'M') { // <-- Cambiado a M (Masculino)
         this.paciente.embarazo = 'N/A'; // Forzamos N/A si es hombre
-      } else if (this.paciente.sexo === 'M' && (!this.paciente.embarazo || this.paciente.embarazo === 'N/A')) { // <-- Cambiado a F (Femenino)
+      } else if (this.paciente.sexo === 'F' && (!this.paciente.embarazo || this.paciente.embarazo === 'N/A')) { // <-- Cambiado a F (Femenino)
         // Si es mujer y lo dejó vacío, lanzamos alerta y cancelamos el guardado
         this.alertService.showError('Por favor, indique si la paciente está embarazada.');
         return; 
