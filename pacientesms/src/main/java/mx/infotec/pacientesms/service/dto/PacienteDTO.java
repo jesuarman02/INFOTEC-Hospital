@@ -208,6 +208,7 @@ public class PacienteDTO implements Serializable {
             ", apellidoPaterno='" + getApellidoPaterno() + "'" +
             ", apellidoMaterno='" + getApellidoMaterno() + "'" +
             ", sexo='" + getSexo() + "'" +
+            ", embarazo='" + getEmbarazo() + "'" +
             ", nacionalidad='" + getNacionalidad() + "'" +
             ", fechaNacimiento='" + getFechaNacimiento() + "'" +
             ", estadoCivil='" + getEstadoCivil() + "'" +

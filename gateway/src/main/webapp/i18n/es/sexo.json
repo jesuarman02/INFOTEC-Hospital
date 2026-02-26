@@ -2,8 +2,8 @@
   "gatewayApp": {
     "Sexo": {
       "null": "",
-      "H": "Hombre",
-      "M": "Mujer"
+      "M": "Hombre",
+      "F": "Mujer"
     }
   }
 }
