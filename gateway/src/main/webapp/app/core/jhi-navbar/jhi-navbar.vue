@@ -49,23 +49,11 @@
             </span>
           </b-nav-item>
 
-          <b-nav-item to="/ehr" exact v-if="authenticated">
-            <span>
-              <font-awesome-icon icon="users" />
-              <!-- <span v-text="t$('global.menu.electronic-health-record')">Records</span> -->
-            </span>
-          </b-nav-item>
+        
           
-          <b-nav-item-dropdown right id="staff-menu" v-if="authenticated" active-class="active" class="pointer">
-            <template #button-content>
-              <span class="navbar-dropdown-menu">
-                <font-awesome-icon icon="user-nurse" />
-                <!-- <span class="no-bold" v-text="t$('global.menu.medical-staff')">Staff</span> -->
-              </span>
-            </template>
-            </b-nav-item-dropdown>
+        
 
-          <b-nav-item-dropdown right id="entity-menu" v-if="authenticated" active-class="active" class="pointer" data-cy="entity">
+          <b-nav-item-dropdown right id="entity-menu" v-if="hasAnyAuthority('ROLE_ADMIN')" active-class="active" class="pointer" data-cy="entity">
             <template #button-content>
               <span class="navbar-dropdown-menu">
                 <font-awesome-icon icon="th-list" />
