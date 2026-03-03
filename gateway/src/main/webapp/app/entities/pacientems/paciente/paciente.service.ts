@@ -84,4 +84,8 @@ export default class PacienteService {
         });
     });
   }
+  // Método para recuperar un paciente por su ECU
+  public retrieveByEcu(ecu: string): Promise<any> {
+    return axios.get(`api/patients?ecu.equals=${ecu}`);
+  }
 }

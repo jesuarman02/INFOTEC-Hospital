@@ -23,17 +23,18 @@
             </span>
           </div>
           <input 
-  type="text" 
-  class="form-control border-0 bg-transparent search-input" 
-  placeholder="ECU, Nombre del Paciente" 
-  @keyup.enter="realizarBusqueda" 
-/>
+            type="text" 
+            v-model="searchQuery" 
+            @keyup.enter="buscarPorEcu" 
+            placeholder="ECU, Nombre del Paciente"
+            class="minimal-input"
+            />
         </div>
       </div>
     </div>
 
     <div class="main-content flex-grow-1 p-4">
-      <div v-if="busquedaRealizada" class="row h-100">
+      <div  class="row h-100">
         <div class="col-md-5 d-flex flex-column">
 
           <div class="doctor-header d-flex align-items-center justify-content-between mb-2 px-2">
@@ -43,9 +44,9 @@
 
           <div class="card dashboard-card flex-grow-1 mb-4 shadow-sm custom-grey-card">
             <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
-              <h2 class="font-weight-bold mb-3">ECU</h2>
-              <h4 class="mb-2">NOMBRE</h4>
-              <h5 class="mb-2 text-muted">EDAD</h5>
+              <h2 class="font-weight-bold mb-3">{{ resultados[0]?.ecu || 'ECU no disponible' }}</h2>
+              <h4 class="mb-2">{{ resultados[0]?.nombre || 'Nombre no disponible' }}</h4>
+              <h5 class="mb-2 text-muted">{{ calcularEdad(resultados[0]?.fechaNacimiento) }} años</h5>
               <h5 class="mb-2 text-muted">SEXO</h5>
               <h5 class="mb-2 text-muted">DIRECCION</h5>
               <h5 class="mb-0 text-muted">TELEFONO</h5>
@@ -105,23 +106,23 @@
       <div class="d-flex flex-wrap">
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">CURP</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">ABCD123456HDFRRN01</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.curp || 'CURP no disponible' }}</span>
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Nombre(s)</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">Juan</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.nombre || 'Nombres no disponibles' }}</span>
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Primer Apellido</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">Pérez</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.apellidoPaterno || 'Primer apellido no disponible' }}</span>
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Segundo Apellido</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">García</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.apellidoMaterno || 'Segundo apellido no disponible' }}</span>
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Fecha de Nacimiento</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">15/05/1985</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.fechaNacimiento || 'Fecha de nacimiento no disponible' }}</span>
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Edad</label>
@@ -129,11 +130,11 @@
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Sexo / Género</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">Masculino</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.sexo || 'Sexo no disponible' }}</span>
         </div>
         <div class="data-item mr-5 mb-4">
           <label class="text-muted small d-block">Estado Civil</label>
-          <span class="h6 text-dark border-left pl-2 border-danger">Casado</span>
+          <span class="h6 text-dark border-left pl-2 border-danger">{{ resultados[0]?.estadoCivil || 'Estado civil no disponible' }}</span>
         </div>
       </div>
     </b-card>
@@ -383,16 +384,15 @@
           </b-card>
         </div>
       </div>
-      <div v-else class="d-flex flex-column align-items-center justify-content-center h-100 text-muted">
-    <font-awesome-icon icon="search" size="4x" class="mb-3 opacity-20" />
-    p-3000-0-0: Realice una búsqueda para ver los detalles del paciente.
-  </div>
+     
     </div> 
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'; // Importamos ref
+import { defineComponent, ref,inject } from 'vue'; // Importamos ref
+import { usePacienteSearch } from '../../entities/pacientems/paciente/paciente-search';
+
 
 export default defineComponent({
   name: 'InterfazPacientes',
@@ -404,10 +404,22 @@ export default defineComponent({
     const realizarBusqueda = () => {
       busquedaRealizada.value = true;
     };
+const { 
+        searchQuery, 
+        resultados, 
+        buscarPorEcu, 
+        estaCargando,
+        calcularEdad, 
+        error 
+    } = usePacienteSearch();
 
     return {
       busquedaRealizada,
-      realizarBusqueda
+      realizarBusqueda,
+      searchQuery,
+      resultados,
+      buscarPorEcu,
+      calcularEdad
     };
   },
 });
@@ -617,5 +629,25 @@ export default defineComponent({
 ::v-deep .nav-tabs .nav-link:hover {
   color: #b71c1c;
   background-color: rgba(211, 47, 47, 0.05); /* Un fondo rojo muy tenue */
+}
+.search-container {
+  display: flex;
+  align-items: center;
+  background: #f1f3f5; /* Color gris claro de tu imagen */
+  border-radius: 50px; /* Bordes muy redondeados */
+  padding: 8px 20px;
+}
+
+.minimal-input {
+  border: none;
+  background: transparent;
+  outline: none;
+  width: 100%;
+  padding: 5px 10px;
+  color: #495057;
+}
+
+.search-icon {
+  color: #adb5bd;
 }
 </style>
