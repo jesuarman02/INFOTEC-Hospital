@@ -1,0 +1,116 @@
+   .title-pacientes {
+       font-size: 2rem;
+       font-weight: 800;
+       letter-spacing: 1px;
+       color: #333;
+       margin-bottom: 0.75rem;
+       /* Espacio reducido */
+       text-transform: uppercase;
+       text-align: center;
+   }
+
+
+   .fancy-search:focus-within {
+       background-color: #ffffff;
+       border-color: #eecbc4;
+       box-shadow: 0 4px 12px rgba(97, 18, 50, 0.15);
+       transform: translateY(-2px);
+   }
+
+   .search-input {
+       box-shadow: none !important;
+       font-size: 0.9rem;
+       color: #495057;
+   }
+
+   .search-icon {
+       transition: color 0.3s;
+   }
+
+   .fancy-search:focus-within .search-icon {
+       color: #611232 !important;
+   }
+
+
+   .input-wrapper {
+       display: flex;
+       align-items: center;
+       background: #fff;
+       border: 1px solid #d1d5db;
+       border-radius: 8px;
+       padding: 10px;
+       width: 100%;
+       /* Ocupa todo el ancho del panel lateral */
+   }
+
+   input {
+       border: none;
+       outline: none;
+       width: 100%;
+       margin-left: 10px;
+       font-size: 0.85rem;
+   }
+
+   .search-wrapper {
+       margin-top: 1rem;
+   }
+
+   .title-section {
+       font-size: 0.75rem;
+       font-weight: 800;
+       color: #333;
+       letter-spacing: 1.5px;
+       margin-bottom: 1.5rem;
+       text-transform: uppercase;
+   }
+
+   /* El input tipo "píldora" de tu imagen */
+   .glass-input {
+       width: 100%;
+       padding: 12px 16px;
+       border-radius: 12px;
+       border: 1px solid rgba(0, 0, 0, 0.1);
+       background: rgba(255, 255, 255, 0.5);
+       font-size: 0.9rem;
+       outline: none;
+       transition: all 0.3s ease;
+       backdrop-filter: blur(10px);
+   }
+
+   .glass-input:focus {
+       border-color: #5c0f3c;
+       /* Resalte en color vino */
+       background: white;
+       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+   }
+
+   .glass-sidebar-content {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       /* Centra todo horizontalmente */
+       padding: 1.5rem 1rem;
+       width: 100%;
+   }
+
+
+   .search-container {
+       width: 100%;
+       max-width: 260px;
+       /* Evita que el input se estire demasiado */
+   }
+
+   .fancy-search {
+       border-radius: 20px;
+       background: rgba(255, 255, 255, 0.8);
+       border: 1.5px solid #ddd;
+       padding: 5px 15px;
+       display: flex;
+       align-items: center;
+       transition: all 0.3s ease;
+   }
+
+   .fancy-search:focus-within {
+       border-color: #611232;
+       box-shadow: 0 0 0 2px rgba(97, 18, 50, 0.1);
+   }
