@@ -1,0 +1,44 @@
+.sidebar-wrapper {
+    height: 100%;
+    background-color: #611232;
+    /* Tu color vino */
+    width: 70px;
+    flex-shrink: 0;
+}
+
+.sidebar-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 2rem;
+}
+
+.icon-group {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    /* Espaciado uniforme y profesional */
+}
+
+.icon-item {
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 45px;
+    height: 45px;
+    border-radius: 8px;
+}
+
+.icon-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: scale(1.1);
+}
+
+.sidebar-svg {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+    /* Asegura que los iconos sean blancos */
+}
