@@ -254,10 +254,10 @@
               font-weight: 600;
               text-align: left;
               max-width: 245px;
-              padding: 0px 0 0px;
-              padding-top: 80px;
               color: white;
               text-decoration: underline !important;
+              display:inline-block;
+              margin-top:20px;
             "
             target="_blank"
             title="Abre en una nueva ventana"

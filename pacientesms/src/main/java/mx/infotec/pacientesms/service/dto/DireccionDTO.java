@@ -22,26 +22,34 @@ public class DireccionDTO implements Serializable {
     private String telefono;
 
     // ==========================================
-    // 1. TIPO DE VIALIDAD (Nuevo)
+    // 1. TIPO DE VIALIDAD
     // ==========================================
     private Long tipoVialidadId;
     private String tipoVialidadNombre;
     private TipoVialidadDTO tipoVialidad;
 
     // ==========================================
-    // 2. CÓDIGO POSTAL (Nuevo - Relación)
+    // 2. CÓDIGO POSTAL 
     // ==========================================
-    // Nota: En el JDL le llamamos 'codigoPostalInfo' a la relación
     private Long codigoPostalInfoId;
     private String codigoPostalInfoCodigo; 
     private CodigoPostalDTO codigoPostalInfo;
 
     // ==========================================
-    // 3. ENTIDAD FEDERATIVA (Restaurado)
+    // 3. ENTIDAD FEDERATIVA
     // ==========================================
     private Long entidadFederativaId;
     private String entidadFederativaNombre;
     private EntidadFederativaDTO entidadFederativa;
+
+    // ==========================================
+    // 4. PACIENTE (Nuevo - Para mostrar en Front)
+    // ==========================================
+    private Long pacienteId;
+    private Integer pacienteEcu;
+    private String pacienteNombre;
+    private String pacienteApellidoPaterno;
+
 
     // --- GETTERS Y SETTERS ---
 
@@ -90,6 +98,20 @@ public class DireccionDTO implements Serializable {
     public EntidadFederativaDTO getEntidadFederativa() { return entidadFederativa; }
     public void setEntidadFederativa(EntidadFederativaDTO entidadFederativa) { this.entidadFederativa = entidadFederativa; }
 
+    // Paciente (Getters y Setters)
+    public Long getPacienteId() { return pacienteId; }
+    public void setPacienteId(Long pacienteId) { this.pacienteId = pacienteId; }
+
+    public Integer getPacienteEcu() { return pacienteEcu; }
+    public void setPacienteEcu(Integer pacienteEcu) { this.pacienteEcu = pacienteEcu; }
+
+    public String getPacienteNombre() { return pacienteNombre; }
+    public void setPacienteNombre(String pacienteNombre) { this.pacienteNombre = pacienteNombre; }
+
+    public String getPacienteApellidoPaterno() { return pacienteApellidoPaterno; }
+    public void setPacienteApellidoPaterno(String pacienteApellidoPaterno) { this.pacienteApellidoPaterno = pacienteApellidoPaterno; }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) { return true; }
@@ -113,6 +135,7 @@ public class DireccionDTO implements Serializable {
             ", tipoVialidad=" + getTipoVialidadId() +
             ", codigoPostal=" + getCodigoPostalInfoId() +
             ", entidad=" + getEntidadFederativaId() +
+            ", pacienteEcu=" + getPacienteEcu() +
             "}";
     }
 }

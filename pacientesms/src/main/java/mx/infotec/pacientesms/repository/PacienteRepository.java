@@ -28,6 +28,12 @@ public interface PacienteRepository extends ReactiveCrudRepository<Paciente, Lon
     @Query("SELECT * FROM paciente entity WHERE entity.direccion_id = :id")
     Flux<Paciente> findByDireccion(Long id);
 
+    // =======================================================================
+    // NUESTRO NUEVO MÉTODO (Devuelve un Mono para un solo paciente)
+    // =======================================================================
+    @Query("SELECT * FROM paciente entity WHERE entity.direccion_id = :direccionId")
+    Mono<Paciente> findByDireccionId(Long direccionId);
+
     @Query("SELECT * FROM paciente entity WHERE entity.direccion_id IS NULL")
     Flux<Paciente> findAllWhereDireccionIsNull();
 

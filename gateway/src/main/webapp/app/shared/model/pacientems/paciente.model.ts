@@ -16,6 +16,7 @@ export interface IPaciente {
   fechaNacimiento?: Date | null;
   estadoCivil?: EstadoCivil | null;
   curp?: string | null;
+  direccion?: any | null;
 }
 
 export class Paciente implements IPaciente {
@@ -30,6 +31,7 @@ export class Paciente implements IPaciente {
     public nacionalidad?: Nacionalidad | null,
     public fechaNacimiento?: Date | null,
     public estadoCivil?: EstadoCivil | null,
-    public curp?: string | null
+    public curp?: string | null,
+    public direccion?: any | null // <--- Y AGREGAR ESTA LÍNEA AQUÍ TAMBIÉN
   ) {}
 }

@@ -11,6 +11,12 @@ export interface IDireccion {
   tipoVialidad?: ITipoVialidad | null;
   codigoPostalInfo?: ICodigoPostal | null;
   entidadFederativa?: IEntidadFederativa | null;
+
+  // --- NUEVOS CAMPOS DEL PACIENTE ---
+  pacienteId?: number | null;
+  pacienteEcu?: number | null;
+  pacienteNombre?: string | null;
+  pacienteApellidoPaterno?: string | null;
 }
 
 export class Direccion implements IDireccion {
@@ -23,5 +29,10 @@ export class Direccion implements IDireccion {
     public tipoVialidad?: ITipoVialidad | null,
     public codigoPostalInfo?: ICodigoPostal | null,
     public entidadFederativa?: IEntidadFederativa | null,
+    // --- NUEVOS CAMPOS DEL PACIENTE ---
+    public pacienteId?: number | null,
+    public pacienteEcu?: number | null,
+    public pacienteNombre?: string | null,
+    public pacienteApellidoPaterno?: string | null
   ) {}
 }

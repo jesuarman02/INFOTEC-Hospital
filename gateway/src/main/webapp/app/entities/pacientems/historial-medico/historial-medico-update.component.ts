@@ -1,104 +1,140 @@
-import { type Ref, computed, defineComponent, inject, ref } from 'vue';
+import { ref, defineComponent, inject, type Ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useRoute, useRouter } from 'vue-router';
-import { useVuelidate } from '@vuelidate/core';
+import useVuelidate from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
 
-import HistorialMedicoService from './historial-medico.service';
-import useDataUtils from '@/shared/data/data-utils.service';
-import { useValidation } from '@/shared/composables';
+// Importamos el servicio y modelo del paciente tal como lo tienes en dirección
+import PacienteService from '../paciente/paciente.service';
+import { type IPaciente } from '@/shared/model/pacientems/paciente.model';
 import { useAlertService } from '@/shared/alert/alert.service';
-
-import { HistorialMedico, type IHistorialMedico } from '@/shared/model/pacientems/historial-medico.model';
 
 export default defineComponent({
   compatConfig: { MODE: 3 },
   name: 'HistorialMedicoUpdate',
   setup() {
-    const historialMedicoService = inject('historialMedicoService', () => new HistorialMedicoService());
+    const { t: t$ } = useI18n();
+    
+    // Inyectamos los servicios correctamente
     const alertService = inject('alertService', () => useAlertService(), true);
+    const historialMedicoService = inject('historialMedicoService') as any;
+    const pacienteService = inject('pacienteService', () => new PacienteService()); 
 
-    const historialMedico: Ref<IHistorialMedico> = ref(new HistorialMedico());
+    // Estado del buscador
+    const ecuSearchString = ref('');
+    const isSearchingEcu = ref(false);
+    const pacienteEncontrado: Ref<IPaciente | null> = ref(null);
     const isSaving = ref(false);
-    const currentLanguage = inject('currentLanguage', () => computed(() => navigator.language ?? 'es'), true);
 
-    const route = useRoute();
-    const router = useRouter();
+    // Entidad Historial Medico
+    const historialMedico = ref<any>({
+      id: null,
+      pacienteId: null,
+      altura: null,
+      peso: null,
+      imc: null,
+      grupoSanguineo: null,
+      factorRh: null,
+      alergias: '',
+      padecimientos: '',
+      enfermedadesCronicas: '',
+      cirugiasPrevias: '',
+      medicamentosActuales: '',
+      antecedentesFamiliares: '',
+      antecedentesPatologicos: '',
+      antecedentesNoPatologicos: '',
+      antecedentesGinecoObstetricos: '',
+      consumoTabaco: false,
+      consumoAlcohol: false,
+      consumoDrogas: false,
+      vacunas: '',
+      discapacidad: '',
+      observacionesGenerales: '',
+      fechaRegistroHistorial: new Date()
+    });
 
-    const previousState = () => router.go(-1);
+    // Validaciones básicas
+    const rules = {
+      altura: { required },
+      peso: { required }
+    };
+    const v$ = useVuelidate(rules, historialMedico);
 
-    const retrieveHistorialMedico = async historialMedicoId => {
+    // Función corregida: usa retrieve() y filtra por ECU igual que en dirección
+    const buscarPaciente = async () => {
+      if (!ecuSearchString.value) return;
+      
+      isSearchingEcu.value = true;
+      pacienteEncontrado.value = null;
+
       try {
-        const res = await historialMedicoService().find(historialMedicoId);
-        historialMedico.value = res;
-      } catch (error) {
+        const res = await pacienteService().retrieve();
+        const pacientes = res.data;
+        const ecuNumerico = parseInt(ecuSearchString.value, 10);
+        
+        const encontrado = pacientes.find((p: IPaciente) => p.ecu === ecuNumerico);
+        
+        if (encontrado) {
+          pacienteEncontrado.value = encontrado;
+          historialMedico.value.pacienteId = encontrado.id; // Vincular historial al paciente
+          alertService.showSuccess(`Paciente encontrado correctamente.`);
+        } else {
+          alertService.showError('No se encontró ningún paciente registrado con ese número de ECU.');
+        }
+      } catch (error: any) {
         alertService.showHttpError(error.response);
+      } finally {
+        isSearchingEcu.value = false;
       }
     };
 
-    if (route.params?.historialMedicoId) {
-      retrieveHistorialMedico(route.params.historialMedicoId);
-    }
+    // Calcular IMC automáticamente
+    const calcularIMC = () => {
+      const pesoStr = historialMedico.value.peso?.toString() || '0';
+      const alturaStr = historialMedico.value.altura?.toString() || '0';
+      
+      const peso = parseFloat(pesoStr);
+      const altura = parseFloat(alturaStr);
 
-    const dataUtils = useDataUtils();
-
-    const { t: t$ } = useI18n();
-    const validations = useValidation();
-    const validationRules = {
-      antecedentesQuirurgicos: {
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 500 }).toString(), 500),
-      },
-      esquemaVacunacion: {
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 255 }).toString(), 255),
-      },
-      habitos: {
-        maxLength: validations.maxLength(t$('entity.validation.maxlength', { max: 255 }).toString(), 255),
-      },
-      observacionesGenerales: {},
+      if (peso > 0 && altura > 0) {
+        const calculo = peso / (altura * altura);
+        historialMedico.value.imc = calculo.toFixed(2);
+      } else {
+        historialMedico.value.imc = null;
+      }
     };
-    const v$ = useVuelidate(validationRules, historialMedico as any);
-    v$.value.$validate();
+
+    const previousState = () => {
+      window.history.back();
+    };
+
+    const save = async () => {
+      isSaving.value = true;
+      try {
+        if (historialMedico.value.id) {
+          await historialMedicoService().update(historialMedico.value); // Asumiendo que también requiere paréntesis
+        } else {
+          await historialMedicoService().create(historialMedico.value); // Asumiendo que también requiere paréntesis
+        }
+        previousState();
+      } catch (error: any) {
+        console.error("Error guardando el historial", error);
+      } finally {
+        isSaving.value = false;
+      }
+    };
 
     return {
-      historialMedicoService,
-      alertService,
-      historialMedico,
-      previousState,
-      isSaving,
-      currentLanguage,
-      ...dataUtils,
-      v$,
       t$,
+      v$,
+      ecuSearchString,
+      isSearchingEcu,
+      pacienteEncontrado,
+      historialMedico,
+      isSaving,
+      buscarPaciente,
+      calcularIMC,
+      save,
+      previousState
     };
-  },
-  created(): void {},
-  methods: {
-    save(): void {
-      this.isSaving = true;
-      if (this.historialMedico.id) {
-        this.historialMedicoService()
-          .update(this.historialMedico)
-          .then(param => {
-            this.isSaving = false;
-            this.previousState();
-            this.alertService.showInfo(this.t$('pacientesmsApp.pacientemsHistorialMedico.updated', { param: param.id }));
-          })
-          .catch(error => {
-            this.isSaving = false;
-            this.alertService.showHttpError(error.response);
-          });
-      } else {
-        this.historialMedicoService()
-          .create(this.historialMedico)
-          .then(param => {
-            this.isSaving = false;
-            this.previousState();
-            this.alertService.showSuccess(this.t$('pacientesmsApp.pacientemsHistorialMedico.created', { param: param.id }).toString());
-          })
-          .catch(error => {
-            this.isSaving = false;
-            this.alertService.showHttpError(error.response);
-          });
-      }
-    },
-  },
+  }
 });

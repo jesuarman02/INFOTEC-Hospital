@@ -1,6 +1,8 @@
 package mx.infotec.pacientesms.service.impl;
 
 import mx.infotec.pacientesms.repository.DireccionRepository;
+// IMPORTANTE: Importamos el repositorio del paciente
+import mx.infotec.pacientesms.repository.PacienteRepository;
 import mx.infotec.pacientesms.service.DireccionService;
 import mx.infotec.pacientesms.service.dto.DireccionDTO;
 import mx.infotec.pacientesms.service.mapper.DireccionMapper;
@@ -22,12 +24,15 @@ public class DireccionServiceImpl implements DireccionService {
     private static final Logger LOG = LoggerFactory.getLogger(DireccionServiceImpl.class);
 
     private final DireccionRepository direccionRepository;
-
     private final DireccionMapper direccionMapper;
+    // 1. Declaramos el repositorio de paciente
+    private final PacienteRepository pacienteRepository; 
 
-    public DireccionServiceImpl(DireccionRepository direccionRepository, DireccionMapper direccionMapper) {
+    // 2. Lo inyectamos en el constructor
+    public DireccionServiceImpl(DireccionRepository direccionRepository, DireccionMapper direccionMapper, PacienteRepository pacienteRepository) {
         this.direccionRepository = direccionRepository;
         this.direccionMapper = direccionMapper;
+        this.pacienteRepository = pacienteRepository;
     }
 
     @Override
@@ -50,28 +55,29 @@ public class DireccionServiceImpl implements DireccionService {
             .findById(direccionDTO.getId())
             .map(existingDireccion -> {
                 direccionMapper.partialUpdate(existingDireccion, direccionDTO);
-
                 return existingDireccion;
             })
             .flatMap(direccionRepository::save)
             .map(direccionMapper::toDto);
     }
 
+    // 3. Modificamos findAll para que se enriquezca con el paciente
     @Override
     @Transactional(readOnly = true)
     public Flux<DireccionDTO> findAll() {
         LOG.debug("Request to get all Direccions");
-        return direccionRepository.findAll().map(direccionMapper::toDto);
+        return direccionRepository.findAll()
+            .map(direccionMapper::toDto)
+            .flatMap(this::enrichWithPaciente); // <--- MAGIA REACTIVA
     }
 
+    // 4. Modificamos findAllWithEagerRelationships
     public Flux<DireccionDTO> findAllWithEagerRelationships(Pageable pageable) {
-        return direccionRepository.findAllWithEagerRelationships(pageable).map(direccionMapper::toDto);
+        return direccionRepository.findAllWithEagerRelationships(pageable)
+            .map(direccionMapper::toDto)
+            .flatMap(this::enrichWithPaciente); // <--- MAGIA REACTIVA
     }
 
-    /**
-     *  Get all the direccions where Paciente is {@code null}.
-     *  @return the list of entities.
-     */
     @Transactional(readOnly = true)
     public Flux<DireccionDTO> findAllWherePacienteIsNull() {
         LOG.debug("Request to get all direccions where Paciente is null");
@@ -82,16 +88,35 @@ public class DireccionServiceImpl implements DireccionService {
         return direccionRepository.count();
     }
 
+    // 5. Modificamos findOne
     @Override
     @Transactional(readOnly = true)
     public Mono<DireccionDTO> findOne(Long id) {
         LOG.debug("Request to get Direccion : {}", id);
-        return direccionRepository.findOneWithEagerRelationships(id).map(direccionMapper::toDto);
+        return direccionRepository.findOneWithEagerRelationships(id)
+            .map(direccionMapper::toDto)
+            .flatMap(this::enrichWithPaciente); // <--- MAGIA REACTIVA
     }
 
     @Override
     public Mono<Void> delete(Long id) {
         LOG.debug("Request to delete Direccion : {}", id);
         return direccionRepository.deleteById(id);
+    }
+
+    // =========================================================================
+    // MÉTODO AUXILIAR: Busca al paciente dueño y rellena la "caja" (DTO)
+    // =========================================================================
+    private Mono<DireccionDTO> enrichWithPaciente(DireccionDTO dto) {
+        return pacienteRepository.findByDireccionId(dto.getId())
+            .map(paciente -> {
+                dto.setPacienteId(paciente.getId());
+                dto.setPacienteEcu(paciente.getEcu());
+                dto.setPacienteNombre(paciente.getNombre());
+                dto.setPacienteApellidoPaterno(paciente.getApellidoPaterno());
+                return dto;
+            })
+            // Si la dirección no tiene paciente asignado aún, la devolvemos igual sin romper nada
+            .defaultIfEmpty(dto); 
     }
 }

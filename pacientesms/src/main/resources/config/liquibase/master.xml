@@ -32,6 +32,7 @@
     <include file="config/liquibase/changelog/20260116042504_added_entity_constraints_PacienteAlergia.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042505_added_entity_constraints_PacienteMedicamento.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042457_added_entity_constraints_Direccion.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260307_add_fk_paciente_direccion.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

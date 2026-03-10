@@ -17,6 +17,9 @@ import { type ICodigoPostal } from '@/shared/model/pacientesms/codigo-postal.mod
 
 import { type IDireccion, Direccion } from '@/shared/model/pacientems/direccion.model';
 
+import PacienteService from '../paciente/paciente.service';
+import { type IPaciente } from '@/shared/model/pacientems/paciente.model';
+
 export default defineComponent({
   compatConfig: { MODE: 3 },
   name: 'DireccionUpdate',
@@ -34,7 +37,11 @@ export default defineComponent({
 
     const codigoPostalService = inject('codigoPostalService', () => new CodigoPostalService());
     
-    // Variables para la Búsqueda Inteligente
+    const pacienteService = inject('pacienteService', () => new PacienteService());
+    const ecuSearchString = ref('');
+    const pacienteEncontrado: Ref<IPaciente | null> = ref(null);
+    const isSearchingEcu = ref(false);
+
     const cpSearchString = ref(''); 
     const coloniasOptions: Ref<ICodigoPostal[]> = ref([]); 
     const municipioDisplay = ref(''); 
@@ -43,28 +50,55 @@ export default defineComponent({
     const isSaving = ref(false);
     const currentLanguage = inject('currentLanguage', () => computed(() => navigator.language ?? 'es'), true);
 
-    // MODIFICACIÓN: Reglas de validación más estrictas
+    // MODIFICACIÓN: Reglas estrictas de validación
     const validationRules = {
-      nombreVialidad: { required }, // Sugerido: que sea obligatorio
-      numExterior: { required },    // Sugerido
-      numInterior: {},
-      telefono: {},
-      tipoVialidad: { required },   // REQUERIDO: Para validar que seleccionen vialidad
-      codigoPostalInfo: { required }, // REQUERIDO: Para asegurar que elijan colonia
+      nombreVialidad: { required }, 
+      numExterior: { required },    
+      numInterior: {}, // Opcional
+      telefono: { 
+        required,
+        numeric,
+        minLength: minLength(10),
+        maxLength: maxLength(10)
+      },
+      tipoVialidad: { required },   
+      codigoPostalInfo: { required }, 
     };
     const v$ = useVuelidate(validationRules, direccion as any);
-    const { resolveJsonI18nKey } = useValidation();
+    //const { resolveJsonI18nKey } = useValidation();
 
-    // MODIFICACIÓN: Función de búsqueda mejorada con validaciones
+    const buscarPaciente = async () => {
+      if (!ecuSearchString.value) return;
+      isSearchingEcu.value = true;
+      pacienteEncontrado.value = null;
+
+      try {
+        const res = await pacienteService().retrieve();
+        const pacientes = res.data;
+        const ecuNumerico = parseInt(ecuSearchString.value, 10);
+        
+        const encontrado = pacientes.find((p: IPaciente) => p.ecu === ecuNumerico);
+        
+        if (encontrado) {
+          pacienteEncontrado.value = encontrado;
+          alertService.showSuccess(`Paciente encontrado correctamente.`);
+        } else {
+          alertService.showError('No se encontró ningún paciente registrado con ese número de ECU.');
+        }
+      } catch (error: any) {
+        alertService.showHttpError(error.response);
+      } finally {
+        isSearchingEcu.value = false;
+      }
+    };
+
     const searchByZipCode = async () => {
       const cpValue = cpSearchString.value;
 
-      // 1. Validar longitud y formato
       if (!cpValue || cpValue.length !== 5) {
-        return; // No hacemos nada si no tiene 5 dígitos (el watcher lo controla)
+        return; 
       }
 
-      // 2. Validación de Rango (México: 01000 - 99998)
       const cpNumber = parseInt(cpValue, 10);
       if (isNaN(cpNumber) || cpNumber < 1000 || cpNumber > 99998) {
         alertService.showError('Código Postal inválido.');
@@ -80,10 +114,7 @@ export default defineComponent({
         coloniasOptions.value = res.data;
         
         if (coloniasOptions.value.length > 0) {
-           // 3. Alerta de éxito al encontrar datos
            alertService.showSuccess('Datos del Código Postal cargados correctamente.');
-           
-           // Opcional: Si solo hay una colonia, seleccionarla automáticamente
            if (coloniasOptions.value.length === 1) {
              direccion.value.codigoPostalInfo = coloniasOptions.value[0];
              updateLocationDetails();
@@ -91,20 +122,23 @@ export default defineComponent({
         } else {
            alertService.showInfo('No se encontraron colonias asociadas a este Código Postal.');
         }
-      } catch (error) {
+      } catch (error: any) {
         alertService.showHttpError(error.response);
       } finally {
         isSearchingCP.value = false;
       }
     };
+    // Función para forzar mayúsculas mientras el usuario escribe
+    const onInputUpper = (event: Event, field: any) => {
+      const target = event.target as HTMLInputElement | null;
+      if (!target) return;
+      field.$model = target.value.toUpperCase();
+    };
 
-    // MODIFICACIÓN: Watcher para búsqueda automática
     watch(cpSearchString, (newVal) => {
-      // Si el usuario escribe exactamente 5 dígitos, disparamos la búsqueda
       if (newVal && newVal.length === 5) {
         searchByZipCode();
       }
-      // Si el usuario borra y tiene menos de 5, limpiamos las opciones
       if (newVal && newVal.length < 5) {
         coloniasOptions.value = [];
         municipioDisplay.value = '';
@@ -124,7 +158,7 @@ export default defineComponent({
       }
     };
 
-    const retrieveDireccion = async direccionId => {
+    const retrieveDireccion = async (direccionId: number) => {      
       try {
         const res = await direccionService().find(direccionId);
         direccion.value = res;
@@ -135,7 +169,7 @@ export default defineComponent({
            estadoDisplay.value = direccion.value.codigoPostalInfo.estado || '';
            coloniasOptions.value = [direccion.value.codigoPostalInfo];
         }
-      } catch (error) {
+      } catch (error: any) {
         alertService.showHttpError(error.response);
       }
     };
@@ -144,7 +178,7 @@ export default defineComponent({
       try {
         const resTipoVialidad = await tipoVialidadService().retrieve();
         tipoVialidads.value = resTipoVialidad.data;
-      } catch (error) {
+      } catch (error: any) {
         alertService.showHttpError(error.response);
       }
     };
@@ -153,24 +187,51 @@ export default defineComponent({
 
     const previousState = () => router.go(-1);
 
-    const save = async () => {
-      // Validamos el formulario antes de guardar
+      const save = async () => {
       const isFormValid = await v$.value.$validate();
       if (!isFormValid) {
-        alertService.showError('Por favor verifica los campos requeridos.');
+        alertService.showError('Por favor verifica los campos requeridos en rojo.');
         return;
       }
+      // --- INICIO CAMBIO S/N ---
+      if (!direccion.value.numInterior || direccion.value.numInterior.trim() === '') {
+        direccion.value.numInterior = 'S/N';
+      }
+      // --- FIN CAMBIO S/N ---
 
       isSaving.value = true;
       try {
-        if (direccion.value.id) {
-          await direccionService().update(direccion.value);
-        } else {
-          await direccionService().create(direccion.value);
+
+        if (direccion.value.tipoVialidad) {
+          (direccion.value as any).tipoVialidadId = direccion.value.tipoVialidad.id;
         }
+        if (direccion.value.codigoPostalInfo) {
+          (direccion.value as any).codigoPostalInfoId = direccion.value.codigoPostalInfo.id;
+        }
+
+        let direccionGuardada;
+
+        // --- 2. GUARDAR LA DIRECCIÓN ---
+        if (direccion.value.id) {
+          direccionGuardada = await direccionService().update(direccion.value);
+        } else {
+          direccionGuardada = await direccionService().create(direccion.value);
+        }
+
+// --- INICIO MAGIA DE VINCULACIÓN CORREGIDA ---
+        // Aseguramos que tengamos el paciente y la dirección creada exitosamente con un ID
+        if (pacienteEncontrado.value && direccionGuardada && direccionGuardada.id) {
+          // IMPORTANTE: Solo le pasamos un objeto con el puro ID. Así Java no se confunde.
+          pacienteEncontrado.value.direccion = { id: direccionGuardada.id };
+          
+          // Guardamos la relación en el paciente
+          await pacienteService().update(pacienteEncontrado.value);
+        }
+        // --- FIN MAGIA DE VINCULACIÓN ---
+
         previousState();
-        alertService.showSuccess(t$('pacientemsApp.pacientemsDireccion.created', { param: direccion.value.id }).toString());
-      } catch (error) {
+        alertService.showSuccess('¡Dirección guardada y vinculada al paciente correctamente!');
+      } catch (error: any) {
         alertService.showHttpError(error.response);
       } finally {
         isSaving.value = false;
@@ -178,7 +239,7 @@ export default defineComponent({
     };
 
     if (route.params?.direccionId) {
-      retrieveDireccion(route.params.direccionId);
+      retrieveDireccion(Number(route.params.direccionId));
     }
 
     return {
@@ -191,12 +252,19 @@ export default defineComponent({
       searchByZipCode,  
       updateLocationDetails, 
       isSearchingCP,
+      
+      ecuSearchString,
+      pacienteEncontrado,
+      isSearchingEcu,
+      buscarPaciente,
+
       isSaving,
       currentLanguage,
       previousState,
       save,
       t$,
-      v$, // Retornamos el validador
+      v$,
+      onInputUpper,
     };
   },
 });
