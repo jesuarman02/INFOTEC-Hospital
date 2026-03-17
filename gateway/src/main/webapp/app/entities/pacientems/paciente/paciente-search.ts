@@ -1,11 +1,8 @@
 import { ref, type Ref } from 'vue';
-import PacienteService from './paciente.service'; // Importación directa
+import axios from 'axios'; // Aseguramos el import de axios
 import type { IPaciente } from '@/shared/model/pacientems/paciente.model';
 
 export function usePacienteSearch() {
-    // Instanciamos el servicio directamente aquí
-    const pacienteService = new PacienteService();
-
     const searchQuery = ref('');
     const resultados: Ref<IPaciente[]> = ref([]);
     const estaCargando = ref(false);
@@ -15,32 +12,36 @@ export function usePacienteSearch() {
         const ecuBusqueda = searchQuery.value.trim();
         if (!ecuBusqueda) return;
 
+        // NUEVO: Validar que sea un número antes de enviarlo al backend
+        const ecuNumero = Number(ecuBusqueda);
+        if (isNaN(ecuNumero)) {
+            error.value = "Por favor, ingresa un número de ECU válido.";
+            return;
+        }
+
         estaCargando.value = true;
         error.value = null;
         resultados.value = [];
 
         try {
-            const res = await pacienteService.retrieve({
-                'ecu.equals': ecuBusqueda
-            });
+            // Mandamos la variable limpia al backend
+            const res = await axios.get(`services/pacientesms/api/pacientes/ecu/${ecuNumero}`);
 
-            if (res.data && res.data.length > 0) {
-                // Le indicamos a TypeScript que p es un IPaciente
-                const exacto = res.data.find((p: IPaciente) => String(p.ecu) === ecuBusqueda);
-
-                if (exacto) {
-                    resultados.value = [exacto]; // Ahora sí guardará solo a Alan (ECU 20)
-                } else {
-                    error.value = `No se encontró coincidencia exacta para el ECU: ${ecuBusqueda}`;
-                }
+            if (res.data) {
+                resultados.value = [res.data];
             }
-        } catch (err) {
-            error.value = "Error de conexión";
-            console.error(err);
+        } catch (err: any) {
+            if (err.response?.status === 404) {
+                error.value = `No se encontró paciente con el ECU: ${ecuNumero}`;
+            } else {
+                error.value = "Error de conexión con el backend";
+                console.error(err);
+            }
         } finally {
             estaCargando.value = false;
         }
     };
+
     const calcularEdad = (fechaNacimiento: Date | string | null | undefined): string => {
         if (!fechaNacimiento) return '0';
 
@@ -50,15 +51,12 @@ export function usePacienteSearch() {
         let edad = hoy.getFullYear() - cumple.getFullYear();
         const diferenciaMeses = hoy.getMonth() - cumple.getMonth();
 
-        // Si el mes actual es menor al de nacimiento, 
-        // o si es el mismo mes pero el día actual es menor, aún no cumple años.
         if (diferenciaMeses < 0 || (diferenciaMeses === 0 && hoy.getDate() < cumple.getDate())) {
             edad--;
         }
 
         return edad.toString();
     };
-
 
     return { searchQuery, resultados, estaCargando, error, buscarPorEcu, calcularEdad };
 }
