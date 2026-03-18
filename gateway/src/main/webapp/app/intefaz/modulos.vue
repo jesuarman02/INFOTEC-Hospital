@@ -37,8 +37,8 @@
                   </div>
 
                   <div class="data-row">
-                    <span class="data-label">Nacimiento:</span>
-                    <span class="data-value">{{ paciente?.fechaNacimiento || 'No registrada' }}</span>
+                    <span class="data-label">Edad:</span>
+                    <span class="data-value">{{ calcularEdad(paciente?.fechaNacimiento) || 'No registrada' }}</span>
                   </div>
 
                   <div class="data-row">
@@ -47,13 +47,13 @@
                   </div>
 
                   <div class="data-row">
-                    <span class="data-label">Nacionalidad:</span>
-                    <span class="data-value">{{ paciente?.nacionalidad || 'No registrada' }}</span>
+                    <span class="data-label">Dirección:</span>
+                    <span class="data-value">{{ paciente?.direccion || 'No registrada' }}</span>
                   </div>
 
                   <div class="data-row">
-                    <span class="data-label">CURP:</span>
-                    <span class="data-value">{{ paciente?.curp || 'N/A' }}</span>
+                    <span class="data-label">Teléfono:</span>
+                    <span class="data-value">{{ paciente?.telefono || 'N/A' }}</span>
                   </div>
 
                 </div>
@@ -115,5 +115,20 @@ const props = defineProps({
     required: true
   }
 });
+const calcularEdad = (fechaNacimiento: string | undefined) => {
+  if (!fechaNacimiento) return 'N/A';
+  
+  const hoy = new Date();
+  const cumpleanos = new Date(fechaNacimiento);
+  let edad = hoy.getFullYear() - cumpleanos.getFullYear();
+  const m = hoy.getMonth() - cumpleanos.getMonth();
+  
+  // Si el mes de hoy es menor al mes de nacimiento, le restamos 1 año
+  if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
+    edad--;
+  }
+  
+  return isNaN(edad) ? 'N/A' : `${edad} años`;
+};
 </script>
 <style scoped src="../../content/css/modulos.css"></style>
