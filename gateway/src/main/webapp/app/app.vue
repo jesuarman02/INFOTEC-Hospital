@@ -1,13 +1,21 @@
 <template>
   <div id="app">
     <ribbon></ribbon>
+
     <div id="app-header">
       <jhi-navbar></jhi-navbar>
     </div>
+
     <div class="container-fluid">
-      <div class="card jh-card">
+
+      <!-- 🔥 Si NO es calendario -->
+      <div v-if="$route.name !== 'Calendario'" class="card jh-card">
         <router-view></router-view>
       </div>
+
+      <!-- 🔥 Si es calendario -->
+      <router-view v-else></router-view>
+
       <b-modal id="login-page" hide-footer lazy>
         <template #modal-title>
           <span data-cy="loginTitle" id="login-title" v-text="t$('login.title')"></span>
@@ -16,6 +24,7 @@
       </b-modal>
 
       <jhi-footer></jhi-footer>
+
     </div>
   </div>
 </template>

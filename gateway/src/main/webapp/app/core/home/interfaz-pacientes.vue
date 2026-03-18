@@ -22,7 +22,7 @@ const manejarBusqueda = async () => {
 
         <searchModule />
         <p class="status-text, status-area">Esperando búsqueda de paciente...</p>
-      </div>
+      </div> 
     </aside>
 
     <main class="right-panel-workspace">
