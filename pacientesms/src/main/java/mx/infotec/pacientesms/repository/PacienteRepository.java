@@ -66,6 +66,9 @@ public interface PacienteRepository extends ReactiveCrudRepository<Paciente, Lon
 
     @Override
     Mono<Void> deleteById(Long id);
+
+    Mono<Paciente> findByEcu(Integer ecu);
+
 }
 
 interface PacienteRepositoryInternal {
@@ -76,7 +79,8 @@ interface PacienteRepositoryInternal {
     Flux<Paciente> findAll();
 
     Mono<Paciente> findById(Long id);
-    // this is not supported at the moment because of https://github.com/jhipster/generator-jhipster/issues/18269
+    // this is not supported at the moment because of
+    // https://github.com/jhipster/generator-jhipster/issues/18269
     // Flux<Paciente> findAllBy(Pageable pageable, Criteria criteria);
 
     Mono<Paciente> findOneWithEagerRelationships(Long id);
@@ -86,4 +90,5 @@ interface PacienteRepositoryInternal {
     Flux<Paciente> findAllWithEagerRelationships(Pageable page);
 
     Mono<Void> deleteById(Long id);
+
 }
