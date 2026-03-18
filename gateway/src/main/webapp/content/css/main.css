@@ -1,9 +1,12 @@
+body{
+    overflow-y:auto ;
+}
 .interface-container {
     display: flex;
-    height: 100vh;
-    width: 100vw;
-    overflow: hidden;
+    min-height: 100vh;
+    width: 100%;
     background-color: #f8f9fa;
+    overflow: visible;
 }
 
 /* Panel Izquierdo: Glassmorphism */
@@ -29,12 +32,9 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    /* Esto pone los datos ARRIBA de la tabla */
-    overflow-y: auto;
-    /* El scroll solo sucede aquí */
     padding: 2rem;
     gap: 2rem;
-    /* Espacio elegante entre los datos y la tabla */
+    overflow-y:auto ;
 }
 
 .title {
@@ -51,44 +51,20 @@
     text-align: center;
 }
 
-.work-area {
-    flex: 1;
-    height: 100vh;
-    overflow-y: auto;
-    /* Permite scroll si el contenido es mucho */
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: #f8f9fa;
-    position: relative;
-}
-
 .table-scroll-section {
-    flex: 1;
-    /* Toma todo el espacio sobrante */
+    flex-grow: 1;
     overflow-y: auto;
-    /* Aquí es donde ocurre la magia del scroll */
     background: white;
     border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-    flex: 1;
-    height: 100vh;
-    overflow-y: auto;
-    /* Permite scroll si el contenido es mucho */
-    padding: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    background-color: #f8f9fa;
-    position: relative;
+    padding: 1rem;
 }
+
 
 /* Asegura que el área de trabajo ocupe el alto de la ventana sin desbordar */
 .main-content {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 100%;
     /* Altura total de la pantalla */
     overflow: hidden;
     /* Evita scroll en el contenedor padre */
@@ -98,8 +74,6 @@
 /* Sección superior (Módulos): Se ajusta a su contenido */
 .top-section-modules {
     flex-shrink: 0;
-    /* No permite que la tabla lo aplaste */
-    margin-bottom: 20px;
 }
 
 /* Sección inferior (Tabla): Ocupa el resto y tiene su propio scroll */
@@ -110,7 +84,6 @@
     /* Solo esta parte tiene scroll */
     background: white;
     border-radius: 15px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
 /* Ajuste de las cards para que no sean excesivamente altas */
