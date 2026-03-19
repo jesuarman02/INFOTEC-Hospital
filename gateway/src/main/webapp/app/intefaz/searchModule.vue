@@ -1,7 +1,6 @@
 <template>
   <transition name="fade">
-      <div v-show="mostrarHeader">
-
+    <div v-show="mostrarHeader">
       <h5 class="title-pacientes mt-2 mb-3">PACIENTES</h5>
 
       <div class="search-container mb-4">
@@ -14,42 +13,42 @@
 
           <input 
             type="text" 
-            v-model="searchQuery" 
-            @keyup.enter="buscarPorEcu" 
+            v-model="valorLocal"
+            @keyup.enter="emit('buscar')" 
             placeholder="ECU, Nombre del Paciente"
             class="minimal-input"
           />
         </div>
       </div>
-
     </div>
   </transition>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref } from 'vue';
+<script setup lang="ts">
+import { computed } from 'vue';
 
+const props = defineProps({
+  // CAMBIO CLAVE: En Vue 2/Compat se llama "value", no "modelValue"
+  value: { 
+    type: String,
+    default: ''
+  },
+  mostrarHeader: {
+    type: Boolean,
+    default: true
+  }
+});
 
-export default defineComponent({
-    name: 'SerchModule',
-    // Definimos las propiedades que recibimos del padre
-    props: {
-      modelValue: String, // Este es el texto de búsqueda (searchQuery)
-      mostrarHeader: { type: Boolean, default: true }
-    },
-    // Definimos los eventos que enviamos al padre
-    emits: ['update:modelValue', 'buscar'],
-   setup(props, { emit }) {
-    // Función para manejar el cambio de texto de forma segura
-    const alCambiarInput = (event: Event) => {
-        const target = event.target as HTMLInputElement;
-        if (target) {
-            emit('update:modelValue', target.value);
-        }
-    };
+// CAMBIO CLAVE: En Vue 2/Compat se emite "input"
+const emit = defineEmits(['input', 'buscar']); 
 
-    return { alCambiarInput };
-}
+const valorLocal = computed({
+  get() {
+    return props.value; 
+  },
+  set(nuevoValor) {
+    emit('input', nuevoValor); 
+  }
 });
 </script>
 <style scoped src="../../content/css/searchbar.css"></style>
