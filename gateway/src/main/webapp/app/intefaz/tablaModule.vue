@@ -1,12 +1,38 @@
 <template>
-  <div>
-    <b-card no-body>
-      <b-tabs card>
-        
-        <b-tab title="Datos del Paciente" active>
-          <div class="container-fluid p-4">
-            
-            <b-card border-variant="light" shadow="sm" class="mb-4">
+  <div class="card shadow-sm border-0">
+    
+    <div class="card-header bg-white pb-0">
+      <ul class="nav nav-tabs border-bottom-0">
+        <li class="nav-item">
+          <a class="nav-link text-secondary" style="cursor: pointer;" 
+             :class="{ 'active font-weight-bold text-danger': tabActual === 'datos' }" 
+             @click="tabActual = 'datos'">Datos del Paciente</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" style="cursor: pointer;" 
+             :class="{ 'active font-weight-bold text-danger': tabActual === 'medicos' }" 
+             @click="tabActual = 'medicos'">Datos Médicos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" style="cursor: pointer;" 
+             :class="{ 'active font-weight-bold text-danger': tabActual === 'diagnostico' }" 
+             @click="tabActual = 'diagnostico'">Diagnóstico</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-secondary" style="cursor: pointer;" 
+             :class="{ 'active font-weight-bold text-danger': tabActual === 'medico_responsable' }" 
+             @click="tabActual = 'medico_responsable'">Datos del médico</a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card-body bg-light p-4">
+      
+      <div v-if="tabActual === 'datos'">
+        <div class="container-fluid p-0">
+          
+          <div class="card border-light shadow-sm mb-4">
+            <div class="card-body">
               <h5 class="text-danger mb-4 border-bottom pb-2">Datos Generales</h5>
               <div class="d-flex flex-wrap">
                 <div class="data-item mr-5 mb-4">
@@ -46,65 +72,102 @@
                   <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.estadoCivil || 'N/A' }}</span>
                 </div>
               </div>
-            </b-card>
+            </div>
+          </div>
 
-            <b-card border-variant="light" shadow="sm" class="mb-4">
+         <div class="card border-light shadow-sm mb-4">
+            <div class="card-body">
               <h5 class="text-danger mb-4 border-bottom pb-2">Dirección y Contacto</h5>
               <div class="d-flex flex-wrap">
+                
                 <div class="data-item mr-5 mb-4">
-                  <label class="text-muted small d-block">Dirección</label>
-                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion || 'Dato no capturado' }}</span>
+                  <label class="text-muted small d-block">Calle y Número</label>
+                  <span class="h6 text-dark border-left pl-2 border-danger">
+                    {{ paciente?.direccion?.vialidad || '' }} 
+                    {{ paciente?.direccion?.nombreVialidad || 'No registrada' }} 
+                    {{ paciente?.direccion?.numExterior || '' }} 
+                    {{ paciente?.direccion?.numInterior ? 'Int. ' + paciente?.direccion?.numInterior : '' }}
+                  </span>
                 </div>
+                
                 <div class="data-item mr-5 mb-4">
-                  <label class="text-muted small d-block">Teléfono Celular</label>
-                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.telefono || 'Dato no capturado' }}</span>
+                  <label class="text-muted small d-block">Colonia</label>
+                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.asentamiento || 'No registrada' }}</span>
                 </div>
+                
                 <div class="data-item mr-5 mb-4">
-                  <label class="text-muted small d-block">Correo Electrónico</label>
-                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.email || 'Dato no capturado' }}</span>
+                  <label class="text-muted small d-block">Alcaldía / Municipio</label>
+                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.municipio || 'No registrada' }}</span>
                 </div>
+                
+                <div class="data-item mr-5 mb-4">
+                  <label class="text-muted small d-block">Estado</label>
+                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.estado || 'No registrada' }}</span>
+                </div>
+                
+                <div class="data-item mr-5 mb-4">
+                  <label class="text-muted small d-block">Código Postal</label>
+                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.codigo || 'No registrada' }}</span>
+                </div>
+                
+                <div class="data-item mr-5 mb-4">
+                  <label class="text-muted small d-block">Teléfono</label>
+                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.telefono || 'No registrado' }}</span>
+                </div>
+
               </div>
-            </b-card>
-
-            <b-card border-variant="light" shadow="sm" class="mb-4">
-              <h5 class="text-danger mb-4 border-bottom pb-2">Información Socioeconómica</h5>
-              <p class="text-muted"><em>Sección pendiente de integrar con el microservicio correspondiente.</em></p>
-            </b-card>
-
+            </div>
           </div>
-        </b-tab>
 
-        <b-tab title="Datos Medicos">
-          <b-card border-variant="light" shadow="sm" class="mb-4">
+          <div class="card border-light shadow-sm mb-4">
+            <div class="card-body">
+              <h5 class="text-danger mb-4 border-bottom pb-2">Información Socioeconómica</h5>
+              <p class="text-muted mb-0"><em>Sección pendiente de integrar con el microservicio correspondiente.</em></p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <div v-if="tabActual === 'medicos'">
+        <div class="card border-light shadow-sm mb-4">
+          <div class="card-body">
             <h5 class="text-danger mb-4 border-bottom pb-2">DATOS MÉDICOS Y ALERTAS</h5>
-            <p class="text-muted"><em>Datos clínicos pendientes de integrar.</em></p>
-          </b-card>
-        </b-tab>
+            <p class="text-muted mb-0"><em>Datos clínicos pendientes de integrar.</em></p>
+          </div>
+        </div>
+      </div>
 
-        <b-tab title="Diagnostico">
-           <div class="p-4">
-             <p class="text-muted"><em>Historial de diagnósticos en desarrollo.</em></p>
-           </div>
-        </b-tab>
+      <div v-if="tabActual === 'diagnostico'">
+        <div class="p-2">
+          <p class="text-muted"><em>Historial de diagnósticos en desarrollo.</em></p>
+        </div>
+      </div>
 
-        <b-tab title="Datos del medico">
-          <b-card border-variant="light" shadow="sm" class="mb-4">
+      <div v-if="tabActual === 'medico_responsable'">
+        <div class="card border-light shadow-sm mb-4">
+          <div class="card-body">
             <h5 class="text-danger mb-4 border-bottom pb-2">PERSONAL MÉDICO RESPONSABLE</h5>
-             <div class="d-flex flex-wrap">
-                <div class="data-item mr-5 mb-4">
-                  <label class="text-muted small d-block font-weight-bold">MÉDICO ENCARGADO</label>
-                  <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.medicoEncargado || 'Sin asignar' }}</span>
-                </div>
-             </div>
-          </b-card>
-        </b-tab>
+            <div class="d-flex flex-wrap">
+              <div class="data-item mr-5 mb-4">
+                <label class="text-muted small d-block font-weight-bold">MÉDICO ENCARGADO</label>
+                <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.medicoEncargado || 'Sin asignar' }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-      </b-tabs>
-    </b-card>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'; // ¡Importante traer el ref para las pestañas!
+
+// 0. Variable reactiva que controla la pestaña visible
+const tabActual = ref('datos');
+
 // 1. Ahora recibimos UN paciente (igual que en modulos.vue)
 const props = defineProps({
   paciente: {
@@ -123,7 +186,6 @@ const calcularEdad = (fechaNacimiento: string | undefined) => {
   let edad = hoy.getFullYear() - cumpleanos.getFullYear();
   const m = hoy.getMonth() - cumpleanos.getMonth();
   
-  // Si el mes de hoy es menor al mes de nacimiento, le restamos 1 año
   if (m < 0 || (m === 0 && hoy.getDate() < cumpleanos.getDate())) {
     edad--;
   }
