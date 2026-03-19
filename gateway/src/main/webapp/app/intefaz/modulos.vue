@@ -17,7 +17,7 @@
               <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
                 
                 <div class="patient-icon">
-                  <font-awesome-icon icon="user-injured" />
+                 <font-awesome-icon icon="user" />
                 </div>
                 
                 <div class="patient-data">
@@ -48,12 +48,15 @@
 
                   <div class="data-row">
                     <span class="data-label">Dirección:</span>
-                    <span class="data-value">{{ paciente?.direccion || 'No registrada' }}</span>
+                    <span class="data-value">{{ paciente?.direccion?.vialidad || '' }} 
+                    {{ paciente?.direccion?.nombreVialidad || 'No registrada' }} 
+                    {{ paciente?.direccion?.numExterior || '' }} 
+                    {{ paciente?.direccion?.numInterior ? 'Int. ' + paciente?.direccion?.numInterior : '' }}</span>
                   </div>
 
                   <div class="data-row">
                     <span class="data-label">Teléfono:</span>
-                    <span class="data-value">{{ paciente?.telefono || 'N/A' }}</span>
+                    <span class="data-value">{{ paciente?.direccion?.telefono || 'N/A' }}</span>
                   </div>
 
                 </div>
