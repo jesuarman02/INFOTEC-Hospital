@@ -67,6 +67,7 @@ export default defineComponent({
     const v$ = useVuelidate(validationRules, direccion as any);
     //const { resolveJsonI18nKey } = useValidation();
 
+// Búsqueda del paciente con Validación de Dirección
     const buscarPaciente = async () => {
       if (!ecuSearchString.value) return;
       isSearchingEcu.value = true;
@@ -80,10 +81,15 @@ export default defineComponent({
         const encontrado = pacientes.find((p: IPaciente) => p.ecu === ecuNumerico);
         
         if (encontrado) {
-          pacienteEncontrado.value = encontrado;
-          alertService.showSuccess(`Paciente encontrado correctamente.`);
+          // CANDADO: Verificamos si el paciente ya trae un objeto dirección ligado
+          if (encontrado.direccion && encontrado.direccion.id) {
+            alertService.showError(`El paciente con ECU ${ecuNumerico} ya tiene una dirección registrada.`);
+          } else {
+            pacienteEncontrado.value = encontrado;
+            alertService.showSuccess('Paciente cargado. Puede registrar su dirección.');
+          }
         } else {
-          alertService.showError('No se encontró ningún paciente registrado con ese número de ECU.');
+          alertService.showError('No se encontró ningún paciente con ese ECU.');
         }
       } catch (error: any) {
         alertService.showHttpError(error.response);

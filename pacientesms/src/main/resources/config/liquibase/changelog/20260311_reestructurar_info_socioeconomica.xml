@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.6.xsd
+                        http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+    <changeSet id="20260311-reestructurar-info-socioeconomica" author="armando">
+        
+        <dropTable tableName="info_socioeconomica" cascadeConstraints="true"/>
+
+        <createTable tableName="info_socioeconomica">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            
+            <column name="paciente_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="pregunta" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            
+            <column name="respuesta" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+            
+            <column name="respuesta_abierta" type="varchar(255)">
+                <constraints nullable="true"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseColumnNames="paciente_id"
+                                 baseTableName="info_socioeconomica"
+                                 constraintName="fk_info_socioeconomica__paciente_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="paciente"/>
+                                 
+    </changeSet>
+</databaseChangeLog>

@@ -1,29 +1,71 @@
-tabs-section {
+/* CONTENEDOR PRINCIPAL */
+.main-content{
     position: relative;
-    z-index: 1;
-    /* importante para que no se meta detrás del fondo */
+    min-height:100vh;
+    overflow:visible;
+    padding:2rem;
+    box-sizing:border-box;
 }
 
-.tab-content-custom {
-    padding: 20px;
-    font-size: 16px;
-    color: #333;
+/* SECCION DE TABS */
+.tabs-section{
+    position: relative;
+    z-index:1;
+    margin-top:40px;
 }
 
-.nav-tabs .nav-link.active {
-    background-color: #611232 !important;
-    color: white !important;
-    border-radius: 10px 10px 0 0;
+/* CONTENIDO DE LAS TABS */
+.tab-content{
+    overflow:visible !important;
+    height:auto !important;
 }
 
-.nav-tabs .nav-link {
-    font-weight: 600;
-    color: #611232;
+.tab-pane{
+    overflow:visible !important;
+    height:auto !important;
 }
 
-.b-tabs .nav-tabs {
-    position: sticky;
-    top: 0;
-    z-index: 10;
-    background: white;
+/* ESTILO INTERNO */
+.tab-content-custom{
+    padding:20px;
+    font-size:16px;
+    color:#333;
+}
+
+/* NAV TABS */
+.nav-tabs .nav-link{
+    font-weight:600;
+    color:#611232;
+}
+
+.nav-tabs .nav-link.active{
+    background-color:#611232 !important;
+    color:white !important;
+    border-radius:10px 10px 0 0;
+}
+
+/* TABS FIJAS ARRIBA */
+.b-tabs .nav-tabs{
+    position:sticky;
+    top:0;
+    z-index:10;
+    background:white;
+}
+
+/* EVITAR ALTURAS FIJAS DE BOOTSTRAP */
+.b-tabs,
+.b-tabs .tab-content,
+.b-tabs .tab-pane{
+    height:auto !important;
+    max-height:none !important;
+    overflow:visible !important;
+}
+
+/* DASHBOARD CONTENT */
+.dashboard-content{
+    height:auto;
+    overflow:visible;
+}
+.tabs-section{
+    margin-top: 80px; /* aumenta esto si quieres más separación */
 }

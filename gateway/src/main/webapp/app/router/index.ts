@@ -3,6 +3,8 @@ import { createRouter as createVueRouter, createWebHistory } from 'vue-router';
 const Home = () => import('@/core/home/home.vue');
 const Error = () => import('@/core/error/error.vue');
 const InterfazPacientes = () => import('@/core/home/interfaz-pacientes.vue');
+const Calendario = () => import('@/core/home/calendario.vue');
+
 import account from '@/router/account';
 import admin from '@/router/admin';
 import entities from '@/router/entities';
@@ -34,6 +36,12 @@ export const createRouter = () =>
         name: 'InterfazPacientes',
         component: InterfazPacientes,
         meta: { authorities: ['ROLE_USER'] },
+      },
+      {
+       path: '/calendario',
+       name: 'Calendario',
+       component: Calendario,
+       meta: { authorities: ['ROLE_USER'] },
       },
       ...account,
       ...admin,
