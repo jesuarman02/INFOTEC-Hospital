@@ -3,7 +3,6 @@ package mx.infotec.pacientesms.domain;
 import static mx.infotec.pacientesms.domain.DireccionTestSamples.*;
 import static mx.infotec.pacientesms.domain.EntidadFederativaTestSamples.*;
 import static mx.infotec.pacientesms.domain.HistorialMedicoTestSamples.*;
-import static mx.infotec.pacientesms.domain.InfoSocioeconomicaTestSamples.*;
 import static mx.infotec.pacientesms.domain.PacienteAlergiaTestSamples.*;
 import static mx.infotec.pacientesms.domain.PacienteEnfermedadTestSamples.*;
 import static mx.infotec.pacientesms.domain.PacienteMedicamentoTestSamples.*;
@@ -44,17 +43,7 @@ class PacienteTest {
         assertThat(paciente.getDireccion()).isNull();
     }
 
-    @Test
-    void infoSocioeconomicaTest() {
-        Paciente paciente = getPacienteRandomSampleGenerator();
-        InfoSocioeconomica infoSocioeconomicaBack = getInfoSocioeconomicaRandomSampleGenerator();
 
-        paciente.setInfoSocioeconomica(infoSocioeconomicaBack);
-        assertThat(paciente.getInfoSocioeconomica()).isEqualTo(infoSocioeconomicaBack);
-
-        paciente.infoSocioeconomica(null);
-        assertThat(paciente.getInfoSocioeconomica()).isNull();
-    }
 
     @Test
     void historialGeneralTest() {
