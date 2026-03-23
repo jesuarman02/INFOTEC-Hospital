@@ -33,9 +33,21 @@ public class SignosVitalesRowMapper implements BiFunction<Row, String, SignosVit
         entity.setFrecuenciaRespiratoria(converter.fromRow(row, prefix + "_frecuencia_respiratoria", Integer.class));
         entity.setTemperatura(converter.fromRow(row, prefix + "_temperatura", BigDecimal.class));
         entity.setSaturacionOxigeno(converter.fromRow(row, prefix + "_saturacion_oxigeno", Integer.class));
-        entity.setPeso(converter.fromRow(row, prefix + "_peso", BigDecimal.class));
-        entity.setEstatura(converter.fromRow(row, prefix + "_estatura", BigDecimal.class));
-        entity.setImc(converter.fromRow(row, prefix + "_imc", BigDecimal.class));
+        
+        // --- NUEVAS COLUMNAS (IDENTIFICACIÓN DEL PACIENTE) ---
+        entity.setPacienteEcu(converter.fromRow(row, prefix + "_paciente_ecu", Integer.class));
+        entity.setPacienteNombre(converter.fromRow(row, prefix + "_paciente_nombre", String.class));
+        entity.setPacienteApellidoPaterno(converter.fromRow(row, prefix + "_paciente_apellido_paterno", String.class));
+        
+        // --- NUEVAS COLUMNAS (CONTEXTO Y EVALUACIÓN) ---
+        entity.setTipo(converter.fromRow(row, prefix + "_tipo", String.class));
+        entity.setPersonal(converter.fromRow(row, prefix + "_personal", String.class));
+        entity.setGlucosa(converter.fromRow(row, prefix + "_glucosa", Integer.class));
+        entity.setDolor(converter.fromRow(row, prefix + "_dolor", Integer.class));
+        entity.setEstadoConciencia(converter.fromRow(row, prefix + "_estado_conciencia", String.class));
+        entity.setObservaciones(converter.fromRow(row, prefix + "_observaciones", String.class));
+
+        // --- RELACIÓN ORIGINAL DE JHIPSTER ---
         entity.setPacienteId(converter.fromRow(row, prefix + "_paciente_id", Long.class));
         return entity;
     }

@@ -34,6 +34,10 @@
     <include file="config/liquibase/changelog/20260116042457_added_entity_constraints_Direccion.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260307_add_fk_paciente_direccion.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260311_reestructurar_info_socioeconomica.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260322_update_historial_medico.xml"/>
+    <include file="config/liquibase/changelog/20260322_add_paciente_ref_historial.xml"/>
+    <include file="config/liquibase/changelog/20260322_add_paciente_nombres.xml"/>
+    <include file="config/liquibase/changelog/20260322_update_signos_vitales_completo.xml"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

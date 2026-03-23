@@ -43,15 +43,36 @@ public class SignosVitales implements Serializable {
     @Column("saturacion_oxigeno")
     private Integer saturacionOxigeno;
 
-    @Column("peso")
-    private BigDecimal peso;
+    // --- NUEVAS COLUMNAS (IDENTIFICACIÓN DEL PACIENTE) ---
+    @Column("paciente_ecu")
+    private Integer pacienteEcu;
 
-    @Column("estatura")
-    private BigDecimal estatura;
+    @Column("paciente_nombre")
+    private String pacienteNombre;
 
-    @Column("imc")
-    private BigDecimal imc;
+    @Column("paciente_apellido_paterno")
+    private String pacienteApellidoPaterno;
 
+    // --- NUEVAS COLUMNAS (CONTEXTO Y EVALUACIÓN) ---
+    @Column("tipo")
+    private String tipo;
+
+    @Column("personal")
+    private String personal;
+
+    @Column("glucosa")
+    private Integer glucosa;
+
+    @Column("dolor")
+    private Integer dolor;
+
+    @Column("estado_conciencia")
+    private String estadoConciencia;
+
+    @Column("observaciones")
+    private String observaciones;
+
+    // --- RELACIÓN ORIGINAL DE JHIPSTER ---
     @Transient
     @JsonIgnoreProperties(
         value = {
@@ -164,44 +185,45 @@ public class SignosVitales implements Serializable {
         this.saturacionOxigeno = saturacionOxigeno;
     }
 
-    public BigDecimal getPeso() {
-        return this.peso;
-    }
+    // --- GETTERS Y SETTERS NUEVOS ---
 
-    public SignosVitales peso(BigDecimal peso) {
-        this.setPeso(peso);
-        return this;
-    }
+    public Integer getPacienteEcu() { return pacienteEcu; }
+    public SignosVitales pacienteEcu(Integer pacienteEcu) { this.setPacienteEcu(pacienteEcu); return this; }
+    public void setPacienteEcu(Integer pacienteEcu) { this.pacienteEcu = pacienteEcu; }
 
-    public void setPeso(BigDecimal peso) {
-        this.peso = peso != null ? peso.stripTrailingZeros() : null;
-    }
+    public String getPacienteNombre() { return pacienteNombre; }
+    public SignosVitales pacienteNombre(String pacienteNombre) { this.setPacienteNombre(pacienteNombre); return this; }
+    public void setPacienteNombre(String pacienteNombre) { this.pacienteNombre = pacienteNombre; }
 
-    public BigDecimal getEstatura() {
-        return this.estatura;
-    }
+    public String getPacienteApellidoPaterno() { return pacienteApellidoPaterno; }
+    public SignosVitales pacienteApellidoPaterno(String pacienteApellidoPaterno) { this.setPacienteApellidoPaterno(pacienteApellidoPaterno); return this; }
+    public void setPacienteApellidoPaterno(String pacienteApellidoPaterno) { this.pacienteApellidoPaterno = pacienteApellidoPaterno; }
 
-    public SignosVitales estatura(BigDecimal estatura) {
-        this.setEstatura(estatura);
-        return this;
-    }
+    public String getTipo() { return tipo; }
+    public SignosVitales tipo(String tipo) { this.setTipo(tipo); return this; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public void setEstatura(BigDecimal estatura) {
-        this.estatura = estatura != null ? estatura.stripTrailingZeros() : null;
-    }
+    public String getPersonal() { return personal; }
+    public SignosVitales personal(String personal) { this.setPersonal(personal); return this; }
+    public void setPersonal(String personal) { this.personal = personal; }
 
-    public BigDecimal getImc() {
-        return this.imc;
-    }
+    public Integer getGlucosa() { return glucosa; }
+    public SignosVitales glucosa(Integer glucosa) { this.setGlucosa(glucosa); return this; }
+    public void setGlucosa(Integer glucosa) { this.glucosa = glucosa; }
 
-    public SignosVitales imc(BigDecimal imc) {
-        this.setImc(imc);
-        return this;
-    }
+    public Integer getDolor() { return dolor; }
+    public SignosVitales dolor(Integer dolor) { this.setDolor(dolor); return this; }
+    public void setDolor(Integer dolor) { this.dolor = dolor; }
 
-    public void setImc(BigDecimal imc) {
-        this.imc = imc != null ? imc.stripTrailingZeros() : null;
-    }
+    public String getEstadoConciencia() { return estadoConciencia; }
+    public SignosVitales estadoConciencia(String estadoConciencia) { this.setEstadoConciencia(estadoConciencia); return this; }
+    public void setEstadoConciencia(String estadoConciencia) { this.estadoConciencia = estadoConciencia; }
+
+    public String getObservaciones() { return observaciones; }
+    public SignosVitales observaciones(String observaciones) { this.setObservaciones(observaciones); return this; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
+
+    // --- GETTERS Y SETTERS RELACIÓN PACIENTE ---
 
     public Paciente getPaciente() {
         return this.paciente;
@@ -240,7 +262,6 @@ public class SignosVitales implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -255,9 +276,15 @@ public class SignosVitales implements Serializable {
             ", frecuenciaRespiratoria=" + getFrecuenciaRespiratoria() +
             ", temperatura=" + getTemperatura() +
             ", saturacionOxigeno=" + getSaturacionOxigeno() +
-            ", peso=" + getPeso() +
-            ", estatura=" + getEstatura() +
-            ", imc=" + getImc() +
+            ", pacienteEcu=" + getPacienteEcu() +
+            ", pacienteNombre='" + getPacienteNombre() + "'" +
+            ", pacienteApellidoPaterno='" + getPacienteApellidoPaterno() + "'" +
+            ", tipo='" + getTipo() + "'" +
+            ", personal='" + getPersonal() + "'" +
+            ", glucosa=" + getGlucosa() +
+            ", dolor=" + getDolor() +
+            ", estadoConciencia='" + getEstadoConciencia() + "'" +
+            ", observaciones='" + getObservaciones() + "'" +
             "}";
     }
 }

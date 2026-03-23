@@ -8,9 +8,23 @@ export interface ISignosVitales {
   frecuenciaRespiratoria?: number | null;
   temperatura?: number | null;
   saturacionOxigeno?: number | null;
-  peso?: number | null;
-  estatura?: number | null;
-  imc?: number | null;
+
+  // --- IDENTIFICACIÓN DEL PACIENTE ---
+  pacienteEcu?: number | null;
+  pacienteNombre?: string | null;
+  pacienteApellidoPaterno?: string | null;
+
+  // --- CONTEXTO DE LA TOMA ---
+  tipo?: string | null;
+  personal?: string | null;
+
+  // --- EVALUACIONES CLÍNICAS EXTRA ---
+  glucosa?: number | null;
+  dolor?: number | null;
+  estadoConciencia?: string | null;
+  observaciones?: string | null;
+
+  // --- RELACIÓN ORIGINAL JHIPSTER ---
   paciente?: IPaciente | null;
 }
 
@@ -23,9 +37,23 @@ export class SignosVitales implements ISignosVitales {
     public frecuenciaRespiratoria?: number | null,
     public temperatura?: number | null,
     public saturacionOxigeno?: number | null,
-    public peso?: number | null,
-    public estatura?: number | null,
-    public imc?: number | null,
+
+    // --- IDENTIFICACIÓN DEL PACIENTE ---
+    public pacienteEcu?: number | null,
+    public pacienteNombre?: string | null,
+    public pacienteApellidoPaterno?: string | null,
+
+    // --- CONTEXTO DE LA TOMA ---
+    public tipo?: string | null,
+    public personal?: string | null,
+
+    // --- EVALUACIONES CLÍNICAS EXTRA ---
+    public glucosa?: number | null,
+    public dolor?: number | null,
+    public estadoConciencia?: string | null,
+    public observaciones?: string | null,
+
+    // --- RELACIÓN ORIGINAL JHIPSTER ---
     public paciente?: IPaciente | null,
   ) {}
 }

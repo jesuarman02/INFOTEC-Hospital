@@ -25,7 +25,7 @@
       <span v-text="t$('gatewayApp.pacientemsSignosVitales.home.notFound')"></span>
     </div>
     <div class="table-responsive" v-if="signosVitales && signosVitales.length > 0">
-      <table class="table table-striped" aria-describedby="signosVitales">
+      <table class="table table-striped table-sm" aria-describedby="signosVitales">
         <thead>
           <tr>
             <th scope="row" @click="changeOrder('id')">
@@ -36,72 +36,75 @@
               <span v-text="t$('gatewayApp.pacientemsSignosVitales.fechaRegistro')"></span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'fechaRegistro'"></jhi-sort-indicator>
             </th>
+            <th scope="row" @click="changeOrder('pacienteEcu')">
+              <span>Paciente (ECU)</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'pacienteEcu'"></jhi-sort-indicator>
+            </th>
+            <th scope="row" @click="changeOrder('tipo')">
+              <span>Tipo de Toma</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'tipo'"></jhi-sort-indicator>
+            </th>
             <th scope="row" @click="changeOrder('frecuenciaCardiaca')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.frecuenciaCardiaca')"></span>
+              <span>FC</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'frecuenciaCardiaca'"></jhi-sort-indicator>
             </th>
             <th scope="row" @click="changeOrder('tensionArterial')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.tensionArterial')"></span>
+              <span>TA</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'tensionArterial'"></jhi-sort-indicator>
             </th>
             <th scope="row" @click="changeOrder('frecuenciaRespiratoria')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.frecuenciaRespiratoria')"></span>
+              <span>FR</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'frecuenciaRespiratoria'"></jhi-sort-indicator>
             </th>
             <th scope="row" @click="changeOrder('temperatura')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.temperatura')"></span>
+              <span>Temp</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'temperatura'"></jhi-sort-indicator>
             </th>
             <th scope="row" @click="changeOrder('saturacionOxigeno')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.saturacionOxigeno')"></span>
+              <span>SpO2</span>
               <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'saturacionOxigeno'"></jhi-sort-indicator>
             </th>
-            <th scope="row" @click="changeOrder('peso')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.peso')"></span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'peso'"></jhi-sort-indicator>
-            </th>
-            <th scope="row" @click="changeOrder('estatura')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.estatura')"></span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'estatura'"></jhi-sort-indicator>
-            </th>
-            <th scope="row" @click="changeOrder('imc')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.imc')"></span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'imc'"></jhi-sort-indicator>
-            </th>
-            <th scope="row" @click="changeOrder('paciente.id')">
-              <span v-text="t$('gatewayApp.pacientemsSignosVitales.paciente')"></span>
-              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'paciente.id'"></jhi-sort-indicator>
+            <th scope="row" @click="changeOrder('glucosa')">
+              <span>Glucosa</span>
+              <jhi-sort-indicator :current-order="propOrder" :reverse="reverse" :field-name="'glucosa'"></jhi-sort-indicator>
             </th>
             <th scope="row"></th>
           </tr>
         </thead>
-        <tbody>
-          <tr v-for="signosVitales in signosVitales" :key="signosVitales.id" data-cy="entityTable">
+<tbody>
+          <tr v-for="registro in signosVitales" :key="registro.id" data-cy="entityTable">
             <td>
-              <router-link :to="{ name: 'SignosVitalesView', params: { signosVitalesId: signosVitales.id } }">{{
-                signosVitales.id
+              <router-link :to="{ name: 'SignosVitalesView', params: { signosVitalesId: registro.id } }">{{
+                registro.id
               }}</router-link>
             </td>
-            <td>{{ formatDateShort(signosVitales.fechaRegistro) || '' }}</td>
-            <td>{{ signosVitales.frecuenciaCardiaca }}</td>
-            <td>{{ signosVitales.tensionArterial }}</td>
-            <td>{{ signosVitales.frecuenciaRespiratoria }}</td>
-            <td>{{ signosVitales.temperatura }}</td>
-            <td>{{ signosVitales.saturacionOxigeno }}</td>
-            <td>{{ signosVitales.peso }}</td>
-            <td>{{ signosVitales.estatura }}</td>
-            <td>{{ signosVitales.imc }}</td>
+            <td>{{ formatDateShort(registro.fechaRegistro) || '' }}</td>
+            
             <td>
-              <div v-if="signosVitales.paciente">
-                <router-link :to="{ name: 'PacienteView', params: { pacienteId: signosVitales.paciente.id } }">{{
-                  signosVitales.paciente.id
-                }}</router-link>
-              </div>
+              <router-link 
+                v-if="registro.paciente && registro.paciente.id" 
+                :to="{ name: 'PacienteView', params: { pacienteId: registro.paciente.id } }" 
+                class="font-weight-bold text-primary" 
+                style="text-decoration: none;">
+                {{ registro.pacienteEcu }} - {{ registro.pacienteNombre }} {{ registro.pacienteApellidoPaterno }}
+              </router-link>
+              <span v-else class="badge badge-warning">Sin Asignar</span>
             </td>
+
+            <td>
+              <span class="badge badge-info">{{ registro.tipo || 'N/A' }}</span>
+            </td>
+            <td>{{ registro.frecuenciaCardiaca }} <small class="text-muted">lpm</small></td>
+            <td>{{ registro.tensionArterial }}</td>
+            <td>{{ registro.frecuenciaRespiratoria }} <small class="text-muted">rpm</small></td>
+            <td>{{ registro.temperatura }} <small class="text-muted">°C</small></td>
+            <td>{{ registro.saturacionOxigeno }} <small class="text-muted">%</small></td>
+            <td>{{ registro.glucosa ? registro.glucosa + ' mg/dL' : '-' }}</td>
+            
             <td class="text-right">
               <div class="btn-group">
                 <router-link
-                  :to="{ name: 'SignosVitalesView', params: { signosVitalesId: signosVitales.id } }"
+                  :to="{ name: 'SignosVitalesView', params: { signosVitalesId: registro.id } }"
                   custom
                   v-slot="{ navigate }"
                 >
@@ -111,7 +114,7 @@
                   </button>
                 </router-link>
                 <router-link
-                  :to="{ name: 'SignosVitalesEdit', params: { signosVitalesId: signosVitales.id } }"
+                  :to="{ name: 'SignosVitalesEdit', params: { signosVitalesId: registro.id } }"
                   custom
                   v-slot="{ navigate }"
                 >
@@ -121,7 +124,7 @@
                   </button>
                 </router-link>
                 <b-button
-                  @click="prepareRemove(signosVitales)"
+                  @click="prepareRemove(registro)"
                   variant="danger"
                   class="btn btn-sm"
                   data-cy="entityDeleteButton"

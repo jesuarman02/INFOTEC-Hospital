@@ -5,10 +5,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd
                         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
-    <!--
-        Added the constraints for entity Paciente.
-    -->
-    <changeSet id="20260116042455-2" author="jhipster">
 
+    <changeSet id="20260322-add-estado" author="jhipster">
+        <addColumn tableName="historial_medico">
+            <column name="estado" type="varchar(20)">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
     </changeSet>
+
 </databaseChangeLog>

@@ -43,7 +43,7 @@
 
         <div v-if="pacienteEncontrado || historialMedico.id">
           
-<div class="card mb-3">
+        <div class="card mb-3">
             <div class="card-header bg-info text-white">Datos Biométricos y Sanguíneos</div>
             <div class="card-body row">
               <div class="form-group col-md-4">
@@ -55,8 +55,7 @@
                   placeholder="Ej: 175"
                   min="20"
                   max="250"
-                  @input="limpiarDecimalesYCalcularIMC($event, 'altura')" 
-                />
+@input="calcularIMC"                />
                 <small class="form-text text-muted">Mín: 20cm, Máx: 250cm</small>
               </div>
               <div class="form-group col-md-4">
@@ -69,8 +68,7 @@
                   placeholder="Ej: 70.5"
                   min="0.5"
                   max="350"
-                  @input="limpiarNumerosYCalcularIMC($event, 'peso')" 
-                />
+@input="calcularIMC"                />
                 <small class="form-text text-muted">Mín: 0.5kg, Máx: 350kg</small>
               </div>
               <div class="form-group col-md-4">
@@ -565,7 +563,7 @@
             </div>
           </div>
 
-<div class="card mb-3 border-secondary">
+          <div class="card mb-3 border-secondary">
             <div class="card-header bg-secondary text-white font-weight-bold">
               <font-awesome-icon icon="smoking"></font-awesome-icon> Hábitos, Consumo y Otros
             </div>
@@ -687,8 +685,8 @@
           <button type="button" class="btn btn-secondary" v-on:click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span>Cancelar</span>
           </button>
-          <button type="submit" :disabled="isSaving || !pacienteEncontrado" class="btn btn-primary">
-            <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span>Guardar Historial</span>
+          <button type="submit" :disabled="isSaving || (!pacienteEncontrado && !historialMedico.id)" class="btn btn-primary">
+              <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span>Guardar Historial</span>
           </button>
         </div>
       </form>
