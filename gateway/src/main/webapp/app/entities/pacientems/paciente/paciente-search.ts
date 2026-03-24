@@ -44,6 +44,19 @@ export function usePacienteSearch() {
                         console.warn("Se encontró el paciente, pero falló la carga de su dirección:", errorDireccion);
                     }
                 }
+                // 3. Vamos por la info socioeconómica
+                if (pacienteEncontrado.infoSocioeconomicaId) {
+                    try {
+                        // ¡OJO AQUÍ! Asegúrate de tener /services/pacientesms/
+                        const infoRes = await axios.get(`/services/pacientesms/api/infoSocioeconomica/${pacienteEncontrado.infoSocioeconomicaId}`);
+
+                        console.log("DATOS SOCIOECONÓMICOS:", infoRes.data);
+                        pacienteEncontrado.infoSocioeconomica = infoRes.data;
+
+                    } catch (errorInfo) {
+                        console.warn("Falló la carga de info socioeconómica:", errorInfo);
+                    }
+                }
 
                 // 3. Finalmente, mandamos al paciente (ahora con su dirección) a la pantalla
                 resultados.value = [pacienteEncontrado];

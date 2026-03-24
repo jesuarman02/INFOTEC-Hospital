@@ -12,15 +12,19 @@ const { searchQuery, resultados, estaCargando, error, buscarPorEcu } = usePacien
 // Ejecuta la búsqueda
 const manejarBusqueda = async () => {
   await buscarPorEcu();
-};
+}; // Asegúrate de importar ref si no lo tienes
+// Variable que controla si el buscador está visible (inicia en false para estar oculto)
+const mostrarBuscador = ref(true);
 </script>
 
 <template>
   <div class="interface-container">
-    <aside class="left-panel-glass">
-      <sidebarModule />
+   <aside class="left-panel-glass">
+      <!-- Escuchamos el evento 'toggle-search' que nos mandará el sidebar -->
+      <sidebarModule @toggle-search="mostrarBuscador = !mostrarBuscador" />
       
-      <div class="search-section glass-sidebar">
+      <!-- Usamos v-show para mostrar u ocultar el panel suavemente -->
+      <div v-show="mostrarBuscador" class="search-section glass-sidebar">
         <searchModule v-model="searchQuery" @buscar="manejarBusqueda" />
         
         <p v-if="estaCargando" class="status-text status-area">Buscando en la base de datos...</p>
