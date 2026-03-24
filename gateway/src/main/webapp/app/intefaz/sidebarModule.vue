@@ -3,10 +3,9 @@
     <nav class="sidebar-icons">
       <div class="icon-group">
 
-        <div class="icon-item" @click="$emit('toggleHeader')">
-          <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
-        </div>
-
+        <div class="icon-item" @click="$emit('toggle-search')">
+  <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
+</div>
         <div class="icon-item" @click="irCalendario">
           <img src="/content/images/calendario.svg" class="sidebar-svg" alt="Calendario" />
         </div>
@@ -23,6 +22,8 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useRouter } from 'vue-router'
+import { defineEmits } from 'vue'
+
 
 export default defineComponent({
   name: 'SidebarModule',
@@ -31,10 +32,9 @@ export default defineComponent({
     mostrarHeader: Boolean,
     mostrarSubirArchivos: Boolean
   },
-
-  emits: ['update:mostrarHeader', 'update:mostrarSubirArchivos'],
-
+  
   setup() {
+    const emit = defineEmits(['toggle-search']);
 
     const router = useRouter()
 

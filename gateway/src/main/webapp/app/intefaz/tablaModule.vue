@@ -79,7 +79,6 @@
             <div class="card-body">
               <h5 class="text-danger mb-4 border-bottom pb-2">Dirección y Contacto</h5>
               <div class="d-flex flex-wrap">
-                
                 <div class="data-item mr-5 mb-4">
                   <label class="text-muted small d-block">Calle y Número</label>
                   <span class="h6 text-dark border-left pl-2 border-danger">
@@ -89,47 +88,68 @@
                     {{ paciente?.direccion?.numInterior ? 'Int. ' + paciente?.direccion?.numInterior : '' }}
                   </span>
                 </div>
-                
                 <div class="data-item mr-5 mb-4">
                   <label class="text-muted small d-block">Colonia</label>
                   <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.asentamiento || 'No registrada' }}</span>
                 </div>
-                
                 <div class="data-item mr-5 mb-4">
                   <label class="text-muted small d-block">Alcaldía / Municipio</label>
                   <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.municipio || 'No registrada' }}</span>
                 </div>
-                
                 <div class="data-item mr-5 mb-4">
                   <label class="text-muted small d-block">Estado</label>
                   <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.estado || 'No registrada' }}</span>
                 </div>
-                
                 <div class="data-item mr-5 mb-4">
                   <label class="text-muted small d-block">Código Postal</label>
                   <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.codigoPostalInfo?.codigo || 'No registrada' }}</span>
                 </div>
-                
                 <div class="data-item mr-5 mb-4">
                   <label class="text-muted small d-block">Teléfono</label>
                   <span class="h6 text-dark border-left pl-2 border-danger">{{ paciente?.direccion?.telefono || 'No registrado' }}</span>
                 </div>
-
               </div>
             </div>
           </div>
 
           <div class="card border-light shadow-sm mb-4">
             <div class="card-body">
-              <h5 class="text-danger mb-4 border-bottom pb-2">Información Socioeconómica</h5>
-              <p class="text-muted mb-0"><em>Sección pendiente de integrar con el microservicio correspondiente.</em></p>
+              <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+                <h5 class="text-danger mb-0">Información Socioeconómica</h5>
+                <button 
+                  class="btn btn-sm btn-outline-danger" 
+                  @click="mostrarModalSocioeconomico = true"
+                  :disabled="!paciente?.infoSocioeconomica"
+                >
+                  <span v-if="paciente?.infoSocioeconomica">Ver Expediente Completo</span>
+                  <span v-else>No hay datos registrados</span>
+                </button>
+              </div>
+
+              <div v-if="paciente?.infoSocioeconomica" class="d-flex flex-wrap">
+                <div class="data-item mr-5 mb-3">
+                  <label class="text-muted small d-block mb-1">Ocupación Actual</label>
+                  <span class="h6 text-dark font-weight-bold">{{ paciente.infoSocioeconomica.ocupacionActual || 'N/A' }}</span>
+                </div>
+                <div class="data-item mr-5 mb-3">
+                  <label class="text-muted small d-block mb-1">Grado de Estudios</label>
+                  <span class="h6 text-dark font-weight-bold">{{ paciente.infoSocioeconomica.gradoMaximoEstudios || 'N/A' }}</span>
+                </div>
+                <div class="data-item mr-5 mb-3">
+                  <label class="text-muted small d-block mb-1">Ingreso Mensual</label>
+                  <span class="h6 text-dark font-weight-bold">${{ paciente.infoSocioeconomica.ingresoMensual || '0' }}</span>
+                </div>
+                <div class="data-item mr-5 mb-3">
+                  <label class="text-muted small d-block mb-1">Afiliación Médica</label>
+                  <span class="h6 text-dark font-weight-bold">{{ paciente.infoSocioeconomica.tipoAfiliacion || 'N/A' }}</span>
+                </div>
+              </div>
+              
+              <p v-else class="text-muted mb-0"><em>El paciente no cuenta con un estudio socioeconómico registrado.</em></p>
             </div>
           </div>
 
-        </div>
-      </div>
-
-      <div v-if="tabActual === 'medicos'">
+        </div> </div> <div v-if="tabActual === 'medicos'">
         <div class="card border-light shadow-sm mb-4">
           <div class="card-body">
             <h5 class="text-danger mb-4 border-bottom pb-2">DATOS MÉDICOS Y ALERTAS</h5>
@@ -159,7 +179,98 @@
       </div>
 
     </div>
-  </div>
+  </div> <div v-if="mostrarModalSocioeconomico" class="modal-overlay" @click.self="mostrarModalSocioeconomico = false">
+      <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 800px; background: white; max-height: 90vh; overflow-y: auto;">
+        
+        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
+          <h4 class="text-danger m-0">Expediente Socioeconómico Completo</h4>
+          <button class="btn btn-light rounded-circle" @click="mostrarModalSocioeconomico = false">✕</button>
+        </div>
+
+        <div v-if="paciente?.infoSocioeconomica" class="row">
+          
+          <div class="col-12 mb-4">
+            <h6 class="text-muted text-uppercase mb-3 font-weight-bold">Datos de Vivienda</h6>
+            <div class="row bg-light p-3 rounded mx-0">
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Tipo de Vivienda</small>
+                <strong>{{ paciente.infoSocioeconomica.tipoVivienda || 'N/A' }}</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Material</small>
+                <strong>{{ paciente.infoSocioeconomica.materialVivienda || 'N/A' }}</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Habitaciones / Habitantes</small>
+                <strong>{{ paciente.infoSocioeconomica.numeroHabitaciones || '0' }} / {{ paciente.infoSocioeconomica.numeroHabitantes || '0' }}</strong>
+              </div>
+              <div class="col-md-12 mb-1">
+                <small class="text-muted d-block">Servicios Disponibles</small>
+                <strong>{{ paciente.infoSocioeconomica.serviciosDisponibles || 'N/A' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-4">
+            <h6 class="text-muted text-uppercase mb-3 font-weight-bold">Economía y Empleo</h6>
+            <div class="row bg-light p-3 rounded mx-0">
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Ocupación / Empleo</small>
+                <strong>{{ paciente.infoSocioeconomica.ocupacionActual || 'N/A' }} ({{ paciente.infoSocioeconomica.tipoEmpleo || 'N/A' }})</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Lugar y Tiempo en Empleo</small>
+                <strong>{{ paciente.infoSocioeconomica.lugarTrabajo || 'N/A' }} ({{ paciente.infoSocioeconomica.tiempoEmpleado || 'N/A' }})</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Condición Laboral</small>
+                <strong>{{ paciente.infoSocioeconomica.condicionLaboral || 'N/A' }}</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Ingreso Personal / Hogar</small>
+                <strong>${{ paciente.infoSocioeconomica.ingresoMensual || '0' }} / ${{ paciente.infoSocioeconomica.ingresoMensualHogar || '0' }}</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Gasto Mensual</small>
+                <strong>${{ paciente.infoSocioeconomica.gastoMensual || '0' }}</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Dependientes</small>
+                <strong>{{ paciente.infoSocioeconomica.personasDependientes || '0' }} personas</strong>
+              </div>
+              <div class="col-md-12 mb-1">
+                <small class="text-muted d-block">Apoyos Gubernamentales</small>
+                <strong>{{ paciente.infoSocioeconomica.apoyosGubernamentales || 'Ninguno' }}</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 mb-2">
+            <h6 class="text-muted text-uppercase mb-3 font-weight-bold">Educación, Salud y Movilidad</h6>
+            <div class="row bg-light p-3 rounded mx-0">
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Grado de Estudios</small>
+                <strong>{{ paciente.infoSocioeconomica.gradoMaximoEstudios || 'N/A' }} ({{ paciente.infoSocioeconomica.aniosEstudio || '0' }} años)</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">¿Estudia Actualmente?</small>
+                <strong>{{ paciente.infoSocioeconomica.estudia ? 'Sí' : 'No' }}</strong>
+              </div>
+              <div class="col-md-4 mb-3">
+                <small class="text-muted d-block">Institución Médica / Afiliación</small>
+                <strong>{{ paciente.infoSocioeconomica.institucionMedica || 'N/A' }} ({{ paciente.infoSocioeconomica.tipoAfiliacion || 'N/A' }})</strong>
+              </div>
+              <div class="col-md-4 mb-1">
+                <small class="text-muted d-block">Transporte y Traslado</small>
+                <strong>{{ paciente.infoSocioeconomica.medioTransporte || 'N/A' }} ({{ paciente.infoSocioeconomica.tiempoTraslado || '0' }} min)</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
 </template>
 
 <script setup lang="ts">
@@ -167,7 +278,8 @@ import { ref } from 'vue'; // ¡Importante traer el ref para las pestañas!
 
 // 0. Variable reactiva que controla la pestaña visible
 const tabActual = ref('datos');
-
+// Agrega esto justo debajo de tu variable const tabActual = ref('datos');
+const mostrarModalSocioeconomico = ref(false);
 // 1. Ahora recibimos UN paciente (igual que en modulos.vue)
 const props = defineProps({
   paciente: {
