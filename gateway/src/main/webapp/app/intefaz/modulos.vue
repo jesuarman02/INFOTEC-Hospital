@@ -1,14 +1,5 @@
 <template>
      <div class="main-content flex-grow-1 p-4">
-
-        <div class="top-info text-center">
-          <div class="top-doctor">{{ paciente?.medico?.nombre || 'Médico sin asignar' }}</div>
-          <div class="top-specialty">{{ paciente?.medico?.especialidad || 'Especialidad no definida' }}</div>
-
-          <div class="top-button-wrapper">
-            <button class="btn agregar-paciente-btn">AGREGAR PACIENTE</button>
-          </div>
-        </div>
         <div class="row">
           <div class="col-md-5 d-flex flex-column">
 
@@ -16,9 +7,6 @@
               <div class="card-title-custom">DATOS DEL PACIENTE</div>
               <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
                 
-                <div class="patient-icon">
-                 <font-awesome-icon icon="user" />
-                </div>
                 
                 <div class="patient-data">
                   <div class="ecu-icon">
@@ -26,7 +14,7 @@
                   </div>
                   
                   <div class="data-row">
-                    <strong>ECU -</strong> <span>{{ paciente?.ecu }}</span>
+                    <strong>ECU:</strong> <span>{{ paciente?.ecu }}</span>
                   </div>
 
                   <div class="data-row">
