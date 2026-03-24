@@ -52,6 +52,13 @@ yarn-error.log*
 *.swp
 *.swo
 
+# Configuración local
+**/application-dev.yml
+**/postgresql.yml
+**/consul.yml
+
+# Archivos pesados
+*.tar.bz2
 # --- Excepciones (Opcional) ---
 # Si quisieras forzar la subida de algo específico, se usa !
 # !gateway/src/main/resources/config/tls/keystore.p12 (Ejemplo)

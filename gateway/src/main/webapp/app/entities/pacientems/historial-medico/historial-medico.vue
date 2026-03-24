@@ -1,83 +1,89 @@
 <template>
   <div>
-    <h2 id="page-heading" data-cy="HistorialMedicoHeading">
-      <span v-text="t$('gatewayApp.pacientemsHistorialMedico.home.title')" id="historial-medico-heading"></span>
+    <h2 id="page-heading">
+      <span>Historiales Médicos</span>
       <div class="d-flex justify-content-end">
         <button class="btn btn-info mr-2" @click="handleSyncList" :disabled="isFetching">
-          <font-awesome-icon icon="sync" :spin="isFetching"></font-awesome-icon>
-          <span v-text="t$('gatewayApp.pacientemsHistorialMedico.home.refreshListLabel')"></span>
+          <font-awesome-icon icon="sync" :spin="isFetching" />
+          <span>Refrescar Lista</span>
         </button>
+
         <router-link :to="{ name: 'HistorialMedicoCreate' }" custom v-slot="{ navigate }">
-          <button
-            @click="navigate"
-            id="jh-create-entity"
-            data-cy="entityCreateButton"
-            class="btn btn-primary jh-create-entity create-historial-medico"
-          >
-            <font-awesome-icon icon="plus"></font-awesome-icon>
-            <span v-text="t$('gatewayApp.pacientemsHistorialMedico.home.createLabel')"></span>
+          <button @click="navigate" class="btn btn-primary">
+            <font-awesome-icon icon="plus" />
+            <span>Crear Nuevo Historial Médico</span>
           </button>
         </router-link>
       </div>
     </h2>
+
     <br />
-    <div class="alert alert-warning" v-if="!isFetching && historialMedicos && historialMedicos.length === 0">
-      <span v-text="t$('gatewayApp.pacientemsHistorialMedico.home.notFound')"></span>
+
+    <div v-if="!isFetching && historialMedicos.length === 0" class="alert alert-warning">
+      No se encontraron historiales médicos registrados.
     </div>
-    <div class="table-responsive" v-if="historialMedicos && historialMedicos.length > 0">
-      <table class="table table-striped" aria-describedby="historialMedicos">
+
+    <div class="table-responsive" v-if="historialMedicos.length > 0">
+      <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="row"><span v-text="t$('global.field.id')"></span></th>
-            <th scope="row"><span v-text="t$('gatewayApp.pacientemsHistorialMedico.antecedentesQuirurgicos')"></span></th>
-            <th scope="row"><span v-text="t$('gatewayApp.pacientemsHistorialMedico.esquemaVacunacion')"></span></th>
-            <th scope="row"><span v-text="t$('gatewayApp.pacientemsHistorialMedico.habitos')"></span></th>
-            <th scope="row"><span v-text="t$('gatewayApp.pacientemsHistorialMedico.observacionesGenerales')"></span></th>
-            <th scope="row"></th>
+            <th>ID</th>
+            <th>Paciente (ECU y Nombre)</th>
+            <th>Observaciones Generales</th>
+            <th>Estado</th>
           </tr>
         </thead>
+
         <tbody>
-          <tr v-for="historialMedico in historialMedicos" :key="historialMedico.id" data-cy="entityTable">
+          <tr v-for="historial in historialMedicos" :key="historial.id">
             <td>
-              <router-link :to="{ name: 'HistorialMedicoView', params: { historialMedicoId: historialMedico.id } }">{{
-                historialMedico.id
-              }}</router-link>
+              <router-link :to="{ name: 'HistorialMedicoView', params: { historialMedicoId: historial.id }}">
+                {{ historial.id }}
+              </router-link>
             </td>
-            <td>{{ historialMedico.antecedentesQuirurgicos }}</td>
-            <td>{{ historialMedico.esquemaVacunacion }}</td>
-            <td>{{ historialMedico.habitos }}</td>
-            <td>{{ historialMedico.observacionesGenerales }}</td>
+
+            <td>
+              <router-link :to="{ name: 'PacienteView', params: { pacienteId: historial.pacienteId } }" class="font-weight-bold text-primary" style="text-decoration: none;" v-if="historial.pacienteEcu">
+                {{ historial.pacienteEcu }} - {{ historial.pacienteNombre }} {{ historial.pacienteApellidoPaterno }}
+              </router-link>
+              <span v-else class="badge badge-warning">Sin Asignar</span>
+            </td>
+
+            <td>
+              <div class="text-truncate" style="max-width: 300px;" :title="historial.observacionesGenerales || ''">
+                {{ historial.observacionesGenerales || 'Sin observaciones' }}
+              </div>
+            </td>
+            <td>
+              <span class="badge" 
+                :class="{
+                  'badge-success': historial.estado === 'COMPLETO', 
+                  'badge-warning': historial.estado === 'INCOMPLETO',
+                  'badge-secondary': !historial.estado || historial.estado === 'VACIO'
+                }">
+                {{ historial.estado || 'VACIO' }}
+              </span>
+            </td>
+
             <td class="text-right">
               <div class="btn-group">
-                <router-link
-                  :to="{ name: 'HistorialMedicoView', params: { historialMedicoId: historialMedico.id } }"
-                  custom
-                  v-slot="{ navigate }"
-                >
-                  <button @click="navigate" class="btn btn-info btn-sm details" data-cy="entityDetailsButton">
-                    <font-awesome-icon icon="eye"></font-awesome-icon>
-                    <span class="d-none d-md-inline" v-text="t$('entity.action.view')"></span>
+                <router-link :to="{ name: 'HistorialMedicoView', params: { historialMedicoId: historial.id } }" custom v-slot="{ navigate }">
+                  <button @click="navigate" class="btn btn-info btn-sm">
+                    <font-awesome-icon icon="eye" />
+                    <span class="d-none d-md-inline">Ver Expediente</span>
                   </button>
                 </router-link>
-                <router-link
-                  :to="{ name: 'HistorialMedicoEdit', params: { historialMedicoId: historialMedico.id } }"
-                  custom
-                  v-slot="{ navigate }"
-                >
-                  <button @click="navigate" class="btn btn-primary btn-sm edit" data-cy="entityEditButton">
-                    <font-awesome-icon icon="pencil-alt"></font-awesome-icon>
-                    <span class="d-none d-md-inline" v-text="t$('entity.action.edit')"></span>
+
+                <router-link :to="{ name: 'HistorialMedicoEdit', params: { historialMedicoId: historial.id } }" custom v-slot="{ navigate }">
+                  <button @click="navigate" class="btn btn-primary btn-sm">
+                    <font-awesome-icon icon="pencil-alt" />
+                    <span class="d-none d-md-inline">Editar</span>
                   </button>
                 </router-link>
-                <b-button
-                  @click="prepareRemove(historialMedico)"
-                  variant="danger"
-                  class="btn btn-sm"
-                  data-cy="entityDeleteButton"
-                  v-b-modal.removeEntity
-                >
-                  <font-awesome-icon icon="times"></font-awesome-icon>
-                  <span class="d-none d-md-inline" v-text="t$('entity.action.delete')"></span>
+
+                <b-button @click="prepareRemove(historial)" variant="danger" class="btn btn-sm" v-b-modal.removeEntity>
+                  <font-awesome-icon icon="times" />
+                  <span class="d-none d-md-inline">Eliminar</span>
                 </b-button>
               </div>
             </td>
@@ -85,32 +91,15 @@
         </tbody>
       </table>
     </div>
+
     <b-modal ref="removeEntity" id="removeEntity">
-      <template #modal-title>
-        <span
-          id="gatewayApp.pacientemsHistorialMedico.delete.question"
-          data-cy="historialMedicoDeleteDialogHeading"
-          v-text="t$('entity.delete.title')"
-        ></span>
-      </template>
+      <template #modal-title>Confirmar eliminación</template>
       <div class="modal-body">
-        <p
-          id="jhi-delete-historialMedico-heading"
-          v-text="t$('gatewayApp.pacientemsHistorialMedico.delete.question', { id: removeId })"
-        ></p>
+        ¿Está seguro de eliminar este historial médico?
       </div>
       <template #modal-footer>
-        <div>
-          <button type="button" class="btn btn-secondary" v-text="t$('entity.action.cancel')" @click="closeDialog()"></button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            id="jhi-confirm-delete-historialMedico"
-            data-cy="entityConfirmDeleteButton"
-            v-text="t$('entity.action.delete')"
-            @click="removeHistorialMedico()"
-          ></button>
-        </div>
+        <button class="btn btn-secondary" @click="closeDialog()">Cancelar</button>
+        <button class="btn btn-danger" @click="removeHistorialMedico()">Eliminar</button>
       </template>
     </b-modal>
   </div>

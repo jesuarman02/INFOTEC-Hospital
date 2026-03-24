@@ -1,6 +1,5 @@
 package mx.infotec.pacientesms.domain;
 
-import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
@@ -20,20 +19,49 @@ public class HistorialMedico implements Serializable {
     @Column("id")
     private Long id;
 
-    @Size(max = 500)
-    @Column("antecedentes_quirurgicos")
-    private String antecedentesQuirurgicos;
+    @Column("datos_biometricos_sanguineos")
+    private String datosBiometricosSanguineos;
 
-    @Size(max = 255)
-    @Column("esquema_vacunacion")
-    private String esquemaVacunacion;
+    @Column("alergias")
+    private String alergias;
 
-    @Size(max = 255)
-    @Column("habitos")
-    private String habitos;
+    @Column("enfermedades_cronicas")
+    private String enfermedadesCronicas;
+
+    @Column("cirugias_previas")
+    private String cirugiasPrevias;
+
+    @Column("medicamentos_actuales")
+    private String medicamentosActuales;
+
+    @Column("antecedentes_familiares_hereditarios")
+    private String antecedentesFamiliaresHereditarios;
+
+    @Column("antecedentes_personales_patologicos")
+    private String antecedentesPersonalesPatologicos;
+
+    @Column("habitos_consumo_otros")
+    private String habitosConsumoOtros;
 
     @Column("observaciones_generales")
     private String observacionesGenerales;
+
+    @Column("estado")
+    private String estado;
+
+    @Column("paciente_id")
+    private Long pacienteId;
+
+    @Column("paciente_ecu")
+    private Integer pacienteEcu;
+
+    @Column("paciente_nombre")
+    private String pacienteNombre;
+
+    @Column("paciente_apellido_paterno")
+    private String pacienteApellidoPaterno;
+    
+    // Agrega los public String getPacienteNombre()... y los setters correspondientes.
 
     @Transient
     private Paciente paciente;
@@ -53,43 +81,108 @@ public class HistorialMedico implements Serializable {
         this.id = id;
     }
 
-    public String getAntecedentesQuirurgicos() {
-        return this.antecedentesQuirurgicos;
+    public String getDatosBiometricosSanguineos() {
+        return this.datosBiometricosSanguineos;
     }
 
-    public HistorialMedico antecedentesQuirurgicos(String antecedentesQuirurgicos) {
-        this.setAntecedentesQuirurgicos(antecedentesQuirurgicos);
+    public HistorialMedico datosBiometricosSanguineos(String datosBiometricosSanguineos) {
+        this.setDatosBiometricosSanguineos(datosBiometricosSanguineos);
         return this;
     }
 
-    public void setAntecedentesQuirurgicos(String antecedentesQuirurgicos) {
-        this.antecedentesQuirurgicos = antecedentesQuirurgicos;
+    public void setDatosBiometricosSanguineos(String datosBiometricosSanguineos) {
+        this.datosBiometricosSanguineos = datosBiometricosSanguineos;
     }
 
-    public String getEsquemaVacunacion() {
-        return this.esquemaVacunacion;
+    public String getAlergias() {
+        return this.alergias;
     }
 
-    public HistorialMedico esquemaVacunacion(String esquemaVacunacion) {
-        this.setEsquemaVacunacion(esquemaVacunacion);
+    public HistorialMedico alergias(String alergias) {
+        this.setAlergias(alergias);
         return this;
     }
 
-    public void setEsquemaVacunacion(String esquemaVacunacion) {
-        this.esquemaVacunacion = esquemaVacunacion;
+    public void setAlergias(String alergias) {
+        this.alergias = alergias;
     }
 
-    public String getHabitos() {
-        return this.habitos;
+    public String getEnfermedadesCronicas() {
+        return this.enfermedadesCronicas;
     }
 
-    public HistorialMedico habitos(String habitos) {
-        this.setHabitos(habitos);
+    public HistorialMedico enfermedadesCronicas(String enfermedadesCronicas) {
+        this.setEnfermedadesCronicas(enfermedadesCronicas);
         return this;
     }
 
-    public void setHabitos(String habitos) {
-        this.habitos = habitos;
+    public void setEnfermedadesCronicas(String enfermedadesCronicas) {
+        this.enfermedadesCronicas = enfermedadesCronicas;
+    }
+
+    public String getCirugiasPrevias() {
+        return this.cirugiasPrevias;
+    }
+
+    public HistorialMedico cirugiasPrevias(String cirugiasPrevias) {
+        this.setCirugiasPrevias(cirugiasPrevias);
+        return this;
+    }
+
+    public void setCirugiasPrevias(String cirugiasPrevias) {
+        this.cirugiasPrevias = cirugiasPrevias;
+    }
+
+    public String getMedicamentosActuales() {
+        return this.medicamentosActuales;
+    }
+
+    public HistorialMedico medicamentosActuales(String medicamentosActuales) {
+        this.setMedicamentosActuales(medicamentosActuales);
+        return this;
+    }
+
+    public void setMedicamentosActuales(String medicamentosActuales) {
+        this.medicamentosActuales = medicamentosActuales;
+    }
+
+    public String getAntecedentesFamiliaresHereditarios() {
+        return this.antecedentesFamiliaresHereditarios;
+    }
+
+    public HistorialMedico antecedentesFamiliaresHereditarios(String antecedentesFamiliaresHereditarios) {
+        this.setAntecedentesFamiliaresHereditarios(antecedentesFamiliaresHereditarios);
+        return this;
+    }
+
+    public void setAntecedentesFamiliaresHereditarios(String antecedentesFamiliaresHereditarios) {
+        this.antecedentesFamiliaresHereditarios = antecedentesFamiliaresHereditarios;
+    }
+
+    public String getAntecedentesPersonalesPatologicos() {
+        return this.antecedentesPersonalesPatologicos;
+    }
+
+    public HistorialMedico antecedentesPersonalesPatologicos(String antecedentesPersonalesPatologicos) {
+        this.setAntecedentesPersonalesPatologicos(antecedentesPersonalesPatologicos);
+        return this;
+    }
+
+    public void setAntecedentesPersonalesPatologicos(String antecedentesPersonalesPatologicos) {
+        this.antecedentesPersonalesPatologicos = antecedentesPersonalesPatologicos;
+    }
+
+    public String getHabitosConsumoOtros() {
+        return this.habitosConsumoOtros;
+    }
+
+    public HistorialMedico habitosConsumoOtros(String habitosConsumoOtros) {
+        this.setHabitosConsumoOtros(habitosConsumoOtros);
+        return this;
+    }
+
+    public void setHabitosConsumoOtros(String habitosConsumoOtros) {
+        this.habitosConsumoOtros = habitosConsumoOtros;
     }
 
     public String getObservacionesGenerales() {
@@ -105,9 +198,49 @@ public class HistorialMedico implements Serializable {
         this.observacionesGenerales = observacionesGenerales;
     }
 
+    // Y hasta abajo del archivo, agrega sus Getters y Setters:
+    public String getEstado() {
+        return this.estado;
+    }
+
+    public HistorialMedico estado(String estado) {
+        this.setEstado(estado);
+        return this;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public Paciente getPaciente() {
         return this.paciente;
     }
+
+        // Getter y Setter de pacienteNombre
+    public String getPacienteNombre() {
+        return pacienteNombre;
+    }
+
+    public void setPacienteNombre(String pacienteNombre) {
+        this.pacienteNombre = pacienteNombre;
+    }
+
+    // Getter y Setter de pacienteApellidoPaterno
+    public String getPacienteApellidoPaterno() {
+        return pacienteApellidoPaterno;
+    }
+
+    public void setPacienteApellidoPaterno(String pacienteApellidoPaterno) {
+        this.pacienteApellidoPaterno = pacienteApellidoPaterno;
+    }
+
+    // Y al final del archivo, agrega sus Getters y Setters:
+    public Long getPacienteId() { return this.pacienteId; }
+    public void setPacienteId(Long pacienteId) { this.pacienteId = pacienteId; }
+
+    public Integer getPacienteEcu() { return this.pacienteEcu; }
+    public void setPacienteEcu(Integer pacienteEcu) { this.pacienteEcu = pacienteEcu; }
+    
 
     public void setPaciente(Paciente paciente) {
         if (this.paciente != null) {
@@ -139,7 +272,6 @@ public class HistorialMedico implements Serializable {
 
     @Override
     public int hashCode() {
-        // see https://vladmihalcea.com/how-to-implement-equals-and-hashcode-using-the-jpa-entity-identifier/
         return getClass().hashCode();
     }
 
@@ -148,10 +280,6 @@ public class HistorialMedico implements Serializable {
     public String toString() {
         return "HistorialMedico{" +
             "id=" + getId() +
-            ", antecedentesQuirurgicos='" + getAntecedentesQuirurgicos() + "'" +
-            ", esquemaVacunacion='" + getEsquemaVacunacion() + "'" +
-            ", habitos='" + getHabitos() + "'" +
-            ", observacionesGenerales='" + getObservacionesGenerales() + "'" +
             "}";
     }
 }

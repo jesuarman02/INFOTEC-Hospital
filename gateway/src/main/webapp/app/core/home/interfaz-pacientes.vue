@@ -26,7 +26,6 @@ const mostrarBuscador = ref(true);
       <!-- Usamos v-show para mostrar u ocultar el panel suavemente -->
       <div v-show="mostrarBuscador" class="search-section glass-sidebar">
         <searchModule v-model="searchQuery" @buscar="manejarBusqueda" />
-        
         <p v-if="estaCargando" class="status-text status-area">Buscando en la base de datos...</p>
         <p v-else-if="error" class="status-text status-area" style="color: #ff4d4f;">{{ error }}</p>
         <p v-else-if="resultados.length === 0" class="status-text status-area">Esperando búsqueda de paciente...</p>

@@ -12,182 +12,151 @@
             <label for="id" v-text="t$('global.field.id')"></label>
             <input type="text" class="form-control" id="id" name="id" v-model="signosVitales.id" readonly />
           </div>
+
+          <div class="card bg-light mb-4 mt-3">
+            <div class="card-body">
+              <h5 class="card-title text-primary"><font-awesome-icon icon="user-injured" /> Identificación del Paciente</h5>
+              <div class="form-group mb-0">
+                <label class="form-control-label font-weight-bold" for="paciente-ecu">Número de ECU</label>
+                <input
+                  type="number"
+                  class="form-control form-control-lg"
+                  id="paciente-ecu"
+                  v-model.number="signosVitales.pacienteEcu"
+                  placeholder="Ingrese el ECU para vincular al paciente..."
+                  required
+                />
+              </div>
+              
+              <div v-if="pacienteEncontrado" class="alert alert-success mt-3 mb-0">
+                <strong>Paciente Encontrado:</strong> {{ pacienteEncontrado.nombre }} {{ pacienteEncontrado.apellidoPaterno }}
+              </div>
+              <div v-else-if="signosVitales.pacienteEcu" class="alert alert-warning mt-3 mb-0">
+                <strong>Atención:</strong> No se encontró ningún paciente con este ECU en la base de datos.
+              </div>
+            </div>
+          </div>
+
+          <hr />
+          <h4>Datos de la Toma</h4>
+
           <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.fechaRegistro')"
-              for="signos-vitales-fechaRegistro"
-            ></label>
+            <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.fechaRegistro')" for="signos-vitales-fechaRegistro"></label>
             <div class="d-flex">
               <input
                 id="signos-vitales-fechaRegistro"
-                data-cy="fechaRegistro"
                 type="datetime-local"
                 class="form-control"
                 name="fechaRegistro"
                 :class="{ valid: !v$.fechaRegistro.$invalid, invalid: v$.fechaRegistro.$invalid }"
                 required
-                :value="convertDateTimeFromServer(v$.fechaRegistro.$model)"
-                @change="updateInstantField('fechaRegistro', $event)"
+                v-model="fechaRegistroLocal"
               />
             </div>
-            <div v-if="v$.fechaRegistro.$anyDirty && v$.fechaRegistro.$invalid">
-              <small class="form-text text-danger" v-for="error of v$.fechaRegistro.$errors" :key="error.$uid">{{ error.$message }}</small>
+          </div>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label" for="signos-vitales-tipo">Tipo de Toma</label>
+              <select class="form-control" id="signos-vitales-tipo" v-model="v$.tipo.$model">
+                <option value="Ingreso">Ingreso</option>
+                <option value="Rutina">Rutina (Piso)</option>
+                <option value="Urgencia">Urgencia</option>
+                <option value="Alta">Alta Médica</option>
+              </select>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label" for="signos-vitales-personal">Personal Responsable</label>
+              <input type="text" class="form-control" id="signos-vitales-personal" v-model="v$.personal.$model" placeholder="Ej. Dra. Martínez" />
             </div>
           </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.frecuenciaCardiaca')"
-              for="signos-vitales-frecuenciaCardiaca"
-            ></label>
-            <input
-              type="number"
-              class="form-control"
-              name="frecuenciaCardiaca"
-              id="signos-vitales-frecuenciaCardiaca"
-              data-cy="frecuenciaCardiaca"
-              :class="{ valid: !v$.frecuenciaCardiaca.$invalid, invalid: v$.frecuenciaCardiaca.$invalid }"
-              v-model.number="v$.frecuenciaCardiaca.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.tensionArterial')"
-              for="signos-vitales-tensionArterial"
-            ></label>
-            <input
-              type="text"
-              class="form-control"
-              name="tensionArterial"
-              id="signos-vitales-tensionArterial"
-              data-cy="tensionArterial"
-              :class="{ valid: !v$.tensionArterial.$invalid, invalid: v$.tensionArterial.$invalid }"
-              v-model="v$.tensionArterial.$model"
-            />
-            <div v-if="v$.tensionArterial.$anyDirty && v$.tensionArterial.$invalid">
-              <small class="form-text text-danger" v-for="error of v$.tensionArterial.$errors" :key="error.$uid">{{
-                error.$message
-              }}</small>
+
+          <hr />
+          <h4>Mediciones Vitales</h4>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.frecuenciaCardiaca')"></label>
+              <div class="input-group">
+                <input type="number" min="0" max="300" class="form-control" v-model.number="v$.frecuenciaCardiaca.$model" />
+                <div class="input-group-append"><span class="input-group-text">lpm</span></div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.tensionArterial')"></label>
+              <input type="text" class="form-control" v-model="v$.tensionArterial.$model" placeholder="120/80" />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.frecuenciaRespiratoria')"></label>
+              <div class="input-group">
+                <input type="number" min="0" max="100" class="form-control" v-model.number="v$.frecuenciaRespiratoria.$model" />
+                <div class="input-group-append"><span class="input-group-text">rpm</span></div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.temperatura')"></label>
+              <div class="input-group">
+                <input type="number" min="20" max="45" step="0.1" class="form-control" v-model.number="v$.temperatura.$model" />
+                <div class="input-group-append"><span class="input-group-text">°C</span></div>
+              </div>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.saturacionOxigeno')"></label>
+              <div class="input-group">
+                <input type="number" min="0" max="100" class="form-control" v-model.number="v$.saturacionOxigeno.$model" />
+                <div class="input-group-append"><span class="input-group-text">%</span></div>
+              </div>
+            </div>
+            
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Glucosa</label>
+              <div class="input-group">
+                <input type="number" min="0" max="1000" class="form-control" v-model.number="v$.glucosa.$model" />
+                <div class="input-group-append"><span class="input-group-text">mg/dL</span></div>
+              </div>
             </div>
           </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.frecuenciaRespiratoria')"
-              for="signos-vitales-frecuenciaRespiratoria"
-            ></label>
-            <input
-              type="number"
-              class="form-control"
-              name="frecuenciaRespiratoria"
-              id="signos-vitales-frecuenciaRespiratoria"
-              data-cy="frecuenciaRespiratoria"
-              :class="{ valid: !v$.frecuenciaRespiratoria.$invalid, invalid: v$.frecuenciaRespiratoria.$invalid }"
-              v-model.number="v$.frecuenciaRespiratoria.$model"
-            />
+
+          <hr />
+          <h4>Evaluación Extra</h4>
+
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Dolor (Escala 0-10)</label>
+              <input type="number" min="0" max="10" class="form-control" v-model.number="v$.dolor.$model" />
+            </div>
+
+            <div class="form-group col-md-6">
+              <label class="form-control-label">Estado de Conciencia</label>
+              <select class="form-control" v-model="v$.estadoConciencia.$model">
+                <option value="Alerta">Alerta</option>
+                <option value="Responde a Voz">Responde a Voz</option>
+                <option value="Responde a Dolor">Responde a Dolor</option>
+                <option value="Inconsciente">Inconsciente</option>
+              </select>
+            </div>
           </div>
+
           <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.temperatura')"
-              for="signos-vitales-temperatura"
-            ></label>
-            <input
-              type="number"
-              class="form-control"
-              name="temperatura"
-              id="signos-vitales-temperatura"
-              data-cy="temperatura"
-              :class="{ valid: !v$.temperatura.$invalid, invalid: v$.temperatura.$invalid }"
-              v-model.number="v$.temperatura.$model"
-            />
+            <label class="form-control-label">Observaciones</label>
+            <textarea class="form-control" rows="3" v-model="v$.observaciones.$model"></textarea>
           </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.saturacionOxigeno')"
-              for="signos-vitales-saturacionOxigeno"
-            ></label>
-            <input
-              type="number"
-              class="form-control"
-              name="saturacionOxigeno"
-              id="signos-vitales-saturacionOxigeno"
-              data-cy="saturacionOxigeno"
-              :class="{ valid: !v$.saturacionOxigeno.$invalid, invalid: v$.saturacionOxigeno.$invalid }"
-              v-model.number="v$.saturacionOxigeno.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.peso')" for="signos-vitales-peso"></label>
-            <input
-              type="number"
-              class="form-control"
-              name="peso"
-              id="signos-vitales-peso"
-              data-cy="peso"
-              :class="{ valid: !v$.peso.$invalid, invalid: v$.peso.$invalid }"
-              v-model.number="v$.peso.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.estatura')"
-              for="signos-vitales-estatura"
-            ></label>
-            <input
-              type="number"
-              class="form-control"
-              name="estatura"
-              id="signos-vitales-estatura"
-              data-cy="estatura"
-              :class="{ valid: !v$.estatura.$invalid, invalid: v$.estatura.$invalid }"
-              v-model.number="v$.estatura.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label class="form-control-label" v-text="t$('gatewayApp.pacientemsSignosVitales.imc')" for="signos-vitales-imc"></label>
-            <input
-              type="number"
-              class="form-control"
-              name="imc"
-              id="signos-vitales-imc"
-              data-cy="imc"
-              :class="{ valid: !v$.imc.$invalid, invalid: v$.imc.$invalid }"
-              v-model.number="v$.imc.$model"
-            />
-          </div>
-          <div class="form-group">
-            <label
-              class="form-control-label"
-              v-text="t$('gatewayApp.pacientemsSignosVitales.paciente')"
-              for="signos-vitales-paciente"
-            ></label>
-            <select class="form-control" id="signos-vitales-paciente" data-cy="paciente" name="paciente" v-model="signosVitales.paciente">
-              <option :value="null"></option>
-              <option
-                :value="signosVitales.paciente && pacienteOption.id === signosVitales.paciente.id ? signosVitales.paciente : pacienteOption"
-                v-for="pacienteOption in pacientes"
-                :key="pacienteOption.id"
-              >
-                {{ pacienteOption.id }}
-              </option>
-            </select>
-          </div>
+
         </div>
         <div>
-          <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" @click="previousState()">
+          <button type="button" id="cancel-save" class="btn btn-secondary" @click="previousState()">
             <font-awesome-icon icon="ban"></font-awesome-icon>&nbsp;<span v-text="t$('entity.action.cancel')"></span>
           </button>
           <button
             type="submit"
             id="save-entity"
-            data-cy="entityCreateSaveButton"
-            :disabled="v$.$invalid || isSaving"
-            class="btn btn-primary"
+            :disabled="v$.$invalid || isSaving || !pacienteEncontrado"
+            class="btn btn-primary ml-2"
           >
             <font-awesome-icon icon="save"></font-awesome-icon>&nbsp;<span v-text="t$('entity.action.save')"></span>
           </button>

@@ -6,60 +6,60 @@
   min-height: 100vh;
 }
 
-.calendar-card {
-  display: flex;
-  width: 1100px;
-  background: white;
-  border-radius: 15px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-  overflow: hidden;
+/* CARD GENERAL */
+.calendar-card{
+  display:flex;
+  width:950px;
+  background:white;
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.2);
+  overflow:hidden;
 }
 
 /* IZQUIERDA */
-
-.left-section {
-  width: 40%;
-  padding: 30px;
-  text-align: center;
-  background: #f5f5f5;
+.left-section{
+  width:40%;
+  padding:20px;
+  text-align:center;
+  background:#f5f5f5;
 }
 
-.mes {
-  font-size: 50px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.mes{
+  font-size:28px;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
-.numero-dia {
-  font-size: 180px;
-  font-weight: bold;
-  margin-bottom: 20px;
+.numero-dia{
+  font-size:90px;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
-.titulo-mes {
-  font-size: 30px;
-  font-weight: bold;
+.titulo-mes{
+  font-size:20px;
+  font-weight:bold;
 }
 
-.titulo-citas {
-  font-size: 45px;
-  font-weight: bold;
-  margin-bottom: 10px;
+.titulo-citas{
+  font-size:22px;
+  font-weight:bold;
+  margin-bottom:10px;
 }
 
-.cita-card {
-  background: white;
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 8px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+.cita-card{
+  background:white;
+  padding:8px;
+  margin-bottom:6px;
+  border-radius:8px;
+  box-shadow:0 3px 10px rgba(0,0,0,0.1);
+  font-size:14px;
 }
 
-/* DERECHA CALENDARIO */
-
-.right-section {
-  width: 60%;
-  padding: 20px;
+/* DERECHA */
+.right-section{
+  width:60%;
+  padding:15px;
 }
 
 .month-switch {
@@ -68,36 +68,42 @@
   margin-bottom: 10px;
 }
 
-.month-switch button {
-  border: none;
-  background: #8b1c3d;
-  color: white;
-  padding: 6px 12px;
-  border-radius: 6px;
-  cursor: pointer;
+.month-switch button{
+  border:none;
+  background:#8b1c3d;
+  color:white;
+  padding:6px 12px;
+  border-radius:6px;
+  cursor:pointer;
+  transition:0.2s;
 }
 
-.week-days {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  font-weight: bold;
-  font-size: 18px;
+.month-switch button:hover{
+  background:#6e142f;
 }
 
-.days-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
-  margin-top: 10px;
+/* DÍAS */
+.week-days{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  text-align:center;
+  font-weight:bold;
+  font-size:14px;
 }
 
-.day {
-  padding: 16px;
-  text-align: center;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 20px;
+.days-grid{
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  gap:5px;
+  margin-top:10px;
+}
+
+.day{
+  padding:10px;
+  text-align:center;
+  border-radius:6px;
+  cursor:pointer;
+  font-size:14px;
 }
 
 .day:hover {
@@ -113,245 +119,135 @@
   background: #ffdede;
 }
 
-.btn-agendar {
-  display: block;
-  margin: 40px auto;
-  padding: 15px 40px;
-  font-size: 18px;
-  font-weight: bold;
-  background: linear-gradient(135deg, #4facfe, #00f3fe);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+/* BOTÓN */
+.btn-agendar{
+  display:block;
+  margin:25px auto;
+  padding:12px 30px;
+  font-size:16px;
+  font-weight:bold;
+  background: linear-gradient(135deg,#4facfe,#00f3fe);
+  color:white;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 6px 15px rgba(0,0,0,0.2);
+  transition:0.2s;
 }
 
-.btn-agendar:hover {
-  transform: scale(1.05);
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+.btn-agendar:hover{
+  transform:scale(1.05);
+  box-shadow:0 10px 20px rgba(0,0,0,0.25);
 }
 
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-
-  width: 100vw;
-  height: 100vh;
-
-  background: rgba(0, 0, 0, 0.55);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 9999;
+/* OVERLAY */
+.modal-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.55);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:9999;
 }
 
-.modal {
+/* MODAL */
+.modal{
+  position:relative;
+  background:white;
+  padding:25px;
+  border-radius:20px;
 
-  position: relative;
+  width:420px;
+  max-width:95%;
 
-  background: rgb(255, 255, 255);
+  /* 🔥 IMPORTANTE */
+  max-height:90vh;
+  overflow-y:auto;
 
-  padding: 35px;
-  border-radius: 15px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
 
-  width: 420px;
-  max-width: 90%;
-
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
-
-  animation: aparecerModal .25s ease;
+  box-shadow:0 20px 50px rgba(0,0,0,0.35);
+  animation:aparecerModal .25s ease;
 }
 
-.modal {
-  background: rgb(255, 255, 255);
-  padding: 10px;
-  border-radius: 40px;
-  display: flex;
-  flex-direction: column;
-  gap: 22px;
-  width: 450px;
-}
-
+/* INPUTS */
 .modal input,
-.modal select {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.modal-buttons {
-  display: flex;
-  justify-content: space-between;
-}
-
-.modal-overlay {
-  position: fixed;
-
-  top: 0;
-  left: 0;
-
-  width: 100%;
-  height: 100%;
-
-  background: rgba(0, 0, 0, 0.5);
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  z-index: 1000;
-}
-
-.modal input,
-.modal select {
-
-  padding: 13px;
-
-  border-radius: 8px;
-  border: 1px solid #ccc;
-
-  font-size: 16px;
-
-  transition: 0.2s;
+.modal select{
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ddd;
+  font-size:14px;
+  background:#f9f9f9;
+  transition:0.2s;
 }
 
 .modal input:focus,
-.modal select:focus {
-
-  border-color: #8a3a3a;
-  outline: none;
-
-  box-shadow: 0 0 10px rgba(183, 72, 72, 0.5);
+.modal select:focus{
+  border-color:#8b1c3d;
+  background:#fff;
+  outline:none;
+  box-shadow:0 0 8px rgba(139,28,61,0.3);
 }
 
-.modal-buttons {
-
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
-
+/* BOTONES MODAL */
+.modal-buttons{
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  margin-top:10px;
 }
 
-.modal-buttons button {
-
-  padding: 10px 20px;
-
-  border: none;
-  border-radius: 8px;
-
-  font-weight: bold;
-  cursor: pointer;
-
+.modal-buttons button{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.2s;
 }
 
-.modal-buttons button:first-child {
-
-  background: #4facfe;
-  color: white;
-
+.modal-buttons button:first-child{
+  background:linear-gradient(135deg,#4facfe,#00c6ff);
+  color:white;
 }
 
-.modal-buttons button:last-child {
-
-  background: #e5e7eb;
-
+.modal-buttons button:first-child:hover{
+  transform:scale(1.03);
 }
 
-@keyframes aparecerModal {
+.modal-buttons button:last-child{
+  background:#e5e7eb;
+}
 
-  from {
-    transform: scale(0.8);
-    opacity: 0;
+.modal-buttons button:last-child:hover{
+  background:#d1d5db;
+}
+
+/* SCROLL BONITO */
+.modal::-webkit-scrollbar{
+  width:6px;
+}
+
+.modal::-webkit-scrollbar-thumb{
+  background:#ccc;
+  border-radius:10px;
+}
+
+/* ANIMACIÓN */
+@keyframes aparecerModal{
+  from{
+    transform:scale(0.8);
+    opacity:0;
   }
-
-  to {
-    transform: scale(1);
-    opacity: 1;
+  to{
+    transform:scale(1);
+    opacity:1;
   }
-
-}
-
-.right-panel-workspace {
-  flex-grow: 1;
-  /* Sigue tomando todo el espacio horizontal restante */
-  display: flex;
-  /* ¡ESTA ES LA MAGIA! Activamos Flexbox */
-  flex-direction: column;
-  /* Stack vertical (calendario arriba, controles si los hay) */
-  justify-content: center;
-  /* Centrado VERTICAL automático */
-  align-items: center;
-  /* Centrado HORIZONTAL automático */
-  padding: 2.5rem;
-  /* Un respiro de espacio alrededor */
-  background-color: #f8f9fa;
-  /* Te recomiendo este gris sutil para que tu tarjeta blanca resalte */
-  overflow-y: auto;
-  /* Solo esta área hará scroll si el contenido es muy alto */
-  position: relative;
-  /* Importante para el botón flotante si lo usas */
-}
-
-/* Opcional: Asegura que tu calendario card tenga un ancho adecuado */
-.calendar-card {
-  /* ... rest of your styles ... */
-  width: 100%;
-  max-width: 1100px;
-  /* Opcional: limita el ancho máximo en pantallas gigantes */
-  /* ... rest of your styles (display: flex, shadow, border-radius, etc.) ... */
-}
-
-.interface-container {
-  display: flex;
-  height: calc(100vh - 65px);
-  /* Esto empuja todo hasta el fondo de la pantalla */
-  width: 100%;
-  overflow: hidden;
-  background-color: #f4f6f9;
-}
-
-/* 2. EL SIDEBAR: Lo obligamos a tener el 100% del alto */
-.left-panel-glass {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-  /* ¡Esta es la regla que rescatará tu barra guinda! */
-  z-index: 10;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-/* 3. EL ÁREA DE TRABAJO: Centra el calendario */
-.right-panel-workspace {
-  flex-grow: 1;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  /* Centrado vertical */
-  align-items: center;
-  /* Centrado horizontal */
-  padding: 2.5rem;
-  overflow-y: auto;
-}
-
-/* Opcional: Para que el modal se vea por encima de todo */
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 9999;
 }

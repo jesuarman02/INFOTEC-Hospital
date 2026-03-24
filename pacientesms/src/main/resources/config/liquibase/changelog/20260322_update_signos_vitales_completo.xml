@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="20260322-drop-biometricos" author="jhipster">
+        <dropColumn tableName="signos_vitales" columnName="peso" />
+        <dropColumn tableName="signos_vitales" columnName="estatura" />
+        <dropColumn tableName="signos_vitales" columnName="imc" />
+    </changeSet>
+
+    <changeSet id="20260322-add-signos-vitales-extra" author="jhipster">
+        <addColumn tableName="signos_vitales">
+            <column name="paciente_ecu" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="paciente_nombre" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="paciente_apellido_paterno" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="tipo" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="personal" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+
+            <column name="glucosa" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="dolor" type="integer">
+                <constraints nullable="true" />
+            </column>
+            <column name="estado_conciencia" type="varchar(50)">
+                <constraints nullable="true" />
+            </column>
+            <column name="observaciones" type="text">
+                <constraints nullable="true" />
+            </column>
+        </addColumn>
+    </changeSet>
+
+</databaseChangeLog>

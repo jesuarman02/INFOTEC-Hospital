@@ -28,12 +28,20 @@ public class SignosVitalesDTO implements Serializable {
 
     private Integer saturacionOxigeno;
 
-    private BigDecimal peso;
+    // --- NUEVAS COLUMNAS (IDENTIFICACIÓN DEL PACIENTE) ---
+    private Integer pacienteEcu;
+    private String pacienteNombre;
+    private String pacienteApellidoPaterno;
 
-    private BigDecimal estatura;
+    // --- NUEVAS COLUMNAS (CONTEXTO Y EVALUACIÓN) ---
+    private String tipo;
+    private String personal;
+    private Integer glucosa;
+    private Integer dolor;
+    private String estadoConciencia;
+    private String observaciones;
 
-    private BigDecimal imc;
-
+    // --- RELACIÓN ORIGINAL JHIPSTER ---
     private PacienteDTO paciente;
 
     public Long getId() {
@@ -92,29 +100,34 @@ public class SignosVitalesDTO implements Serializable {
         this.saturacionOxigeno = saturacionOxigeno;
     }
 
-    public BigDecimal getPeso() {
-        return peso;
-    }
+    // --- GETTERS Y SETTERS NUEVOS ---
 
-    public void setPeso(BigDecimal peso) {
-        this.peso = peso;
-    }
+    public Integer getPacienteEcu() { return pacienteEcu; }
+    public void setPacienteEcu(Integer pacienteEcu) { this.pacienteEcu = pacienteEcu; }
 
-    public BigDecimal getEstatura() {
-        return estatura;
-    }
+    public String getPacienteNombre() { return pacienteNombre; }
+    public void setPacienteNombre(String pacienteNombre) { this.pacienteNombre = pacienteNombre; }
 
-    public void setEstatura(BigDecimal estatura) {
-        this.estatura = estatura;
-    }
+    public String getPacienteApellidoPaterno() { return pacienteApellidoPaterno; }
+    public void setPacienteApellidoPaterno(String pacienteApellidoPaterno) { this.pacienteApellidoPaterno = pacienteApellidoPaterno; }
 
-    public BigDecimal getImc() {
-        return imc;
-    }
+    public String getTipo() { return tipo; }
+    public void setTipo(String tipo) { this.tipo = tipo; }
 
-    public void setImc(BigDecimal imc) {
-        this.imc = imc;
-    }
+    public String getPersonal() { return personal; }
+    public void setPersonal(String personal) { this.personal = personal; }
+
+    public Integer getGlucosa() { return glucosa; }
+    public void setGlucosa(Integer glucosa) { this.glucosa = glucosa; }
+
+    public Integer getDolor() { return dolor; }
+    public void setDolor(Integer dolor) { this.dolor = dolor; }
+
+    public String getEstadoConciencia() { return estadoConciencia; }
+    public void setEstadoConciencia(String estadoConciencia) { this.estadoConciencia = estadoConciencia; }
+
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 
     public PacienteDTO getPaciente() {
         return paciente;
@@ -156,9 +169,15 @@ public class SignosVitalesDTO implements Serializable {
             ", frecuenciaRespiratoria=" + getFrecuenciaRespiratoria() +
             ", temperatura=" + getTemperatura() +
             ", saturacionOxigeno=" + getSaturacionOxigeno() +
-            ", peso=" + getPeso() +
-            ", estatura=" + getEstatura() +
-            ", imc=" + getImc() +
+            ", pacienteEcu=" + getPacienteEcu() +
+            ", pacienteNombre='" + getPacienteNombre() + "'" +
+            ", pacienteApellidoPaterno='" + getPacienteApellidoPaterno() + "'" +
+            ", tipo='" + getTipo() + "'" +
+            ", personal='" + getPersonal() + "'" +
+            ", glucosa=" + getGlucosa() +
+            ", dolor=" + getDolor() +
+            ", estadoConciencia='" + getEstadoConciencia() + "'" +
+            ", observaciones='" + getObservaciones() + "'" +
             ", paciente=" + getPaciente() +
             "}";
     }

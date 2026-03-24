@@ -17,11 +17,23 @@ public class SignosVitalesSqlHelper {
         columns.add(Column.aliased("frecuencia_respiratoria", table, columnPrefix + "_frecuencia_respiratoria"));
         columns.add(Column.aliased("temperatura", table, columnPrefix + "_temperatura"));
         columns.add(Column.aliased("saturacion_oxigeno", table, columnPrefix + "_saturacion_oxigeno"));
-        columns.add(Column.aliased("peso", table, columnPrefix + "_peso"));
-        columns.add(Column.aliased("estatura", table, columnPrefix + "_estatura"));
-        columns.add(Column.aliased("imc", table, columnPrefix + "_imc"));
+        
+        // --- NUEVAS COLUMNAS (IDENTIFICACIÓN DEL PACIENTE) ---
+        columns.add(Column.aliased("paciente_ecu", table, columnPrefix + "_paciente_ecu"));
+        columns.add(Column.aliased("paciente_nombre", table, columnPrefix + "_paciente_nombre"));
+        columns.add(Column.aliased("paciente_apellido_paterno", table, columnPrefix + "_paciente_apellido_paterno"));
+        
+        // --- NUEVAS COLUMNAS (CONTEXTO Y EVALUACIÓN) ---
+        columns.add(Column.aliased("tipo", table, columnPrefix + "_tipo"));
+        columns.add(Column.aliased("personal", table, columnPrefix + "_personal"));
+        columns.add(Column.aliased("glucosa", table, columnPrefix + "_glucosa"));
+        columns.add(Column.aliased("dolor", table, columnPrefix + "_dolor"));
+        columns.add(Column.aliased("estado_conciencia", table, columnPrefix + "_estado_conciencia"));
+        columns.add(Column.aliased("observaciones", table, columnPrefix + "_observaciones"));
 
+        // --- RELACIÓN ORIGINAL DE JHIPSTER ---
         columns.add(Column.aliased("paciente_id", table, columnPrefix + "_paciente_id"));
+        
         return columns;
     }
 }
