@@ -1,19 +1,18 @@
 /* 1. RESETEO DEL BODY */
 /* Bloqueamos el scroll global para que la app se sienta nativa, no como una página web */
 body {
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x:hidden ;
     background-color: #f4f6f9;
-    /* Gris sutil de fondo */
     margin: 0;
 }
 
 /* 2. CONTENEDOR PRINCIPAL */
 .interface-container {
     display: flex;
-    /* Calculamos el alto total MENOS el menú superior de Infotec (aprox 65px) */
-    height: calc(100vh - 65px);
+    min-height: calc(100vh - 65px);
     width: 100%;
-    overflow: hidden;
+    overflow: visible;
     /* Nada sale de este contenedor */
 }
 
@@ -22,8 +21,7 @@ body {
 .left-panel-glass {
     display: flex;
     flex-direction: row;
-    /* ¡ESTA ES LA CLAVE! Uno al lado del otro */
-    height: 100%;
+    min-height: calc(100vh - 65px);
     background: rgba(255, 255, 255, 0.7);
     backdrop-filter: blur(15px);
     border-right: 1px solid rgba(0, 0, 0, 0.05);
@@ -52,13 +50,12 @@ body {
 /* 4. PANEL DERECHO (Área de Trabajo) */
 .right-panel-workspace {
     flex-grow: 1;
-    height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     padding: 2rem;
     /* ESTA ES LA CLAVE: El único lugar donde permitimos scroll */
-    overflow-y: auto;
-    scroll-behavior: smooth;
+    overflow:visible;
 }
 
 /* 5. SEPARACIÓN Y ESTILOS DE COMPONENTES INTERNOS */

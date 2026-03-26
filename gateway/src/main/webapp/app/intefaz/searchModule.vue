@@ -1,4 +1,5 @@
 <template>
+  <!-- HEADER CON TRANSICIÓN (solo 1 hijo) -->
   <transition name="fade">
     <div v-show="mostrarHeader">
       <h5 class="title-pacientes mt-2 mb-3">PACIENTES</h5>
@@ -19,16 +20,44 @@
             class="minimal-input"
           />
         </div>
+
+        <!-- TEXTO -->
+        <p class="ecu-link" @click="mostrarModal = true">
+          No conozco mi ECU
+        </p>
+      </div>
+    </div>
+  </transition>
+
+  <!-- MODAL (FUERA DEL TRANSITION) -->
+  <transition name="fade">
+    <div v-if="mostrarModal" class="modal-overlay">
+      <div class="modal-content">
+        <h5>Buscar ECU</h5>
+
+        <input v-model="nombre" placeholder="Nombre" />
+        <input v-model="apellidoPaterno" placeholder="Apellido Paterno" />
+        <input v-model="apellidoMaterno" placeholder="Apellido Materno" />
+
+        <button @click="buscarEcu">Encontrar</button>
+
+        <p v-if="ecuEncontrado">
+          Tu ECU es: <strong>{{ ecuEncontrado }}</strong>
+        </p>
+
+        <button class="close-btn" @click="mostrarModal = false">
+          Cerrar
+        </button>
       </div>
     </div>
   </transition>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
+// PROPS
 const props = defineProps({
-  // CAMBIO CLAVE: En Vue 2/Compat se llama "value", no "modelValue"
   value: { 
     type: String,
     default: ''
@@ -39,9 +68,10 @@ const props = defineProps({
   }
 });
 
-// CAMBIO CLAVE: En Vue 2/Compat se emite "input"
+// EMITS
 const emit = defineEmits(['input', 'buscar']); 
 
+// V-MODEL LOCAL
 const valorLocal = computed({
   get() {
     return props.value; 
@@ -50,5 +80,25 @@ const valorLocal = computed({
     emit('input', nuevoValor); 
   }
 });
+
+// MODAL STATES
+const mostrarModal = ref(false);
+
+const nombre = ref('');
+const apellidoPaterno = ref('');
+const apellidoMaterno = ref('');
+const ecuEncontrado = ref('');
+
+// FUNCIÓN DE BÚSQUEDA (simulada)
+const buscarEcu = () => {
+  if (!nombre.value || !apellidoPaterno.value || !apellidoMaterno.value) {
+    ecuEncontrado.value = 'Completa todos los campos';
+    return;
+  }
+
+  // Aquí luego conectas tu API real
+  ecuEncontrado.value = '123456';
+};
 </script>
+
 <style scoped src="../../content/css/searchbar.css"></style>
