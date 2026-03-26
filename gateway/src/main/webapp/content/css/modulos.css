@@ -1,17 +1,16 @@
 /* 1. CONTENEDOR PRINCIPAL Y MARCA DE AGUA */
 .main-content{
     position: relative;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
+    height: auto;
+    overflow: visible;
     padding: 2rem;
     box-sizing: border-box;
 }
-.dashboard-content{
-    height: calc(100vh - 180px);
-    overflow-y: auto;
-}
+
 .body{
-    overflow: hidden;
+    overflow-y: auto;
+    overflow-x:hidden; 
 }
 .main-content::before {
     content: "";
