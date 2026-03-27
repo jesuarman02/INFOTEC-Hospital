@@ -137,6 +137,15 @@ export default defineComponent({
     const cargarHistorial = (data: any) => {
       historialMedico.value.id = data.id;
       historialMedico.value.observacionesGenerales = data.observacionesGenerales;
+
+      if (data.pacienteId) {
+        pacienteEncontrado.value = {
+          id: data.pacienteId,
+          ecu: data.pacienteEcu,
+          nombre: data.pacienteNombre,
+          apellidoPaterno: data.pacienteApellidoPaterno
+        };
+      }
       
       if (data.datosBiometricosSanguineos) {
         const parsed = fromJson(data.datosBiometricosSanguineos); 
@@ -323,12 +332,18 @@ export default defineComponent({
         // Hábitos
         payload.habitosConsumoOtros = JSON.stringify(formHabitos.value || {});
 
+// 🚀 PARCHE 2: Asegurar los datos del paciente en el payload
         if (pacienteEncontrado.value) {
             payload.pacienteId = pacienteEncontrado.value.id;
             payload.pacienteEcu = pacienteEncontrado.value.ecu;
-        // Asegúrate de que las variables se llamen así en tu modelo de paciente
             payload.pacienteNombre = pacienteEncontrado.value.nombre; 
             payload.pacienteApellidoPaterno = pacienteEncontrado.value.apellidoPaterno;
+        } else if (hm.pacienteId) {
+            // Plan B: Si no se buscó un paciente nuevo, usamos el que ya tenía el historial original
+            payload.pacienteId = hm.pacienteId;
+            payload.pacienteEcu = hm.pacienteEcu;
+            payload.pacienteNombre = hm.pacienteNombre;
+            payload.pacienteApellidoPaterno = hm.pacienteApellidoPaterno;
         }
 
         console.log("Payload a enviar (revisa el campo 'estado'):", payload);

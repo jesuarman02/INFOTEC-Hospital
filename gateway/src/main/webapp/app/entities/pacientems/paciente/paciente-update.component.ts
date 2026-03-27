@@ -115,7 +115,6 @@ export default defineComponent({
         // 'EXTXX' + 13 números de la fecha = 18 caracteres exactos
         paciente.value.curp = 'EXTXX' + Date.now().toString();
       } else if (nuevaNacionalidad === 'MEXICANA') {
-        // Si regresa a mexicana, limpiamos el curp falso
         if (paciente.value.curp && paciente.value.curp.startsWith('EXTXX')) {
           paciente.value.curp = '';
         }
