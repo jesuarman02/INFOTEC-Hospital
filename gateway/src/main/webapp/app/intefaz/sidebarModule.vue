@@ -3,6 +3,7 @@
     <nav class="sidebar-icons">
       <div class="icon-group">
 
+        <!-- PACIENTES -->
         <div class="icon-item" @click="$emit('toggle-search')">
           <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
         </div>
@@ -11,6 +12,7 @@
           <img src="/content/images/calendario.svg" class="sidebar-svg" alt="Calendario" />
         </div>
 
+        <!-- EXPEDIENTES -->
         <div class="icon-item" @click="$emit('update:mostrarSubirArchivos', true)">
           <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
         </div>
@@ -33,7 +35,8 @@
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import { useRouter } from 'vue-router'
+// 🚀 AQUÍ EL ARREGLO: Importamos también useRoute
+import { useRouter, useRoute } from 'vue-router'
 // Importamos el componente que acabamos de crear
 import PacienteModal from '@/shared/modals/PacienteModal.vue'
 
@@ -54,12 +57,19 @@ export default defineComponent({
   
   setup(props, { emit }) {
     const router = useRouter()
+    // 🚀 AQUÍ EL ARREGLO: Inicializamos el mapa de la ruta actual
+    const route = useRoute()
     
     // Variable reactiva que controla si el modal se ve o no
     const mostrarModalPaciente = ref(false)
 
     const irCalendario = () => {
-      router.push('/calendario')
+      // Ahora sí reconoce la variable 'route'
+      if (route.path === '/calendario'){
+        router.back()
+      } else {
+        router.push('/calendario')
+      }
     }
 
     const abrirModalPrueba = () => {

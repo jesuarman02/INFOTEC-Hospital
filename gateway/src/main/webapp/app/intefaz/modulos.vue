@@ -1,24 +1,12 @@
 <template>
-     <div class="main-content flex-grow-1 p-4">
-
-        <div class="top-info text-center">
-          <div class="top-doctor">{{ paciente?.medico?.nombre || 'Médico sin asignar' }}</div>
-          <div class="top-specialty">{{ paciente?.medico?.especialidad || 'Especialidad no definida' }}</div>
-
-          <div class="top-button-wrapper">
-            <button class="btn agregar-paciente-btn">AGREGAR PACIENTE</button>
-          </div>
-        </div>
+     <div class="main-content p-4">
         <div class="row">
           <div class="col-md-5 d-flex flex-column">
 
-            <div class="card dashboard-card flex-grow-1 mb-4 shadow-sm custom-grey-card">
+            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card">
               <div class="card-title-custom">DATOS DEL PACIENTE</div>
               <div class="card-body d-flex flex-column align-items-center justify-content-center text-center">
                 
-                <div class="patient-icon">
-                 <font-awesome-icon icon="user" />
-                </div>
                 
                 <div class="patient-data">
                   <div class="ecu-icon">
@@ -26,7 +14,7 @@
                   </div>
                   
                   <div class="data-row">
-                    <strong>ECU -</strong> <span>{{ paciente?.ecu }}</span>
+                    <strong>ECU:</strong> <span>{{ paciente?.ecu }}</span>
                   </div>
 
                   <div class="data-row">
@@ -78,8 +66,8 @@
             </div>
           </div>
             
-          <div class="col-md-7 d-flex flex-column">
-            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
+          <div class="col-md-7">
+            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card">
               <div class="card-title-custom">MOTIVO DE INGRESO</div>
               <div class="card-body d-flex align-items-center justify-content-center">
                 <h3 class="font-weight-bold text-uppercase">
@@ -88,7 +76,7 @@
               </div>
             </div>
             
-            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card flex-fill">
+            <div class="card dashboard-card mb-4 shadow-sm custom-grey-card">
               <div class="card-title-custom">ESTADO ACTUAL</div>
               <div class="card-body d-flex align-items-center justify-content-center">
                 <h3 class="font-weight-bold text-uppercase">
@@ -97,7 +85,7 @@
               </div>
             </div>
             
-            <div class="card dashboard-card mb-3 shadow-sm custom-grey-card flex-fill">
+            <div class="card dashboard-card mb-3 shadow-sm custom-grey-card">
               <div class="card-title-custom">TRATAMIENTO</div>
               <div class="card-body d-flex align-items-center justify-content-center">
                 <h3 class="font-weight-bold text-uppercase">
