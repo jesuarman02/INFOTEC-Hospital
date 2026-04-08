@@ -42,7 +42,6 @@ public class PacienteRowMapper implements BiFunction<Row, String, Paciente> {
         entity.setDireccionId(converter.fromRow(row, prefix + "_direccion_id", Long.class));
         entity.setInfoSocioeconomicaId(converter.fromRow(row, prefix + "_info_socioeconomica_id", Long.class));
         entity.setHistorialGeneralId(converter.fromRow(row, prefix + "_historial_general_id", Long.class));
-        entity.setEntidadNacimientoId(converter.fromRow(row, prefix + "_entidad_nacimiento_id", Long.class));
         return entity;
     }
 }

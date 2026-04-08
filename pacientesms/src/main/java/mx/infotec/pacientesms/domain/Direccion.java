@@ -42,8 +42,6 @@ public class Direccion implements Serializable {
     @Transient
     private CodigoPostal codigoPostalInfo;
 
-    @Transient
-    private EntidadFederativa entidadFederativa;
 
     @Transient
     private Paciente paciente;
@@ -152,19 +150,6 @@ public class Direccion implements Serializable {
         return this;
     }
 
-    public EntidadFederativa getEntidadFederativa() {
-        return this.entidadFederativa;
-    }
-
-    public void setEntidadFederativa(EntidadFederativa entidadFederativa) {
-        this.entidadFederativa = entidadFederativa;
-        this.entidadFederativaId = entidadFederativa != null ? entidadFederativa.getId() : null;
-    }
-
-    public Direccion entidadFederativa(EntidadFederativa entidadFederativa) {
-        this.setEntidadFederativa(entidadFederativa);
-        return this;
-    }
 
     public Paciente getPaciente() {
         return this.paciente;

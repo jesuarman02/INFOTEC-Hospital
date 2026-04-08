@@ -101,10 +101,7 @@ class SignosVitalesResourceIT {
             .tensionArterial(DEFAULT_TENSION_ARTERIAL)
             .frecuenciaRespiratoria(DEFAULT_FRECUENCIA_RESPIRATORIA)
             .temperatura(DEFAULT_TEMPERATURA)
-            .saturacionOxigeno(DEFAULT_SATURACION_OXIGENO)
-            .peso(DEFAULT_PESO)
-            .estatura(DEFAULT_ESTATURA)
-            .imc(DEFAULT_IMC);
+            .saturacionOxigeno(DEFAULT_SATURACION_OXIGENO);
     }
 
     /**
@@ -120,10 +117,7 @@ class SignosVitalesResourceIT {
             .tensionArterial(UPDATED_TENSION_ARTERIAL)
             .frecuenciaRespiratoria(UPDATED_FRECUENCIA_RESPIRATORIA)
             .temperatura(UPDATED_TEMPERATURA)
-            .saturacionOxigeno(UPDATED_SATURACION_OXIGENO)
-            .peso(UPDATED_PESO)
-            .estatura(UPDATED_ESTATURA)
-            .imc(UPDATED_IMC);
+            .saturacionOxigeno(UPDATED_SATURACION_OXIGENO);
     }
 
     public static void deleteEntities(EntityManager em) {
@@ -319,10 +313,8 @@ class SignosVitalesResourceIT {
             .tensionArterial(UPDATED_TENSION_ARTERIAL)
             .frecuenciaRespiratoria(UPDATED_FRECUENCIA_RESPIRATORIA)
             .temperatura(UPDATED_TEMPERATURA)
-            .saturacionOxigeno(UPDATED_SATURACION_OXIGENO)
-            .peso(UPDATED_PESO)
-            .estatura(UPDATED_ESTATURA)
-            .imc(UPDATED_IMC);
+            .saturacionOxigeno(UPDATED_SATURACION_OXIGENO);
+
         SignosVitalesDTO signosVitalesDTO = signosVitalesMapper.toDto(updatedSignosVitales);
 
         webTestClient
@@ -418,9 +410,7 @@ class SignosVitalesResourceIT {
 
         partialUpdatedSignosVitales
             .frecuenciaRespiratoria(UPDATED_FRECUENCIA_RESPIRATORIA)
-            .temperatura(UPDATED_TEMPERATURA)
-            .estatura(UPDATED_ESTATURA)
-            .imc(UPDATED_IMC);
+            .temperatura(UPDATED_TEMPERATURA);
 
         webTestClient
             .patch()
@@ -457,10 +447,7 @@ class SignosVitalesResourceIT {
             .tensionArterial(UPDATED_TENSION_ARTERIAL)
             .frecuenciaRespiratoria(UPDATED_FRECUENCIA_RESPIRATORIA)
             .temperatura(UPDATED_TEMPERATURA)
-            .saturacionOxigeno(UPDATED_SATURACION_OXIGENO)
-            .peso(UPDATED_PESO)
-            .estatura(UPDATED_ESTATURA)
-            .imc(UPDATED_IMC);
+            .saturacionOxigeno(UPDATED_SATURACION_OXIGENO);
 
         webTestClient
             .patch()

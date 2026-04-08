@@ -2,7 +2,6 @@ package mx.infotec.pacientesms.domain;
 
 import static mx.infotec.pacientesms.domain.CodigoPostalTestSamples.*;
 import static mx.infotec.pacientesms.domain.DireccionTestSamples.*;
-import static mx.infotec.pacientesms.domain.EntidadFederativaTestSamples.*;
 import static mx.infotec.pacientesms.domain.PacienteTestSamples.*;
 import static mx.infotec.pacientesms.domain.TipoVialidadTestSamples.*;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,18 +47,6 @@ class DireccionTest {
 
         direccion.codigoPostalInfo(null);
         assertThat(direccion.getCodigoPostalInfo()).isNull();
-    }
-
-    @Test
-    void entidadFederativaTest() {
-        Direccion direccion = getDireccionRandomSampleGenerator();
-        EntidadFederativa entidadFederativaBack = getEntidadFederativaRandomSampleGenerator();
-
-        direccion.setEntidadFederativa(entidadFederativaBack);
-        assertThat(direccion.getEntidadFederativa()).isEqualTo(entidadFederativaBack);
-
-        direccion.entidadFederativa(null);
-        assertThat(direccion.getEntidadFederativa()).isNull();
     }
 
     @Test
