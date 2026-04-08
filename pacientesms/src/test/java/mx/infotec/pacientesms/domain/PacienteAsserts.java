@@ -69,7 +69,6 @@ public class PacienteAsserts {
             .as("Verify Paciente relationships")
             .satisfies(e -> assertThat(e.getDireccion()).as("check direccion").isEqualTo(actual.getDireccion()))
             .satisfies(e -> assertThat(e.getInfoSocioeconomica()).as("check infoSocioeconomica").isEqualTo(actual.getInfoSocioeconomica()))
-            .satisfies(e -> assertThat(e.getHistorialGeneral()).as("check historialGeneral").isEqualTo(actual.getHistorialGeneral()))
-            .satisfies(e -> assertThat(e.getEntidadNacimiento()).as("check entidadNacimiento").isEqualTo(actual.getEntidadNacimiento()));
+            .satisfies(e -> assertThat(e.getHistorialGeneral()).as("check historialGeneral").isEqualTo(actual.getHistorialGeneral()));
     }
 }

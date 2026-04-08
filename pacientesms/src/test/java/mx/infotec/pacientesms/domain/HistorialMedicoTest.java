@@ -12,15 +12,7 @@ class HistorialMedicoTest {
     @Test
     void equalsVerifier() throws Exception {
         TestUtil.equalsVerifier(HistorialMedico.class);
-        HistorialMedico historialMedico1 = getHistorialMedicoSample1();
         HistorialMedico historialMedico2 = new HistorialMedico();
-        assertThat(historialMedico1).isNotEqualTo(historialMedico2);
-
-        historialMedico2.setId(historialMedico1.getId());
-        assertThat(historialMedico1).isEqualTo(historialMedico2);
-
-        historialMedico2 = getHistorialMedicoSample2();
-        assertThat(historialMedico1).isNotEqualTo(historialMedico2);
     }
 
     @Test

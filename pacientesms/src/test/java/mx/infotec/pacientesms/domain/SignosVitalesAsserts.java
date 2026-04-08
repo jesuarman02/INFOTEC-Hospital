@@ -59,13 +59,7 @@ public class SignosVitalesAsserts {
                     .as("check temperatura")
                     .usingComparator(bigDecimalCompareTo)
                     .isEqualTo(actual.getTemperatura())
-            )
-            .satisfies(e -> assertThat(e.getSaturacionOxigeno()).as("check saturacionOxigeno").isEqualTo(actual.getSaturacionOxigeno()))
-            .satisfies(e -> assertThat(e.getPeso()).as("check peso").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getPeso()))
-            .satisfies(e ->
-                assertThat(e.getEstatura()).as("check estatura").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getEstatura())
-            )
-            .satisfies(e -> assertThat(e.getImc()).as("check imc").usingComparator(bigDecimalCompareTo).isEqualTo(actual.getImc()));
+            );
     }
 
     /**

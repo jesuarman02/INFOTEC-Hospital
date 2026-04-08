@@ -4,7 +4,7 @@
   "exclude": ["src/main/webapp/app/**/*.spec.ts"],
   "compilerOptions": {
     "composite": true,
-    "baseUrl": "src/main/webapp/app",
+    //"baseUrl": "src/main/webapp/app",
     "outDir": "target/out-tsc/dist",
     "paths": {
       "@/*": ["./*"]

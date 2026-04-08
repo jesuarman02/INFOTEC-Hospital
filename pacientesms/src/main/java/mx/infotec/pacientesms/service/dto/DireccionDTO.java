@@ -40,7 +40,6 @@ public class DireccionDTO implements Serializable {
     // ==========================================
     private Long entidadFederativaId;
     private String entidadFederativaNombre;
-    private EntidadFederativaDTO entidadFederativa;
 
     // ==========================================
     // 4. PACIENTE (Nuevo - Para mostrar en Front)
@@ -94,9 +93,6 @@ public class DireccionDTO implements Serializable {
 
     public String getEntidadFederativaNombre() { return entidadFederativaNombre; }
     public void setEntidadFederativaNombre(String entidadFederativaNombre) { this.entidadFederativaNombre = entidadFederativaNombre; }
-
-    public EntidadFederativaDTO getEntidadFederativa() { return entidadFederativa; }
-    public void setEntidadFederativa(EntidadFederativaDTO entidadFederativa) { this.entidadFederativa = entidadFederativa; }
 
     // Paciente (Getters y Setters)
     public Long getPacienteId() { return pacienteId; }

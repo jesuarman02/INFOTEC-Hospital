@@ -16,21 +16,11 @@
     <include file="config/liquibase/changelog/20260116042457_added_entity_Direccion.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042458_added_entity_HistorialMedico.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042459_added_entity_SignosVitales.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042500_added_entity_Enfermedad.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042501_added_entity_Alergia.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042502_added_entity_Medicamento.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042503_added_entity_PacienteEnfermedad.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042504_added_entity_PacienteAlergia.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042505_added_entity_PacienteMedicamento.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260120221914_added_entity_EntidadFederativa.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260127204854_added_entity_TipoVialidad.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260127204855_added_entity_CodigoPostal.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20260116042455_added_entity_constraints_Paciente.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042459_added_entity_constraints_SignosVitales.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042503_added_entity_constraints_PacienteEnfermedad.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042504_added_entity_constraints_PacienteAlergia.xml" relativeToChangelogFile="false"/>
-    <include file="config/liquibase/changelog/20260116042505_added_entity_constraints_PacienteMedicamento.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042457_added_entity_constraints_Direccion.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260307_add_fk_paciente_direccion.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260311_reestructurar_info_socioeconomica.xml" relativeToChangelogFile="false"/>

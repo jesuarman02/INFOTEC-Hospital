@@ -17,34 +17,46 @@
           <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
         </div>
 
-        <!-- BOTÓN TEMPORAL PARA PROBAR EL MODAL -->
+        <!-- BOTÓN TEMPORAL PARA PROBAR EL MODAL DE PACIENTE -->
         <div class="icon-item" @click="abrirModalPrueba" style="background-color: #ffeeba; border-radius: 8px;">
            <span style="font-size: 1.5rem;">🧑‍⚕️</span>
+        </div>
+
+        <!-- 🚀 NUEVO BOTÓN TEMPORAL PARA PROBAR EL MODAL DE DIRECCIÓN -->
+        <div class="icon-item" @click="abrirModalDireccion" style="background-color: #cff4fc; border-radius: 8px; margin-top: 10px;">
+           <span style="font-size: 1.5rem;">📍</span>
         </div>
 
       </div>
     </nav>
 
-    <!-- AQUÍ VIVE NUESTRO NUEVO MODAL OCULTO -->
+    <!-- MODAL OCULTO DE PACIENTES -->
     <PacienteModal 
       v-model:visible="mostrarModalPaciente" 
       @save="simularGuardado" 
+    />
+
+    <!-- 🚀 NUEVO MODAL OCULTO DE DIRECCIÓN -->
+    <DireccionModal 
+      v-model:visible="mostrarModalDireccion" 
+      @saved="simularGuardadoDireccion" 
     />
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-// 🚀 AQUÍ EL ARREGLO: Importamos también useRoute
 import { useRouter, useRoute } from 'vue-router'
-// Importamos el componente que acabamos de crear
+// Importamos los componentes
 import PacienteModal from '@/shared/modals/PacienteModal.vue'
+import DireccionModal from '@/shared/modals/DireccionModal.vue' // 🚀 Importamos el nuevo modal
 
 export default defineComponent({
   name: 'SidebarModule',
   
   components: {
-    PacienteModal
+    PacienteModal,
+    DireccionModal // 🚀 Lo registramos
   },
 
   props: {
@@ -52,19 +64,17 @@ export default defineComponent({
     mostrarSubirArchivos: Boolean
   },
   
-  // Declaramos los emits correctamente para el setup tradicional
   emits: ['toggle-search', 'update:mostrarSubirArchivos'],
   
   setup(props, { emit }) {
     const router = useRouter()
-    // 🚀 AQUÍ EL ARREGLO: Inicializamos el mapa de la ruta actual
     const route = useRoute()
     
-    // Variable reactiva que controla si el modal se ve o no
+    // Variables reactivas para controlar si los modales se ven o no
     const mostrarModalPaciente = ref(false)
+    const mostrarModalDireccion = ref(false) // 🚀 Estado para el modal de dirección
 
     const irCalendario = () => {
-      // Ahora sí reconoce la variable 'route'
       if (route.path === '/calendario'){
         router.back()
       } else {
@@ -76,17 +86,30 @@ export default defineComponent({
       mostrarModalPaciente.value = true
     }
 
-    // Función que se ejecuta cuando el modal emite el evento 'save'
+    // 🚀 Función para abrir el modal de dirección
+    const abrirModalDireccion = () => {
+      mostrarModalDireccion.value = true
+    }
+
     const simularGuardado = (datosDelPaciente: any) => {
       console.log("¡Éxito! El modal mandó estos datos listos para enviar a Java:", datosDelPaciente)
       alert("Revisa la consola (F12) para ver los datos capturados.")
+    }
+
+    // 🚀 Función para simular cuando el modal de dirección termina
+    const simularGuardadoDireccion = () => {
+      console.log("¡El modal de dirección finalizó su guardado con éxito!")
     }
 
     return {
       irCalendario,
       mostrarModalPaciente,
       abrirModalPrueba,
-      simularGuardado
+      simularGuardado,
+      // 🚀 Exponemos las nuevas variables a la vista
+      mostrarModalDireccion,
+      abrirModalDireccion,
+      simularGuardadoDireccion
     }
   }
 })

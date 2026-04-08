@@ -6,7 +6,6 @@ import java.util.List;
 import mx.infotec.pacientesms.domain.Direccion;
 import mx.infotec.pacientesms.repository.rowmapper.CodigoPostalRowMapper;
 import mx.infotec.pacientesms.repository.rowmapper.DireccionRowMapper;
-import mx.infotec.pacientesms.repository.rowmapper.EntidadFederativaRowMapper;
 import mx.infotec.pacientesms.repository.rowmapper.TipoVialidadRowMapper;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.r2dbc.convert.R2dbcConverter;
@@ -39,7 +38,6 @@ class DireccionRepositoryInternalImpl extends SimpleR2dbcRepository<Direccion, L
 
     private final TipoVialidadRowMapper tipovialidadMapper;
     private final CodigoPostalRowMapper codigopostalMapper;
-    private final EntidadFederativaRowMapper entidadfederativaMapper;
     private final DireccionRowMapper direccionMapper;
 
     private static final Table entityTable = Table.aliased("direccion", EntityManager.ENTITY_ALIAS);
@@ -52,7 +50,6 @@ class DireccionRepositoryInternalImpl extends SimpleR2dbcRepository<Direccion, L
         EntityManager entityManager,
         TipoVialidadRowMapper tipovialidadMapper,
         CodigoPostalRowMapper codigopostalMapper,
-        EntidadFederativaRowMapper entidadfederativaMapper,
         DireccionRowMapper direccionMapper,
         R2dbcEntityOperations entityOperations,
         R2dbcConverter converter
@@ -67,7 +64,6 @@ class DireccionRepositoryInternalImpl extends SimpleR2dbcRepository<Direccion, L
         this.entityManager = entityManager;
         this.tipovialidadMapper = tipovialidadMapper;
         this.codigopostalMapper = codigopostalMapper;
-        this.entidadfederativaMapper = entidadfederativaMapper;
         this.direccionMapper = direccionMapper;
     }
 
@@ -80,7 +76,6 @@ class DireccionRepositoryInternalImpl extends SimpleR2dbcRepository<Direccion, L
         List<Expression> columns = DireccionSqlHelper.getColumns(entityTable, EntityManager.ENTITY_ALIAS);
         columns.addAll(TipoVialidadSqlHelper.getColumns(tipoVialidadTable, "tipoVialidad"));
         columns.addAll(CodigoPostalSqlHelper.getColumns(codigoPostalInfoTable, "codigoPostalInfo"));
-        columns.addAll(EntidadFederativaSqlHelper.getColumns(entidadFederativaTable, "entidadFederativa"));
         SelectFromAndJoinCondition selectFrom = Select.builder()
             .select(columns)
             .from(entityTable)
@@ -89,10 +84,7 @@ class DireccionRepositoryInternalImpl extends SimpleR2dbcRepository<Direccion, L
             .equals(Column.create("id", tipoVialidadTable))
             .leftOuterJoin(codigoPostalInfoTable)
             .on(Column.create("codigo_postal_info_id", entityTable))
-            .equals(Column.create("id", codigoPostalInfoTable))
-            .leftOuterJoin(entidadFederativaTable)
-            .on(Column.create("entidad_federativa_id", entityTable))
-            .equals(Column.create("id", entidadFederativaTable));
+            .equals(Column.create("id", codigoPostalInfoTable));
         // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
         String select = entityManager.createSelect(selectFrom, Direccion.class, pageable, whereClause);
         return db.sql(select).map(this::process);
@@ -128,7 +120,6 @@ class DireccionRepositoryInternalImpl extends SimpleR2dbcRepository<Direccion, L
         Direccion entity = direccionMapper.apply(row, "e");
         entity.setTipoVialidad(tipovialidadMapper.apply(row, "tipoVialidad"));
         entity.setCodigoPostalInfo(codigopostalMapper.apply(row, "codigoPostalInfo"));
-        entity.setEntidadFederativa(entidadfederativaMapper.apply(row, "entidadFederativa"));
         return entity;
     }
 
