@@ -18,9 +18,9 @@
           <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
         </div>
 
-        <!-- NUEVO PANEL -->
-        <div class="icon-item" @click="$emit('toggle-nuevo')">
-          <img src="/content/images/clipboard.svg" class="sidebar-svg" alt="Nuevo" />
+        <!-- NUEVO PANEL (CLIPBOARD) -->
+        <div class="icon-item" @click="$emit('toggle-clipboard')">
+          <img src="/content/images/clipboard.svg" class="sidebar-svg"/>
         </div>
 
       </div>
@@ -40,7 +40,8 @@ export default defineComponent({
     const emit = defineEmits([
       'toggle-search',
       'toggle-nuevo',
-      'update:mostrarSubirArchivos'
+      'update:mostrarSubirArchivos',
+      'toggle-clipboard' // 🔥 AGREGADO
     ]);
 
     const router = useRouter()

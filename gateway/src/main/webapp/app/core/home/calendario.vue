@@ -4,7 +4,7 @@
     <!-- 1. PANEL IZQUIERDO: Tu Sidebar -->
     <aside class="left-panel-glass">
       <!-- Nota: Si no vas a poner un buscador aquí, el evento toggle-search no hará nada visualmente, pero lo dejamos preparado -->
-      <SidebarModule @toggle-search="mostrarBuscador = !mostrarBuscador" />
+      <SidebarModule @toggle-search="irPacientes" />
     </aside>
 
     <!-- 2. PANEL DERECHO: Tu Área de Trabajo (Calendario) -->
@@ -110,6 +110,10 @@ import SidebarModule from '@/intefaz/sidebarModule.vue';
 import '../../../content/css/calendario.css'; // Asegúrate de que esta ruta sea correcta
 
 const router = useRouter();
+
+const irPacientes = () => {
+  router.push('/interfaz-pacientes'); // o '/pacientes' según tu ruta
+};
 
 // Variables de estado
 const mostrarBuscador = ref(false); 

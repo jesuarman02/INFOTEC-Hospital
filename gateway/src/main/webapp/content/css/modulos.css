@@ -166,3 +166,92 @@
     width: 28px;
     height: 28px;
 }
+/* 🔥 FIX BOOTSTRAP BUG */
+.main-content {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.row {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+.col-md-5,
+.col-md-7 {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+/* 📱 RESPONSIVE GENERAL */
+@media (max-width: 768px) {
+
+  .main-content {
+    padding: 10px !important;
+  }
+
+  .row {
+    flex-direction: column;
+  }
+
+  .col-md-5,
+  .col-md-7 {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  /* 🧍 DATOS DEL PACIENTE */
+  .patient-data {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .data-row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 10px;
+  }
+
+  .data-label {
+    font-weight: bold;
+  }
+
+  .data-value {
+    font-size: 14px;
+  }
+
+  /* 🧠 ICONO DEL USUARIO */
+  .ecu-img {
+    width: 60px;
+    height: 60px;
+  }
+
+  /* ❤️ ICONOS VITALES */
+  .card[style] {
+    height: auto !important;
+    padding: 10px 0;
+  }
+
+  .vital-icon-box {
+    display: flex;
+    justify-content: center;
+    margin: 5px;
+  }
+
+  .vital-svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  /* 🧾 TEXTOS GRANDES */
+  h3 {
+    font-size: 16px;
+    text-align: center;
+  }
+}
+/* 💻 TABLET */
+@media (max-width: 992px) {
+  .col-md-5,
+  .col-md-7 {
+    flex: 1 1 100%;
+  }
+}
