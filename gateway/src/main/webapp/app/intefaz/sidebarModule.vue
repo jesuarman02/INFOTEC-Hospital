@@ -17,6 +17,9 @@
           <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
         </div>
 
+        <!-- NUEVO PANEL (CLIPBOARD) -->
+        <div class="icon-item" @click="$emit('toggle-clipboard')">
+          <img src="/content/images/clipboard.svg" class="sidebar-svg"/>
         <!-- BOTÓN TEMPORAL PARA PROBAR EL MODAL DE PACIENTE -->
         <div class="icon-item" @click="abrirModalPrueba" style="background-color: #ffeeba; border-radius: 8px;">
            <span style="font-size: 1.5rem;">🧑‍⚕️</span>
@@ -58,6 +61,14 @@ export default defineComponent({
     PacienteModal,
     DireccionModal // 🚀 Lo registramos
   },
+
+  setup() {
+    const emit = defineEmits([
+      'toggle-search',
+      'toggle-nuevo',
+      'update:mostrarSubirArchivos',
+      'toggle-clipboard' // 🔥 AGREGADO
+    ]);
 
   props: {
     mostrarHeader: Boolean,

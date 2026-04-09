@@ -1,131 +1,80 @@
-   .title-pacientes {
-       font-size: 2rem;
-       font-weight: 800;
-       letter-spacing: 1px;
-       color: #333;
-       margin-bottom: 0.75rem;
-       /* Espacio reducido */
-       text-transform: uppercase;
-       text-align: center;
-   }
+/* ===== CONTENEDOR GENERAL ===== */
+.search-wrapper{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+}
 
+/* ===== TITULO ===== */
+.title-pacientes {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: 5px;
+  color: #611232;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+  text-align: center;
+}
 
-   .fancy-search:focus-within {
-       background-color: #ffffff;
-       border-color: #eecbc4;
-       box-shadow: 0 4px 12px rgba(97, 18, 50, 0.15);
-       transform: translateY(-2px);
-   }
+/* ===== SEARCH ===== */
+.search-container {
+  width: 110%;
+  max-width: 360px;
+}
 
-   .search-input {
-       box-shadow: none !important;
-       font-size: 0.9rem;
-       color: #495057;
-   }
+/* INPUT BONITO */
+.fancy-search {
+  border-radius: 25px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1.5px solid #ddd;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  transition: all 0.3s ease;
+}
 
-   .search-icon {
-       transition: color 0.3s;
-   }
+.fancy-search:focus-within {
+  border-color: #611232;
+  box-shadow: 0 6px 18px rgba(97, 18, 50, 0.2);
+  transform: translateY(-2px);
+}
 
-   .fancy-search:focus-within .search-icon {
-       color: #611232 !important;
-   }
+/* INPUT */
+.minimal-input{
+  border:none;
+  outline:none;
+  width:100%;
+  background:transparent;
+  font-size:14px;
+}
 
+/* ICONO */
+.search-icon {
+  transition: color 0.3s;
+}
 
-   .input-wrapper {
-       display: flex;
-       align-items: center;
-       background: #fff;
-       border: 1px solid #d1d5db;
-       border-radius: 8px;
-       padding: 10px;
-       width: 100%;
-       /* Ocupa todo el ancho del panel lateral */
-   }
+.fancy-search:focus-within .search-icon {
+  color: #611232 !important;
+}
 
-   input {
-       border: none;
-       outline: none;
-       width: 100%;
-       margin-left: 10px;
-       font-size: 0.85rem;
-   }
-
-   .search-wrapper {
-       margin-top: 1rem;
-   }
-
-   .title-section {
-       font-size: 0.75rem;
-       font-weight: 800;
-       color: #333;
-       letter-spacing: 1.5px;
-       margin-bottom: 1.5rem;
-       text-transform: uppercase;
-   }
-
-   /* El input tipo "píldora" de tu imagen */
-   .glass-input {
-       width: 100%;
-       padding: 12px 16px;
-       border-radius: 12px;
-       border: 1px solid rgba(0, 0, 0, 0.1);
-       background: rgba(255, 255, 255, 0.5);
-       font-size: 0.9rem;
-       outline: none;
-       transition: all 0.3s ease;
-       backdrop-filter: blur(10px);
-   }
-
-   .glass-input:focus {
-       border-color: #5c0f3c;
-       /* Resalte en color vino */
-       background: white;
-       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-   }
-
-   .glass-sidebar-content {
-       display: flex;
-       flex-direction: column;
-       align-items: center;
-       /* Centra todo horizontalmente */
-       padding: 1.5rem 1rem;
-       width: 100%;
-   }
-
-
-   .search-container {
-       width: 100%;
-       max-width: 260px;
-       /* Evita que el input se estire demasiado */
-   }
-
-   .fancy-search {
-       border-radius: 20px;
-       background: rgba(255, 255, 255, 0.8);
-       border: 1.5px solid #ddd;
-       padding: 5px 15px;
-       display: flex;
-       align-items: center;
-       transition: all 0.3s ease;
-   }
-
-   .fancy-search:focus-within {
-       border-color: #611232;
-       box-shadow: 0 0 0 2px rgba(97, 18, 50, 0.1);
-   }
+/* LINK ECU */
 .ecu-link {
-  margin-top: 8px;
-  color: #007bff;
+  margin-top: 18px;
+  color: #611232;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 18px;
+  text-align:center;
+  transition:0.3s;
 }
 
 .ecu-link:hover {
   text-decoration: underline;
+  opacity:0.8;
 }
 
-/* MODAL */
+/* ===== MODAL ===== */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -133,22 +82,69 @@
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 999;
 }
 
+/* CAJA */
 .modal-content {
   background: white;
-  padding: 20px;
-  border-radius: 10px;
-  width: 300px;
+  padding: 25px;
+  border-radius: 15px;
+  width: 320px;
   display: flex;
   flex-direction: column;
   gap: 10px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
+/* TITULO MODAL */
+.modal-title{
+  text-align:center;
+  font-weight:700;
+  color:#611232;
+}
+
+/* INPUT MODAL */
+.modal-content input {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.modal-content input:focus {
+  border-color: #611232;
+}
+
+/* BOTONES */
+.modal-content button {
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: #611232;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.modal-content button:hover {
+  background: #7a1a40;
+}
+
+/* BOTON CERRAR */
 .close-btn {
-  margin-top: 10px;
+  background: #ccc !important;
+  color: #333 !important;
+}
+
+/* TEXTO RESULTADO */
+.modal-content p {
+  text-align: center;
+  font-weight: 1200;
+  color: #611232;
 }
