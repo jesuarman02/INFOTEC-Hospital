@@ -7,8 +7,7 @@
         <div class="icon-item" @click="$emit('toggle-search')">
           <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
         </div>
-
-        <!-- CALENDARIO -->
+        
         <div class="icon-item" @click="irCalendario">
           <img src="/content/images/calendario.svg" class="sidebar-svg" alt="Calendario" />
         </div>
@@ -21,20 +20,47 @@
         <!-- NUEVO PANEL (CLIPBOARD) -->
         <div class="icon-item" @click="$emit('toggle-clipboard')">
           <img src="/content/images/clipboard.svg" class="sidebar-svg"/>
+        <!-- BOTÓN TEMPORAL PARA PROBAR EL MODAL DE PACIENTE -->
+        <div class="icon-item" @click="abrirModalPrueba" style="background-color: #ffeeba; border-radius: 8px;">
+           <span style="font-size: 1.5rem;">🧑‍⚕️</span>
+        </div>
+
+        <!-- 🚀 NUEVO BOTÓN TEMPORAL PARA PROBAR EL MODAL DE DIRECCIÓN -->
+        <div class="icon-item" @click="abrirModalDireccion" style="background-color: #cff4fc; border-radius: 8px; margin-top: 10px;">
+           <span style="font-size: 1.5rem;">📍</span>
         </div>
 
       </div>
     </nav>
+
+    <!-- MODAL OCULTO DE PACIENTES -->
+    <PacienteModal 
+      v-model:visible="mostrarModalPaciente" 
+      @save="simularGuardado" 
+    />
+
+    <!-- 🚀 NUEVO MODAL OCULTO DE DIRECCIÓN -->
+    <DireccionModal 
+      v-model:visible="mostrarModalDireccion" 
+      @saved="simularGuardadoDireccion" 
+    />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue'
+import { defineComponent, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { defineEmits } from 'vue'
+// Importamos los componentes
+import PacienteModal from '@/shared/modals/PacienteModal.vue'
+import DireccionModal from '@/shared/modals/DireccionModal.vue' // 🚀 Importamos el nuevo modal
 
 export default defineComponent({
   name: 'SidebarModule',
+  
+  components: {
+    PacienteModal,
+    DireccionModal // 🚀 Lo registramos
+  },
 
   setup() {
     const emit = defineEmits([
@@ -44,8 +70,20 @@ export default defineComponent({
       'toggle-clipboard' // 🔥 AGREGADO
     ]);
 
+  props: {
+    mostrarHeader: Boolean,
+    mostrarSubirArchivos: Boolean
+  },
+  
+  emits: ['toggle-search', 'update:mostrarSubirArchivos'],
+  
+  setup(props, { emit }) {
     const router = useRouter()
     const route = useRoute()
+    
+    // Variables reactivas para controlar si los modales se ven o no
+    const mostrarModalPaciente = ref(false)
+    const mostrarModalDireccion = ref(false) // 🚀 Estado para el modal de dirección
 
     const irCalendario = () => {
       if (route.path === '/calendario'){
@@ -55,8 +93,34 @@ export default defineComponent({
       }
     }
 
+    const abrirModalPrueba = () => {
+      mostrarModalPaciente.value = true
+    }
+
+    // 🚀 Función para abrir el modal de dirección
+    const abrirModalDireccion = () => {
+      mostrarModalDireccion.value = true
+    }
+
+    const simularGuardado = (datosDelPaciente: any) => {
+      console.log("¡Éxito! El modal mandó estos datos listos para enviar a Java:", datosDelPaciente)
+      alert("Revisa la consola (F12) para ver los datos capturados.")
+    }
+
+    // 🚀 Función para simular cuando el modal de dirección termina
+    const simularGuardadoDireccion = () => {
+      console.log("¡El modal de dirección finalizó su guardado con éxito!")
+    }
+
     return {
-      irCalendario
+      irCalendario,
+      mostrarModalPaciente,
+      abrirModalPrueba,
+      simularGuardado,
+      // 🚀 Exponemos las nuevas variables a la vista
+      mostrarModalDireccion,
+      abrirModalDireccion,
+      simularGuardadoDireccion
     }
   }
 })

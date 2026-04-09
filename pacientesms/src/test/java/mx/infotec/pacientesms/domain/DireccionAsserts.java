@@ -63,7 +63,6 @@ public class DireccionAsserts {
         assertThat(expected)
             .as("Verify Direccion relationships")
             .satisfies(e -> assertThat(e.getTipoVialidad()).as("check tipoVialidad").isEqualTo(actual.getTipoVialidad()))
-            .satisfies(e -> assertThat(e.getCodigoPostalInfo()).as("check codigoPostalInfo").isEqualTo(actual.getCodigoPostalInfo()))
-            .satisfies(e -> assertThat(e.getEntidadFederativa()).as("check entidadFederativa").isEqualTo(actual.getEntidadFederativa()));
+            .satisfies(e -> assertThat(e.getCodigoPostalInfo()).as("check codigoPostalInfo").isEqualTo(actual.getCodigoPostalInfo()));
     }
 }

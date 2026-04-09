@@ -79,9 +79,6 @@ class HistorialMedicoResourceIT {
      */
     public static HistorialMedico createEntity() {
         return new HistorialMedico()
-            .antecedentesQuirurgicos(DEFAULT_ANTECEDENTES_QUIRURGICOS)
-            .esquemaVacunacion(DEFAULT_ESQUEMA_VACUNACION)
-            .habitos(DEFAULT_HABITOS)
             .observacionesGenerales(DEFAULT_OBSERVACIONES_GENERALES);
     }
 
@@ -93,9 +90,6 @@ class HistorialMedicoResourceIT {
      */
     public static HistorialMedico createUpdatedEntity() {
         return new HistorialMedico()
-            .antecedentesQuirurgicos(UPDATED_ANTECEDENTES_QUIRURGICOS)
-            .esquemaVacunacion(UPDATED_ESQUEMA_VACUNACION)
-            .habitos(UPDATED_HABITOS)
             .observacionesGenerales(UPDATED_OBSERVACIONES_GENERALES);
     }
 
@@ -276,9 +270,6 @@ class HistorialMedicoResourceIT {
         // Update the historialMedico
         HistorialMedico updatedHistorialMedico = historialMedicoRepository.findById(historialMedico.getId()).block();
         updatedHistorialMedico
-            .antecedentesQuirurgicos(UPDATED_ANTECEDENTES_QUIRURGICOS)
-            .esquemaVacunacion(UPDATED_ESQUEMA_VACUNACION)
-            .habitos(UPDATED_HABITOS)
             .observacionesGenerales(UPDATED_OBSERVACIONES_GENERALES);
         HistorialMedicoDTO historialMedicoDTO = historialMedicoMapper.toDto(updatedHistorialMedico);
 
@@ -373,7 +364,6 @@ class HistorialMedicoResourceIT {
         HistorialMedico partialUpdatedHistorialMedico = new HistorialMedico();
         partialUpdatedHistorialMedico.setId(historialMedico.getId());
 
-        partialUpdatedHistorialMedico.esquemaVacunacion(UPDATED_ESQUEMA_VACUNACION).habitos(UPDATED_HABITOS);
 
         webTestClient
             .patch()
@@ -405,9 +395,6 @@ class HistorialMedicoResourceIT {
         partialUpdatedHistorialMedico.setId(historialMedico.getId());
 
         partialUpdatedHistorialMedico
-            .antecedentesQuirurgicos(UPDATED_ANTECEDENTES_QUIRURGICOS)
-            .esquemaVacunacion(UPDATED_ESQUEMA_VACUNACION)
-            .habitos(UPDATED_HABITOS)
             .observacionesGenerales(UPDATED_OBSERVACIONES_GENERALES);
 
         webTestClient

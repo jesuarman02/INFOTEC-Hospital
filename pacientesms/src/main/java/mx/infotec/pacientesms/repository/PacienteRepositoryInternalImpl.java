@@ -5,7 +5,6 @@ import io.r2dbc.spi.RowMetadata;
 import java.util.List;
 import mx.infotec.pacientesms.domain.Paciente;
 import mx.infotec.pacientesms.repository.rowmapper.DireccionRowMapper;
-import mx.infotec.pacientesms.repository.rowmapper.EntidadFederativaRowMapper;
 import mx.infotec.pacientesms.repository.rowmapper.HistorialMedicoRowMapper;
 import mx.infotec.pacientesms.repository.rowmapper.InfoSocioeconomicaRowMapper;
 import mx.infotec.pacientesms.repository.rowmapper.PacienteRowMapper;
@@ -41,7 +40,6 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
     private final DireccionRowMapper direccionMapper;
     private final InfoSocioeconomicaRowMapper infosocioeconomicaMapper;
     private final HistorialMedicoRowMapper historialmedicoMapper;
-    private final EntidadFederativaRowMapper entidadfederativaMapper;
     private final PacienteRowMapper pacienteMapper;
 
     private static final Table entityTable = Table.aliased("paciente", EntityManager.ENTITY_ALIAS);
@@ -56,7 +54,6 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
         DireccionRowMapper direccionMapper,
         InfoSocioeconomicaRowMapper infosocioeconomicaMapper,
         HistorialMedicoRowMapper historialmedicoMapper,
-        EntidadFederativaRowMapper entidadfederativaMapper,
         PacienteRowMapper pacienteMapper,
         R2dbcEntityOperations entityOperations,
         R2dbcConverter converter
@@ -72,7 +69,6 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
         this.direccionMapper = direccionMapper;
         this.infosocioeconomicaMapper = infosocioeconomicaMapper;
         this.historialmedicoMapper = historialmedicoMapper;
-        this.entidadfederativaMapper = entidadfederativaMapper;
         this.pacienteMapper = pacienteMapper;
     }
 
@@ -86,7 +82,6 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
         columns.addAll(DireccionSqlHelper.getColumns(direccionTable, "direccion"));
         columns.addAll(InfoSocioeconomicaSqlHelper.getColumns(infoSocioeconomicaTable, "infoSocioeconomica"));
         columns.addAll(HistorialMedicoSqlHelper.getColumns(historialGeneralTable, "historialGeneral"));
-        columns.addAll(EntidadFederativaSqlHelper.getColumns(entidadNacimientoTable, "entidadNacimiento"));
         SelectFromAndJoinCondition selectFrom = Select.builder()
             .select(columns)
             .from(entityTable)
@@ -138,7 +133,6 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
         entity.setDireccion(direccionMapper.apply(row, "direccion"));
         entity.setInfoSocioeconomica(infosocioeconomicaMapper.apply(row, "infoSocioeconomica"));
         entity.setHistorialGeneral(historialmedicoMapper.apply(row, "historialGeneral"));
-        entity.setEntidadNacimiento(entidadfederativaMapper.apply(row, "entidadNacimiento"));
         return entity;
     }
 

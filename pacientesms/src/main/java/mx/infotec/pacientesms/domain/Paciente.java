@@ -98,21 +98,6 @@ public class Paciente implements Serializable {
     @JsonIgnoreProperties(value = { "paciente" }, allowSetters = true)
     private Set<SignosVitales> signosVitales = new HashSet<>();
 
-    @Transient
-    @JsonIgnoreProperties(value = { "paciente", "enfermedad" }, allowSetters = true)
-    private Set<PacienteEnfermedad> misEnfermedades = new HashSet<>();
-
-    @Transient
-    @JsonIgnoreProperties(value = { "paciente", "alergia" }, allowSetters = true)
-    private Set<PacienteAlergia> misAlergias = new HashSet<>();
-
-    @Transient
-    @JsonIgnoreProperties(value = { "paciente", "medicamento" }, allowSetters = true)
-    private Set<PacienteMedicamento> misMedicamentos = new HashSet<>();
-
-    @Transient
-    private EntidadFederativa entidadNacimiento;
-
     @Column("direccion_id")
     private Long direccionId;
 
@@ -122,8 +107,6 @@ public class Paciente implements Serializable {
     @Column("historial_general_id")
     private Long historialGeneralId;
 
-    @Column("entidad_nacimiento_id")
-    private Long entidadNacimientoId;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -343,112 +326,6 @@ public class Paciente implements Serializable {
         return this;
     }
 
-    public Set<PacienteEnfermedad> getMisEnfermedades() {
-        return this.misEnfermedades;
-    }
-
-    public void setMisEnfermedades(Set<PacienteEnfermedad> pacienteEnfermedads) {
-        if (this.misEnfermedades != null) {
-            this.misEnfermedades.forEach(i -> i.setPaciente(null));
-        }
-        if (pacienteEnfermedads != null) {
-            pacienteEnfermedads.forEach(i -> i.setPaciente(this));
-        }
-        this.misEnfermedades = pacienteEnfermedads;
-    }
-
-    public Paciente misEnfermedades(Set<PacienteEnfermedad> pacienteEnfermedads) {
-        this.setMisEnfermedades(pacienteEnfermedads);
-        return this;
-    }
-
-    public Paciente addMisEnfermedades(PacienteEnfermedad pacienteEnfermedad) {
-        this.misEnfermedades.add(pacienteEnfermedad);
-        pacienteEnfermedad.setPaciente(this);
-        return this;
-    }
-
-    public Paciente removeMisEnfermedades(PacienteEnfermedad pacienteEnfermedad) {
-        this.misEnfermedades.remove(pacienteEnfermedad);
-        pacienteEnfermedad.setPaciente(null);
-        return this;
-    }
-
-    public Set<PacienteAlergia> getMisAlergias() {
-        return this.misAlergias;
-    }
-
-    public void setMisAlergias(Set<PacienteAlergia> pacienteAlergias) {
-        if (this.misAlergias != null) {
-            this.misAlergias.forEach(i -> i.setPaciente(null));
-        }
-        if (pacienteAlergias != null) {
-            pacienteAlergias.forEach(i -> i.setPaciente(this));
-        }
-        this.misAlergias = pacienteAlergias;
-    }
-
-    public Paciente misAlergias(Set<PacienteAlergia> pacienteAlergias) {
-        this.setMisAlergias(pacienteAlergias);
-        return this;
-    }
-
-    public Paciente addMisAlergias(PacienteAlergia pacienteAlergia) {
-        this.misAlergias.add(pacienteAlergia);
-        pacienteAlergia.setPaciente(this);
-        return this;
-    }
-
-    public Paciente removeMisAlergias(PacienteAlergia pacienteAlergia) {
-        this.misAlergias.remove(pacienteAlergia);
-        pacienteAlergia.setPaciente(null);
-        return this;
-    }
-
-    public Set<PacienteMedicamento> getMisMedicamentos() {
-        return this.misMedicamentos;
-    }
-
-    public void setMisMedicamentos(Set<PacienteMedicamento> pacienteMedicamentos) {
-        if (this.misMedicamentos != null) {
-            this.misMedicamentos.forEach(i -> i.setPaciente(null));
-        }
-        if (pacienteMedicamentos != null) {
-            pacienteMedicamentos.forEach(i -> i.setPaciente(this));
-        }
-        this.misMedicamentos = pacienteMedicamentos;
-    }
-
-    public Paciente misMedicamentos(Set<PacienteMedicamento> pacienteMedicamentos) {
-        this.setMisMedicamentos(pacienteMedicamentos);
-        return this;
-    }
-
-    public Paciente addMisMedicamentos(PacienteMedicamento pacienteMedicamento) {
-        this.misMedicamentos.add(pacienteMedicamento);
-        pacienteMedicamento.setPaciente(this);
-        return this;
-    }
-
-    public Paciente removeMisMedicamentos(PacienteMedicamento pacienteMedicamento) {
-        this.misMedicamentos.remove(pacienteMedicamento);
-        pacienteMedicamento.setPaciente(null);
-        return this;
-    }
-
-    public EntidadFederativa getEntidadNacimiento() {
-        return this.entidadNacimiento;
-    }
-
-    public void setEntidadNacimiento(EntidadFederativa entidadFederativa) {
-        this.entidadNacimiento = entidadFederativa;
-        this.entidadNacimientoId = entidadFederativa != null ? entidadFederativa.getId() : null;
-    }
-
-    public Paciente entidadNacimiento(EntidadFederativa entidadFederativa) {
-        this.setEntidadNacimiento(entidadFederativa);
-        return this;
-    }
 
     public Long getDireccionId() {
         return this.direccionId;
@@ -474,13 +351,6 @@ public class Paciente implements Serializable {
         this.historialGeneralId = historialMedico;
     }
 
-    public Long getEntidadNacimientoId() {
-        return this.entidadNacimientoId;
-    }
-
-    public void setEntidadNacimientoId(Long entidadFederativa) {
-        this.entidadNacimientoId = entidadFederativa;
-    }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 

@@ -20,34 +20,6 @@
       <font-awesome-icon icon="asterisk" />
       <span v-text="t$('global.menu.entities.pacientemsSignosVitales')"></span>
     </b-dropdown-item>
-    <b-dropdown-item to="/enfermedad">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientemsEnfermedad')"></span>
-    </b-dropdown-item>
-    <b-dropdown-item to="/alergia">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientemsAlergia')"></span>
-    </b-dropdown-item>
-    <b-dropdown-item to="/medicamento">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientemsMedicamento')"></span>
-    </b-dropdown-item>
-    <b-dropdown-item to="/paciente-enfermedad">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientemsPacienteEnfermedad')"></span>
-    </b-dropdown-item>
-    <b-dropdown-item to="/paciente-alergia">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientemsPacienteAlergia')"></span>
-    </b-dropdown-item>
-    <b-dropdown-item to="/paciente-medicamento">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientemsPacienteMedicamento')"></span>
-    </b-dropdown-item>
-    <b-dropdown-item to="/entidad-federativa">
-      <font-awesome-icon icon="asterisk" />
-      <span v-text="t$('global.menu.entities.pacientesmsEntidadFederativa')"></span>
-    </b-dropdown-item>
     <b-dropdown-item to="/tipo-vialidad">
       <font-awesome-icon icon="asterisk" />
       <span v-text="t$('global.menu.entities.pacientesmsTipoVialidad')"></span>

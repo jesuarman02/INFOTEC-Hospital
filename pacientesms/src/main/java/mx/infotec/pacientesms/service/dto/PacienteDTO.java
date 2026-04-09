@@ -55,8 +55,6 @@ public class PacienteDTO implements Serializable {
 
     private HistorialMedicoDTO historialGeneral;
 
-    private EntidadFederativaDTO entidadNacimiento;
-
     public Long getId() {
         return id;
     }
@@ -169,13 +167,6 @@ public class PacienteDTO implements Serializable {
         this.historialGeneral = historialGeneral;
     }
 
-    public EntidadFederativaDTO getEntidadNacimiento() {
-        return entidadNacimiento;
-    }
-
-    public void setEntidadNacimiento(EntidadFederativaDTO entidadNacimiento) {
-        this.entidadNacimiento = entidadNacimiento;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -216,7 +207,6 @@ public class PacienteDTO implements Serializable {
             ", direccion=" + getDireccion() +
             ", infoSocioeconomica=" + getInfoSocioeconomica() +
             ", historialGeneral=" + getHistorialGeneral() +
-            ", entidadNacimiento=" + getEntidadNacimiento() +
             "}";
     }
 }
