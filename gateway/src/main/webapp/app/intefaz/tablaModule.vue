@@ -112,7 +112,7 @@
             </div>
           </div>
 
-         <div class="card border-light shadow-sm mb-4">
+         <<div class="card border-light shadow-sm mb-4">
   <div class="card-body">
     <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
       <h5 class="text-danger mb-0">Información Socioeconómica</h5>
@@ -154,14 +154,9 @@
 <div v-if="mostrarModalSocioeconomico" class="card border-danger shadow-sm mb-4">
   <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
     <h5 class="text-danger mb-0">Expediente Socioeconómico Completo</h5>
-     <button 
-        class="btn btn-sm btn-outline-danger" 
-        @click="mostrarModalSocioeconomico = true"
-        :disabled="!paciente?.tieneInfoSocioeconomica"
-      >
-        <span v-if="paciente?.tieneInfoSocioeconomica">Ver Expediente Completo</span>
-        <span v-else>No hay datos registrados</span>
-      </button>
+    <button class="btn btn-sm btn-light font-weight-bold text-danger" @click="mostrarModalSocioeconomico = false">
+      Cerrar ✕
+    </button>
   </div>
   
   <div class="card-body p-0">
@@ -222,12 +217,8 @@
 
     </div>
   </div> <div v-if="mostrarModalSocioeconomico" class="modal-overlay" @click.self="mostrarModalSocioeconomico = false">
-      <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 800px; background: white; max-height: 90vh; overflow-y: auto;">
+ 
         
-        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-          <h4 class="text-danger m-0">Expediente Socioeconómico Completo</h4>
-          <button class="btn btn-light rounded-circle" @click="mostrarModalSocioeconomico = false">✕</button>
-        </div>
 
         <div v-if="paciente?.infoSocioeconomica" class="row">
           
@@ -312,7 +303,7 @@
         </div>
 
       </div>
-    </div>
+    
 </template>
 
 <script setup lang="ts">
