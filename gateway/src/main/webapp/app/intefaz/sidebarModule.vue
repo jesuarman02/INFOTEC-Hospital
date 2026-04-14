@@ -3,33 +3,35 @@
     <nav class="sidebar-icons">
       <div class="icon-group">
 
-        <div class="icon-item" @click="$emit('toggle-search')">
-          <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" alt="Médico" />
+                <div class="icon-item icon-item-custom icon-yellow" @click="$emit('toggle-search')">
+          <img src="/content/images/md-del-usuario.svg" class="sidebar-svg" />
         </div>
-        
-        <div class="icon-item" @click="irCalendario">
-          <img src="/content/images/calendario.svg" class="sidebar-svg" alt="Calendario" />
+          
+          <div class="icon-item icon-item-custom icon-blue" @click="irCalendario">
+            <img src="/content/images/calendario.svg" class="sidebar-svg" />
+          </div>
+          
+          <div class="icon-item icon-item-custom icon-green" @click="$emit('update:mostrarSubirArchivos', true)">
+            <img src="/content/images/carpeta.svg" class="sidebar-svg" />
+          </div>
+          
+          <div class="icon-item icon-item-custom icon-blue" @click="$emit('toggle-clipboard')">
+            <img src="/content/images/clipboard.svg" class="sidebar-svg"/>
+          </div>
+          
+          <!-- Los que ya tenías -->
+          <div class="icon-item icon-item-custom icon-yellow" @click="abrirModalPrueba">
+            <span style="font-size: 1.5rem;">🧑‍⚕️</span>
+          </div>
+          
+          <div class="icon-item icon-item-custom icon-blue" @click="abrirModalDireccion">
+            <span style="font-size: 1.5rem;">📍</span>
+          </div>
+          
+          <div class="icon-item icon-item-custom icon-green" @click="abrirModalWizard">
+    <span style="font-size: 1.5rem;">📋</span>
+  </div>
         </div>
-
-        <div class="icon-item" @click="$emit('update:mostrarSubirArchivos', true)">
-          <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
-        </div>
-
-        <div class="icon-item" @click="$emit('toggle-clipboard')">
-          <img src="/content/images/clipboard.svg" class="sidebar-svg"/>
-        </div> <div class="icon-item" @click="abrirModalPrueba" style="background-color: #ffeeba; border-radius: 8px; margin-top: 20px;">
-           <span style="font-size: 1.5rem;">🧑‍⚕️</span>
-        </div>
-
-        <div class="icon-item" @click="abrirModalDireccion" style="background-color: #cff4fc; border-radius: 8px; margin-top: 10px;">
-           <span style="font-size: 1.5rem;">📍</span>
-        </div>
-
-        <div class="icon-item" @click="abrirModalWizard" style="background-color: #d1e7dd; border-radius: 8px; margin-top: 10px;">
-           <span style="font-size: 1.5rem;">📋</span>
-        </div>
-
-      </div>
     </nav>
 
     <PacienteModal 
