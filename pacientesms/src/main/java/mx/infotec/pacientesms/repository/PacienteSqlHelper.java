@@ -25,7 +25,6 @@ public class PacienteSqlHelper {
         columns.add(Column.aliased("direccion_id", table, columnPrefix + "_direccion_id"));
         columns.add(Column.aliased("info_socioeconomica_id", table, columnPrefix + "_info_socioeconomica_id"));
         columns.add(Column.aliased("historial_general_id", table, columnPrefix + "_historial_general_id"));
-        columns.add(Column.aliased("entidad_nacimiento_id", table, columnPrefix + "_entidad_nacimiento_id"));
         return columns;
     }
 }

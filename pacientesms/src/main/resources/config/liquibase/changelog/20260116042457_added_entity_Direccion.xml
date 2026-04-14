@@ -10,6 +10,7 @@
         Added the entity Direccion.
     -->
     <changeSet id="20260116042457-1" author="jhipster">
+    <validCheckSum>9:8d74bf64a3d50ff00c8af425473391fc</validCheckSum>
         <createTable tableName="direccion">
             <column name="id" type="bigint" autoIncrement="true" startWith="1500">
                 <constraints primaryKey="true" nullable="false"/>
@@ -32,9 +33,7 @@
             <column name="codigo_postal_info_id" type="bigint">
                 <constraints nullable="true" />
             </column>
-            <column name="entidad_federativa_id" type="bigint">
-                <constraints nullable="true" />
-            </column>
+
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
     </changeSet>
