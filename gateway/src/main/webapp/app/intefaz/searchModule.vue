@@ -1,11 +1,13 @@
 <template>
-  <!-- HEADER CON TRANSICIÓN (solo 1 hijo) -->
+  <!-- HEADER CON TRANSICIÓN -->
   <transition name="fade">
-    <div v-show="mostrarHeader">
+    <div v-show="mostrarHeader" class="search-wrapper">
+
       <h5 class="title-pacientes mt-2 mb-3">PACIENTES</h5>
 
       <div class="search-container mb-4">
         <div class="input-group fancy-search">
+
           <div class="input-group-prepend">
             <span class="input-group-text bg-transparent border-0 pl-3">
               <font-awesome-icon icon="search" class="text-muted search-icon" />
@@ -15,8 +17,8 @@
           <input 
             type="text" 
             v-model="valorLocal"
-            @keyup.enter="emit('buscar')" 
-            placeholder="ECU, Nombre del Paciente"
+            @keyup.enter="handleBuscar" 
+            placeholder="Buscar por ECU o nombre..."
             class="minimal-input"
           />
         </div>
@@ -26,14 +28,16 @@
           No conozco mi ECU
         </p>
       </div>
+
     </div>
   </transition>
 
-  <!-- MODAL (FUERA DEL TRANSITION) -->
+  <!-- MODAL -->
   <transition name="fade">
     <div v-if="mostrarModal" class="modal-overlay">
       <div class="modal-content">
-        <h5>Buscar ECU</h5>
+
+        <h5 class="modal-title">Buscar ECU</h5>
 
         <input v-model="nombre" placeholder="Nombre" />
         <input v-model="apellidoPaterno" placeholder="Apellido Paterno" />
@@ -48,6 +52,7 @@
         <button class="close-btn" @click="mostrarModal = false">
           Cerrar
         </button>
+
       </div>
     </div>
   </transition>
@@ -68,8 +73,8 @@ const props = defineProps({
   }
 });
 
-// EMITS
-const emit = defineEmits(['input', 'buscar']); 
+// 🔥 EMITS (agregamos ocultar-header)
+const emit = defineEmits(['input', 'buscar', 'ocultar-header']); 
 
 // V-MODEL LOCAL
 const valorLocal = computed({
@@ -80,6 +85,14 @@ const valorLocal = computed({
     emit('input', nuevoValor); 
   }
 });
+
+// 🔥 FUNCIÓN ENTER
+const handleBuscar = () => {
+  if (!valorLocal.value) return; // opcional, evita vacío
+
+  emit('buscar');             // ejecuta búsqueda
+  emit('ocultar-header');     // 🔥 oculta el search
+};
 
 // MODAL STATES
 const mostrarModal = ref(false);
@@ -96,7 +109,6 @@ const buscarEcu = () => {
     return;
   }
 
-  // Aquí luego conectas tu API real
   ecuEncontrado.value = '123456';
 };
 </script>

@@ -15,7 +15,9 @@
           <img src="/content/images/carpeta.svg" class="sidebar-svg" alt="Expedientes" />
         </div>
 
-        <div class="icon-item" @click="abrirModalPrueba" style="background-color: #ffeeba; border-radius: 8px; margin-top: 20px;">
+        <div class="icon-item" @click="$emit('toggle-clipboard')">
+          <img src="/content/images/clipboard.svg" class="sidebar-svg"/>
+        </div> <div class="icon-item" @click="abrirModalPrueba" style="background-color: #ffeeba; border-radius: 8px; margin-top: 20px;">
            <span style="font-size: 1.5rem;">🧑‍⚕️</span>
         </div>
 
@@ -50,10 +52,10 @@
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
+
 // Importamos los componentes
 import PacienteModal from '@/shared/modals/PacienteModal.vue'
 import DireccionModal from '@/shared/modals/DireccionModal.vue'
-// 🚀 Importamos el nuevo Asistente Wizard
 import InfoSocioeconomicaWizardModal from '@/shared/modals/info-socioeconomica-wizard.vue'
 
 export default defineComponent({
@@ -62,7 +64,7 @@ export default defineComponent({
   components: {
     PacienteModal,
     DireccionModal,
-    InfoSocioeconomicaWizardModal // 🚀 Lo registramos
+    InfoSocioeconomicaWizardModal
   },
 
   props: {
@@ -70,7 +72,13 @@ export default defineComponent({
     mostrarSubirArchivos: Boolean
   },
   
-  emits: ['toggle-search', 'update:mostrarSubirArchivos'],
+  // 🔥 Fusionamos todos los "emits" (Los de la nube y los tuyos)
+  emits: [
+    'toggle-search', 
+    'update:mostrarSubirArchivos', 
+    'toggle-nuevo', 
+    'toggle-clipboard'
+  ],
   
   setup(props, { emit }) {
     const router = useRouter()
@@ -79,7 +87,7 @@ export default defineComponent({
     // Variables reactivas para controlar si los modales se ven o no
     const mostrarModalPaciente = ref(false)
     const mostrarModalDireccion = ref(false)
-    const mostrarModalWizard = ref(false) // 🚀 Estado para el Asistente
+    const mostrarModalWizard = ref(false) 
 
     const irCalendario = () => {
       if (route.path === '/calendario'){
@@ -97,7 +105,6 @@ export default defineComponent({
       mostrarModalDireccion.value = true
     }
 
-    // 🚀 Función para abrir el Asistente Wizard
     const abrirModalWizard = () => {
       mostrarModalWizard.value = true
     }
@@ -111,7 +118,6 @@ export default defineComponent({
       console.log("¡El modal de dirección finalizó su guardado con éxito!")
     }
 
-    // 🚀 Función para simular cuando el Asistente termina
     const simularGuardadoWizard = () => {
       console.log("¡El estudio socioeconómico finalizó y se guardó con éxito!")
     }
@@ -124,13 +130,12 @@ export default defineComponent({
       mostrarModalDireccion,
       abrirModalDireccion,
       simularGuardadoDireccion,
-      // 🚀 Exponemos las nuevas variables a la vista
       mostrarModalWizard,
       abrirModalWizard,
       simularGuardadoWizard
     }
   }
-})
+}) // Eliminé la coma extra que había quedado al final aquí
 </script>
 
 <style scoped src="../../content/css/navbar.css"></style>

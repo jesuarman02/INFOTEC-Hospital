@@ -1,6 +1,6 @@
 <template>
      <div class="main-content p-4">
-        <div class="row">
+        <div class="row gx-3">
           <div class="col-md-5 d-flex flex-column">
 
             <div class="card dashboard-card mb-4 shadow-sm custom-grey-card">
@@ -107,7 +107,7 @@ const props = defineProps({
   }
 });
 const calcularEdad = (fechaNacimiento: string | undefined) => {
-  if (!fechaNacimiento) return 'N/A';
+  if (!fechaNacimiento) return 'N/A'; 
   
   const hoy = new Date();
   const cumpleanos = new Date(fechaNacimiento);
