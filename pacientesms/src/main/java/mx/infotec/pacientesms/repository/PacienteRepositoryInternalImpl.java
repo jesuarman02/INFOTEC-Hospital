@@ -46,7 +46,7 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
     private static final Table direccionTable = Table.aliased("direccion", "direccion");
     private static final Table infoSocioeconomicaTable = Table.aliased("info_socioeconomica", "infoSocioeconomica");
     private static final Table historialGeneralTable = Table.aliased("historial_medico", "historialGeneral");
-    private static final Table entidadNacimientoTable = Table.aliased("entidad_federativa", "entidadNacimiento");
+    // ELIMINADO: private static final Table entidadNacimientoTable = Table.aliased("entidad_federativa", "entidadNacimiento");
 
     public PacienteRepositoryInternalImpl(
         R2dbcEntityTemplate template,
@@ -82,6 +82,7 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
         columns.addAll(DireccionSqlHelper.getColumns(direccionTable, "direccion"));
         columns.addAll(InfoSocioeconomicaSqlHelper.getColumns(infoSocioeconomicaTable, "infoSocioeconomica"));
         columns.addAll(HistorialMedicoSqlHelper.getColumns(historialGeneralTable, "historialGeneral"));
+        
         SelectFromAndJoinCondition selectFrom = Select.builder()
             .select(columns)
             .from(entityTable)
@@ -93,10 +94,9 @@ class PacienteRepositoryInternalImpl extends SimpleR2dbcRepository<Paciente, Lon
             .equals(Column.create("id", infoSocioeconomicaTable))
             .leftOuterJoin(historialGeneralTable)
             .on(Column.create("historial_general_id", entityTable))
-            .equals(Column.create("id", historialGeneralTable))
-            .leftOuterJoin(entidadNacimientoTable)
-            .on(Column.create("entidad_nacimiento_id", entityTable))
-            .equals(Column.create("id", entidadNacimientoTable));
+            .equals(Column.create("id", historialGeneralTable));
+            // ELIMINADO: el LEFT JOIN que buscaba a entidadNacimientoTable
+
         // we do not support Criteria here for now as of https://github.com/jhipster/generator-jhipster/issues/18269
         String select = entityManager.createSelect(selectFrom, Paciente.class, pageable, whereClause);
         return db.sql(select).map(this::process);

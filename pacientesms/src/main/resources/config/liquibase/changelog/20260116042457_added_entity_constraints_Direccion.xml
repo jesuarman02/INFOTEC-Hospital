@@ -24,11 +24,6 @@
                                  referencedTableName="codigo_postal"
                                  />
 
-        <addForeignKeyConstraint baseColumnNames="entidad_federativa_id"
-                                 baseTableName="direccion"
-                                 constraintName="fk_direccion__entidad_federativa_id"
-                                 referencedColumnNames="id"
-                                 referencedTableName="entidad_federativa"
-                                 />
+
     </changeSet>
 </databaseChangeLog>
