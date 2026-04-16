@@ -1,6 +1,5 @@
 <template>
   <div class="tabla-module-container">
-    
     <div class="card shadow-sm border-0">
       <div class="card-header bg-white pb-0">
         <ul class="nav nav-tabs border-bottom-0">
@@ -184,10 +183,6 @@
       </div> </div> <div v-if="mostrarModalSocioeconomico" class="modal-overlay" @click.self="mostrarModalSocioeconomico = false">
       <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 800px; background: white; max-height: 90vh; overflow-y: auto;">
         
-        <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-          <h4 class="text-danger m-0">Expediente Socioeconómico Completo</h4>
-          <button class="btn btn-light rounded-circle" @click="mostrarModalSocioeconomico = false">✕</button>
-        </div>
 
         <div v-if="paciente?.infoSocioeconomica" class="row">
           
@@ -273,7 +268,8 @@
 
       </div>
     </div>
-  </div> </template>
+  </div>
+</template>
 
 <script setup lang="ts">
 import { ref } from 'vue'; 
