@@ -9,6 +9,7 @@
         Added the constraints for entity Direccion.
     -->
     <changeSet id="20260116042457-2" author="jhipster">
+    <validCheckSum>9:ecf5bba7964372cbb4cf9a442f2d2482</validCheckSum>
 
         <addForeignKeyConstraint baseColumnNames="tipo_vialidad_id"
                                  baseTableName="direccion"
