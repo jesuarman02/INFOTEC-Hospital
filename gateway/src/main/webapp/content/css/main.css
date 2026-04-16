@@ -47,15 +47,7 @@ body {
     height: 100%;
     gap: 10rem;
 }
-/* 4. PANEL DERECHO (Área de Trabajo) */
-.right-panel-workspace {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    /* ESTA ES LA CLAVE: El único lugar donde permitimos scroll */
-    overflow-y:hidden;
-}
+
 
 
 /* 5. SEPARACIÓN Y ESTILOS DE COMPONENTES INTERNOS */
@@ -87,4 +79,79 @@ html,body,#app{
     height: 100%;
     margin: 0;
     overflow: hidden;
+}
+/* 🔥 CONTENEDOR GENERAL */
+.interface-container {
+  display: flex;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+/* 🔥 SIDEBAR */
+.left-panel-glass {
+  width: 320px;
+  min-width: 260px;
+  transition: all 0.3s ease;
+}
+
+/* 🔥 ÁREA PRINCIPAL */
+.right-panel-workspace {
+  flex: 1;
+  overflow-y: visible;
+  padding: 15px;
+}
+
+/* 🔥 CONTENIDO PACIENTE */
+.paciente-data-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* 🔥 TABLET */
+@media (max-width: 1024px) {
+  .left-panel-glass {
+    width: 250px;
+  }
+}
+
+/* 🔥 MOBILE */
+@media (max-width: 768px) {
+
+  .interface-container {
+    flex-direction: column;
+  }
+
+  /* SIDEBAR ARRIBA */
+  .left-panel-glass {
+    width: 100%;
+    height: auto;
+  }
+
+  /* MAIN ABAJO */
+  .right-panel-workspace {
+    width: 100%;
+    padding: 10px;
+  }
+
+  /* SCROLL MEJOR */
+  .search-section {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+}
+
+/* 🔥 EXTRA PEQUEÑO */
+@media (max-width: 480px) {
+
+  .status-text {
+    font-size: 0.8rem;
+    text-align: center;
+  }
+
+  .right-panel-workspace {
+    padding: 5px;
+  }
+
 }
