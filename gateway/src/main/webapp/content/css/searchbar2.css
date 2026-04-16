@@ -180,3 +180,110 @@ html, body, #app {
   height: 100%;
   margin: 0;
 }
+.acciones-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.accion-card {
+  width: 90px;
+  height: 90px;
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  color: white;
+  font-weight: 500;
+}
+
+.accion-card .icono {
+  font-size: 1.6rem;
+  margin-bottom: 3px;
+}
+
+.accion-card p {
+  margin: 0;
+  font-size: 0.75rem;
+}
+
+/* COLORES */
+.amarillo {
+  background: linear-gradient(135deg, #5f0303, #8a0707);
+}
+
+.azul {
+  background: linear-gradient(135deg, #5f0303, #8a0707);
+}
+
+.verde {
+  background: linear-gradient(135deg, #5f0303, #8a0707);
+}
+
+/* HOVER PRO */
+.accion-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 12px 25px rgba(0,0,0,1);
+}
+.step-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 25px;
+  gap: 10px;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+.circle {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #444;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  transition: all 0.3s ease;
+}
+
+.step span {
+  font-size: 0.7rem;
+  margin-top: 5px;
+  color: #aaa;
+}
+
+.line {
+  width: 40px;
+  height: 4px;
+  background: #444;
+  border-radius: 5px;
+  transition: all 0.3s ease;
+}
+
+/* ACTIVO */
+.step.active .circle {
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  transform: scale(1.1);
+  box-shadow: 0 0 10px rgba(0, 114, 255, 0.6);
+}
+
+.step.active span {
+  color: #fff;
+}
+
+.line.active {
+  background: linear-gradient(90deg, #00c6ff, #0072ff);
+}
