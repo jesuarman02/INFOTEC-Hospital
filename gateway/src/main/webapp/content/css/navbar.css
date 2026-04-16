@@ -1,44 +1,131 @@
+/* ========================================= */
+/* 1. BARRA LATERAL (Laptop, PC, iPad)       */
+/* ========================================= */
 .sidebar-wrapper {
-    height: 100%;
-    background-color: #611232;
-    /* Tu color vino */
-    width: 70px;
-    flex-shrink: 0;
+  background-color: #5c1830; 
+  width: 80px;
+  
+  /* 🔥 SOLUCIÓN PC Y FOOTER 🔥 */
+  position: sticky; /* Te sigue al scrollear, pero RESPETA el footer */
+  top: 70px;        /* Se queda pegada 70px abajo del techo (por tu header) */
+  height: calc(100vh - 70px); 
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; 
+  padding-top: 25px;
+  box-shadow: 4px 0 15px rgba(0,0,0,0.15);
+  z-index: 1000;
+  transition: all 0.3s ease;
 }
 
 .sidebar-icons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-top: 2rem;
+  width: 100%;
 }
 
 .icon-group {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    /* Espaciado uniforme y profesional */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.icon-separator {
+  width: 40px;
+  height: 2px;
+  background-color: rgba(255,255,255,0.15);
+  margin: 15px 0;
+  border-radius: 2px;
 }
 
 .icon-item {
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 45px;
-    height: 45px;
-    border-radius: 8px;
+  width: 50px;
+  height: 50px;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  background-color: rgba(255,255,255,0.08); 
 }
 
 .icon-item:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(1.1);
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+  background-color: rgba(255,255,255,0.2);
 }
 
+.icon-item:active {
+  transform: translateY(0) scale(0.95);
+}
+
+.icon-yellow:hover { background-color: #ffeeba; }
+.icon-blue:hover { background-color: #cff4fc; }
+.icon-green:hover { background-color: #d1e7dd; }
+
 .sidebar-svg {
-    width: 24px;
-    height: 24px;
-    filter: brightness(0) invert(1);
-    /* Asegura que los iconos sean blancos */
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+.icon-item:hover .sidebar-svg {
+  filter: brightness(0); 
+}
+
+.emoji-icon {
+  font-size: 1.6rem;
+}
+
+
+/* ========================================= */
+/* MODO CELULAR (Anclado arriba correctamente) */
+/* ========================================= */
+@media (max-width: 1024px) {
+  .sidebar-wrapper {
+    /* 🔥 USAMOS FIXED PARA SACARLO DE LA FILA HORIZONTAL 🔥 */
+    position: fixed !important; 
+    top: 70px !important;    /* Lo clavamos debajo de INFOTEC */
+    bottom: auto !important; /* Ignoramos el fondo */
+    
+    width: 100vw;
+    height: 70px;
+    left: 0;
+    padding-top: 0;
+    flex-direction: row;
+    justify-content: center;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra hacia abajo */
+    z-index: 9999;
+  }
+
+  .sidebar-icons {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  }
+
+  .icon-group {
+    flex-direction: row;
+    justify-content: space-evenly;
+    width: 100%;
+    gap: 0;
+    padding: 0 10px;
+  }
+
+  .icon-separator {
+    display: none; 
+  }
+
+  .icon-item {
+    width: 48px;
+    height: 48px;
+  }
+
+  .icon-item:hover {
+    transform: translateY(-5px) scale(1.05); 
+  }
 }
