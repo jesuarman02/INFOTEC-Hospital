@@ -1,6 +1,5 @@
 <template>
-  <!-- HEADER CON TRANSICIÓN -->
-  <transition name="fade">
+  <transition name="fade-slide">
     <div v-show="mostrarHeader" class="search-wrapper">
 
       <h5 class="title-pacientes mt-2 mb-3">PACIENTES</h5>
@@ -18,13 +17,12 @@
             type="text" 
             v-model="valorLocal"
             @keyup.enter="handleBuscar" 
-            placeholder="Buscar por ECU o nombre..."
+            placeholder="Ingresa un ECU" 
             class="minimal-input"
           />
         </div>
 
-        <!-- TEXTO -->
-        <p class="ecu-link" @click="mostrarModal = true">
+        <p class="ecu-link mt-3" @click="mostrarModal = true">
           No conozco mi ECU
         </p>
       </div>
@@ -32,26 +30,34 @@
     </div>
   </transition>
 
-  <!-- MODAL -->
-  <transition name="fade">
-    <div v-if="mostrarModal" class="modal-overlay">
-      <div class="modal-content">
+  <transition name="fade-scale">
+    <div v-if="mostrarModal" class="modal-overlay" @click.self="mostrarModal = false">
+      <div class="modal-content shadow-lg border-0 rounded-lg p-4">
 
-        <h5 class="modal-title">Buscar ECU</h5>
+        <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+          <h5 class="modal-title text-danger m-0 font-weight-bold">Buscar ECU</h5>
+          <button class="btn btn-sm btn-light rounded-circle" @click="mostrarModal = false">✕</button>
+        </div>
 
-        <input v-model="nombre" placeholder="Nombre" />
-        <input v-model="apellidoPaterno" placeholder="Apellido Paterno" />
-        <input v-model="apellidoMaterno" placeholder="Apellido Materno" />
+        <div class="form-group mb-3">
+          <input class="form-control fancy-input" v-model="nombre" placeholder="Nombre(s)" />
+        </div>
+        <div class="form-group mb-3">
+          <input class="form-control fancy-input" v-model="apellidoPaterno" placeholder="Apellido Paterno" />
+        </div>
+        <div class="form-group mb-4">
+          <input class="form-control fancy-input" v-model="apellidoMaterno" placeholder="Apellido Materno" />
+        </div>
 
-        <button @click="buscarEcu">Encontrar</button>
-
-        <p v-if="ecuEncontrado">
-          Tu ECU es: <strong>{{ ecuEncontrado }}</strong>
-        </p>
-
-        <button class="close-btn" @click="mostrarModal = false">
-          Cerrar
+        <button class="btn btn-danger btn-block rounded-pill shadow-sm mb-3 anim-btn" @click="buscarEcu">
+          Encontrar
         </button>
+
+        <transition name="fade">
+          <div v-if="ecuEncontrado" class="alert alert-info text-center rounded-lg mt-2">
+            Tu ECU es: <strong style="font-size: 1.2rem;">{{ ecuEncontrado }}</strong>
+          </div>
+        </transition>
 
       </div>
     </div>
@@ -61,54 +67,35 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 
-// PROPS
 const props = defineProps({
-  value: { 
-    type: String,
-    default: ''
-  },
-  mostrarHeader: {
-    type: Boolean,
-    default: true
-  }
+  value: { type: String, default: '' },
+  mostrarHeader: { type: Boolean, default: true }
 });
 
-// 🔥 EMITS (agregamos ocultar-header)
 const emit = defineEmits(['input', 'buscar', 'ocultar-header']); 
 
-// V-MODEL LOCAL
 const valorLocal = computed({
-  get() {
-    return props.value; 
-  },
-  set(nuevoValor) {
-    emit('input', nuevoValor); 
-  }
+  get() { return props.value; },
+  set(nuevoValor) { emit('input', nuevoValor); }
 });
 
-// 🔥 FUNCIÓN ENTER
 const handleBuscar = () => {
-  if (!valorLocal.value) return; // opcional, evita vacío
-
-  emit('buscar');             // ejecuta búsqueda
-  emit('ocultar-header');     // 🔥 oculta el search
+  if (!valorLocal.value) return; 
+  emit('buscar');             
+  emit('ocultar-header');     
 };
 
-// MODAL STATES
 const mostrarModal = ref(false);
-
 const nombre = ref('');
 const apellidoPaterno = ref('');
 const apellidoMaterno = ref('');
 const ecuEncontrado = ref('');
 
-// FUNCIÓN DE BÚSQUEDA (simulada)
 const buscarEcu = () => {
   if (!nombre.value || !apellidoPaterno.value || !apellidoMaterno.value) {
     ecuEncontrado.value = 'Completa todos los campos';
     return;
   }
-
   ecuEncontrado.value = '123456';
 };
 </script>

@@ -4,8 +4,9 @@
       <div class="custom-modal-box wizard-box">
         
         <div class="custom-modal-header">
-          <h3 class="title-text">
-            <font-awesome-icon icon="clipboard-list" class="mr-2"></font-awesome-icon> Estudio Socioeconómico
+          <h3 class="title-text d-flex align-items-center">
+            <img src="/content/images/clipboard.svg" style="width: 24px; height: 24px; filter: brightness(0) invert(1); margin-right: 10px;" /> 
+            Estudio Socioeconómico
           </h3>
           <button class="close-btn" @click="cerrarModal" type="button">
             <font-awesome-icon icon="times" class="icon-close"></font-awesome-icon>
