@@ -7,14 +7,13 @@
   align-items: center;
   justify-content: flex-start;
   min-height: 100vh;
-  /* 🔥 Le quitamos padding lateral para que pueda estirarse a todo el monitor 🔥 */
   padding: 40px 0; 
   background-color: transparent;
 }
 
 .view-container {
   width: 100%;
-  max-width: 1400px; /* 🔥 MUCHO MÁS ANCHO PARA APROVECHAR MONITORES GRANDES 🔥 */
+  max-width: 1400px;
   padding: 0 20px;
   display: flex;
   flex-direction: column;
@@ -27,157 +26,63 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
-.title-main {
-  font-weight: 900;
-  letter-spacing: 2px;
-  color: #5c1830;
-  text-align: center;
-}
-
-.btn-back {
-  background: none;
-  border: none;
-  color: #666;
-  font-weight: 600;
-  font-size: 0.9rem;
-  cursor: pointer;
-  padding: 5px 0;
-  transition: color 0.2s;
-}
+.title-main { font-weight: 900; letter-spacing: 2px; color: #5c1830; text-align: center; }
+.btn-back { background: none; border: none; color: #666; font-weight: 600; font-size: 0.9rem; cursor: pointer; padding: 5px 0; transition: color 0.2s; }
 .btn-back:hover { color: #5c1830; }
-
-.header-nav {
-  display: flex;
-  justify-content: flex-start;
-  margin-bottom: 20px;
-}
+.header-nav { display: flex; justify-content: flex-start; margin-bottom: 20px; }
 
 /* ======================================= */
 /* 2. PANTALLA INICIO                      */
 /* ======================================= */
-.inicio-grid {
-  display: flex;
-  gap: 40px;
-  width: 100%;
-  justify-content: center;
-  flex-wrap: wrap; 
-}
-
-.big-action-card {
-  width: 100%;
-  max-width: 350px;
-  height: auto;
-  min-height: 240px;
-  border-radius: 20px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  text-align: center;
-  padding: 30px;
-  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.icon-wrapper {
-  width: 70px;
-  height: 70px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 15px;
-}
-
-.svg-icon {
-  width: 35px;
-  height: 35px;
-}
-
-.outline-card {
-  background: white;
-  border: 2px solid #5c1830;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-}
+.inicio-grid { display: flex; gap: 40px; width: 100%; justify-content: center; flex-wrap: wrap; }
+.big-action-card { width: 100%; max-width: 350px; height: auto; min-height: 240px; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; text-align: center; padding: 30px; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+.icon-wrapper { width: 70px; height: 70px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
+.svg-icon { width: 35px; height: 35px; }
+.outline-card { background: white; border: 2px solid #5c1830; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 .outline-card h4 { color: #5c1830; font-weight: 700; margin-bottom: 8px;}
 .outline-card p { color: #666; font-size: 0.9rem; margin: 0;}
 .outline-card .icon-wrapper { background: rgba(92, 24, 48, 0.08); }
 .outline-card .svg-icon { fill: #5c1830; }
-
-.outline-card:hover {
-  background: #5c1830;
-  color: white;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(92, 24, 48, 0.25);
-}
+.outline-card:hover { background: #5c1830; color: white; transform: translateY(-5px); box-shadow: 0 10px 25px rgba(92, 24, 48, 0.25); }
 .outline-card:hover h4, .outline-card:hover p { color: white; }
 .outline-card:hover .icon-wrapper { background: rgba(255,255,255,0.15); }
 .outline-card:hover .svg-icon { fill: white; }
 
 /* ======================================= */
-/* 2.5 BUSCADOR ELEGANTE (SÚPER ANCHO)     */
+/* 2.5 BUSCADOR ELEGANTE (SIN CORTES)      */
 /* ======================================= */
-.search-section-centered {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 30px;
-}
+.search-section-centered { width: 100%; display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
+.search-container { width: 100%; max-width: 650px; margin: 0 auto; } /* 🔥 ANCHO PERFECTO 🔥 */
 
-.search-container { 
-  width: 100%; 
-  max-width: 900px; /* 🔥 EL BUSCADOR ES AHORA DEL TAMAÑO DE TODO TU MONITOR 🔥 */
-}
-
+/* 🔥 NOS DESHACEMOS DEL INPUT-GROUP DE BOOTSTRAP PARA EVITAR QUE APLASTE EL TEXTO 🔥 */
 .fancy-search-pill { 
-  display: flex; 
-  align-items: center; 
-  background: white; 
-  border-radius: 50px; 
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06); 
-  border: 1px solid #e2e8f0; 
-  overflow: hidden; 
-  width: 100%; 
+  display: flex; align-items: center; background: white; 
+  border-radius: 50px; box-shadow: 0 6px 20px rgba(0,0,0,0.06); 
+  border: 1px solid #e2e8f0; width: 100%; 
+  padding: 5px 10px; /* Margen interno general */
   transition: all 0.3s ease; 
 }
+.fancy-search-pill:focus-within { box-shadow: 0 8px 25px rgba(92, 24, 48, 0.15); border-color: #5c1830; }
 
-.fancy-search-pill:focus-within { 
-  box-shadow: 0 8px 25px rgba(92, 24, 48, 0.15); 
-  border-color: #5c1830; 
-}
+.search-icon-wrapper { padding: 0 15px; display: flex; align-items: center; }
 
 .minimal-input-pill { 
-  border: none; 
-  outline: none; 
-  width: 100%; 
-  padding: 18px 25px 18px 0; 
-  font-size: 1.15rem; 
-  color: #333;
-  background: transparent; 
+  flex-grow: 1; border: none; outline: none; background: transparent; 
+  padding: 15px 0; /* Padding vertical, el horizontal lo maneja el padre */
+  font-size: 1.1rem; color: #333; 
 }
 
-.link-no-ecu {
-  color: #5c1830;
-  font-size: 0.95rem;
-  font-weight: 600;
-  text-decoration: none;
-  transition: color 0.2s;
-}
-.link-no-ecu:hover {
-  color: #8a2548;
-  text-decoration: underline;
-}
+.link-no-ecu { color: #5c1830; font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: color 0.2s; }
+.link-no-ecu:hover { color: #8a2548; text-decoration: underline; }
 
 /* ======================================= */
-/* 3. WIZARD (Nuevo Paciente)              */
+/* 3. WIZARD Y DASHBOARD                   */
 /* ======================================= */
 .step-progress { display: flex; flex-direction: row; align-items: center; justify-content: center; width: 100%; margin-bottom: 20px; flex-wrap: wrap; }
 .step { display: flex; flex-direction: column; align-items: center; width: 70px; }
 .circle { width: 35px; height: 35px; border-radius: 50%; background: #e0e0e0; color: #666; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: all 0.3s ease; }
 .step span { font-size: 0.75rem; margin-top: 8px; color: #888; font-weight: 600; }
 .line { width: 40px; height: 4px; background: #e0e0e0; margin-bottom: 15px; transition: all 0.3s ease; }
-
 .step.active .circle { background: #5c1830; color: white; transform: scale(1.1); box-shadow: 0 4px 10px rgba(92, 24, 48, 0.3); }
 .step.active span { color: #5c1830; }
 .step.completed .circle { background: #28a745; color: white; } 
@@ -192,38 +97,17 @@
 .btn-guinda { background: #5c1830; color: white; border: none; font-weight: 600; transition: all 0.2s;}
 .btn-guinda:hover:not(:disabled) { background: #8a2548; transform: translateY(-2px);}
 .btn-guinda:disabled { background: #c5a4b1; cursor: not-allowed; }
-
 .btn-outline { background: transparent; color: #5c1830; border: 2px solid #5c1830; font-weight: 600; transition: all 0.2s; padding: 5px 15px; border-radius: 8px;}
 .btn-outline:hover:not(:disabled) { background: #fdf2f5; }
 .btn-outline:disabled { border-color: #c5a4b1; color: #c5a4b1; cursor: not-allowed;}
 
-/* ======================================= */
-/* 4. DASHBOARD (Paciente Existente)       */
-/* ======================================= */
 .completion-banner { width: 100%; background: white; padding: 20px; border-radius: 15px; border-left: 5px solid #5c1830; }
 
 /* 🔥 DASHBOARD EN CUADRÍCULA 4x1 🔥 */
-.dashboard-grid-horizontal { 
-  display: grid; 
-  grid-template-columns: repeat(4, 1fr); /* 4 Tarjetas exactas por fila */
-  gap: 20px; 
-  width: 100%; 
-}
+.dashboard-grid-horizontal { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; width: 100%; }
+.dashboard-grid-horizontal-center { display: flex; justify-content: center; width: 100%; }
 
-/* Contenedor para centrar la última tarjeta abajo */
-.dashboard-grid-horizontal-center {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
-.dash-card { 
-  background: white; border-radius: 15px; padding: 25px 20px; 
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 2px solid transparent; 
-  cursor: pointer; transition: all 0.3s; 
-  min-height: 160px; 
-}
+.dash-card { background: white; border-radius: 15px; padding: 25px 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 4px 15px rgba(0,0,0,0.04); border: 2px solid transparent; cursor: pointer; transition: all 0.3s; min-height: 160px; }
 .dash-card:hover { transform: translateY(-5px); border-color: #5c1830; box-shadow: 0 8px 25px rgba(92,24,48,0.15); }
 .dash-icon { width: 45px; height: 45px; background: #fdf2f5; border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 15px; }
 .dash-icon svg { width: 24px; height: 24px; fill: #5c1830; }
@@ -236,10 +120,22 @@
 .current-patient-banner { background: #fff; padding: 15px 25px; border-radius: 12px; border: 1px solid #e2e8f0; }
 .avatar-circle { width: 45px; height: 45px; background: #fdf2f5; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .avatar-circle svg { width: 25px; height: 25px; fill: #5c1830; }
-
 .slide-down-enter-active, .slide-down-leave-active { transition: all 0.4s ease; }
 .slide-down-enter-from, .slide-down-leave-to { opacity: 0; transform: translateY(-20px); }
 
+/* ======================================= */
+/* 🔥 ESTILOS DEL MODAL (BUSCAR POR CURP)  */
+/* ======================================= */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 10000; }
+.modal-content { background: white; border-radius: 15px; width: 90%; max-width: 450px; padding: 25px; position: relative; }
+.fade-scale-enter-active, .fade-scale-leave-active { transition: all 0.3s ease; }
+.fade-scale-enter-from, .fade-scale-leave-to { opacity: 0; transform: scale(0.9); }
+.anim-btn { transition: transform 0.2s, box-shadow 0.2s; }
+.anim-btn:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(92, 24, 48, 0.3); }
+
+/* ======================================= */
+/* 📱 RESPONSIVE (Celulares y Tablets)     */
+/* ======================================= */
 /* ======================================= */
 /* 📱 RESPONSIVE (Celulares y Tablets)     */
 /* ======================================= */
@@ -254,15 +150,26 @@
   .inicio-grid { flex-direction: column; align-items: center; gap: 20px; }
   .big-action-card { width: 100%; min-height: 180px; padding: 20px; }
   .compact-card { padding: 20px; }
-  .step span { display: none; } 
-  .line { width: 15px; }
   
-  /* En celulares, la cuadrícula se vuelve 1 sola columna vertical */
+  /* 🔥 ARREGLO DE LOS PASOS DEL WIZARD EN MÓVIL 🔥 */
+  .step-progress { gap: 5px; } /* Menos separación entre elementos */
+  .step span { display: none; } /* Oculta textos */
+  .step { width: auto; } /* Deja que ocupen solo su espacio natural */
+  .circle { width: 28px; height: 28px; font-size: 0.85rem; } /* Bolitas ligeramente más chicas */
+  .line { width: 15px; margin-bottom: 0; } /* Líneas más cortas y centradas */
+  
+  /* 🔥 DASHBOARD EN CELULAR 🔥 */
   .dashboard-grid-horizontal { grid-template-columns: 1fr; }
   .dashboard-grid-horizontal-center { display: block; }
   .dashboard-grid-horizontal-center .dash-card { width: 100% !important; max-width: none; }
   .dash-card { padding: 20px; min-height: 140px; }
   
-  .fancy-search-pill { flex-direction: row; }
-  .minimal-input-pill { font-size: 1rem; padding: 15px 15px 15px 0; }
+  /* 🔥 ARREGLO DE LA BARRA DE BÚSQUEDA EN MÓVIL 🔥 */
+  .fancy-search-pill { 
+    padding: 2px 5px; /* Menos padding en celular para dar espacio al texto */
+  }
+  .minimal-input-pill { 
+    font-size: 1rem; 
+    padding: 12px 10px 12px 0; /* Ajuste para que el texto no se pegue al borde */
+  }
 }
