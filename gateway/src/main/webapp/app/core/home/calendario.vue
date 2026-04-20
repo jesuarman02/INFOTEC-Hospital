@@ -1,58 +1,61 @@
 <template>
   <div class="interface-container">
     
-    <aside class="left-panel-glass">
-      <SidebarModule @toggle-search="irPacientes" />
-    </aside>
+    <SidebarModule 
+      @toggle-search="irPacientes" 
+      @toggle-clipboard="irPacientes" 
+    />
 
     <main class="right-panel-workspace">
       
-      <div class="calendar-card">
-        <div class="left-section">
-          <h2 class="mes">{{ mesNombre }} {{ anioActual }}</h2>
-          <div class="numero-dia">{{ diaSeleccionado }}</div>
-          <h3 class="titulo-citas">Citas</h3>
+      <section class="work-area">
+        <div class="calendar-card">
+          <div class="left-section">
+            <h2 class="mes">{{ mesNombre }} {{ anioActual }}</h2>
+            <div class="numero-dia">{{ diaSeleccionado }}</div>
+            <h3 class="titulo-citas">Citas</h3>
 
-          <div v-if="citasDelDia.length === 0" class="text-muted mt-3">
-            No hay citas
+            <div v-if="citasDelDia.length === 0" class="text-muted mt-3">
+              No hay citas
+            </div>
+
+            <div v-for="(cita, index) in citasDelDia" :key="index" class="cita-card mt-3 p-2 border-left border-danger shadow-sm">
+              <strong>{{ cita.hora }}</strong> - {{ cita.paciente }}
+            </div>
           </div>
 
-          <div v-for="(cita, index) in citasDelDia" :key="index" class="cita-card mt-3 p-2 border-left border-danger shadow-sm">
-            <strong>{{ cita.hora }}</strong> - {{ cita.paciente }}
-          </div>
-        </div>
+          <div class="right-section">
+            <div class="month-switch d-flex justify-content-between align-items-center mb-4">
+              <button class="btn btn-light btn-sm" @click="cambiarMes(-1)">◀</button>
+              <h2 class="titulo-mes m-0">{{ mesNombre }} {{ anioActual }}</h2>
+              <button class="btn btn-light btn-sm" @click="cambiarMes(1)">▶</button>
+            </div>
 
-        <div class="right-section">
-          <div class="month-switch d-flex justify-content-between align-items-center mb-4">
-            <button class="btn btn-light btn-sm" @click="cambiarMes(-1)">◀</button>
-            <h2 class="titulo-mes m-0">{{ mesNombre }} {{ anioActual }}</h2>
-            <button class="btn btn-light btn-sm" @click="cambiarMes(1)">▶</button>
-          </div>
+            <div class="week-days text-muted font-weight-bold">
+              <div v-for="d in diasSemana" :key="d">{{ d }}</div>
+            </div>
 
-          <div class="week-days text-muted font-weight-bold">
-            <div v-for="d in diasSemana" :key="d">{{ d }}</div>
-          </div>
-
-          <div class="days-grid">
-            <div
-              v-for="(dia, index) in diasDelMes"
-              :key="index"
-              class="day"
-              :class="{ selected: dia === diaSeleccionado, cita: tieneCita(dia) }"
-              :style="{ visibility: dia === null ? 'hidden' : 'visible' }"
-              @click="dia !== null && seleccionarDia(dia)"
-            >
-              {{ dia }}
+            <div class="days-grid">
+              <div
+                v-for="(dia, index) in diasDelMes"
+                :key="index"
+                class="day"
+                :class="{ selected: dia === diaSeleccionado, cita: tieneCita(dia) }"
+                :style="{ visibility: dia === null ? 'hidden' : 'visible' }"
+                @click="dia !== null && seleccionarDia(dia)"
+              >
+                {{ dia }}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="d-flex justify-content-end mt-4">
-        <button class="btn btn-danger px-4 py-2 shadow-sm" @click="abrirModal">
-          Agendar Cita
-        </button>
-      </div>
+        <div class="d-flex justify-content-end mt-4">
+          <button class="btn btn-danger px-4 py-2 shadow-sm" @click="abrirModal">
+            Agendar Cita
+          </button>
+        </div>
+      </section>
 
     </main>
 
@@ -104,12 +107,12 @@ import '../../../content/css/calendario.css';
 
 const router = useRouter();
 
+// Cuando presione los botones del sidebar, lo mandamos de regreso a la interfaz de búsqueda
 const irPacientes = () => {
   router.push('/interfaz-pacientes'); 
 };
 
 // Variables de estado
-const mostrarBuscador = ref(false); 
 const modalAbierta = ref(false);
 const fecha = ref(new Date());
 const diaSeleccionado = ref(new Date().getDate());
@@ -123,7 +126,7 @@ const form = ref({
 
 // Datos simulados (Mock)
 const citas = ref([
-  { dia: 6, mes: 2, anio: 2026, hora: '09:00', paciente: 'Juan Pérez' }, // Mes 2 es Marzo (0-index)
+  { dia: 6, mes: 2, anio: 2026, hora: '09:00', paciente: 'Juan Pérez' }, 
   { dia: 6, mes: 2, anio: 2026, hora: '12:30', paciente: 'Ana López' },
   { dia: 10, mes: 2, anio: 2026, hora: '15:00', paciente: 'Carlos Ruiz' }
 ]);
@@ -133,24 +136,12 @@ const anioActual = computed(() => fecha.value.getFullYear());
 const mesActualNumero = computed(() => fecha.value.getMonth());
 const mesNombre = computed(() => fecha.value.toLocaleString('es-MX', { month: 'short' }).toUpperCase());
 
-// AQUÍ ESTÁ LA MAGIA PRINCIPAL
 const diasDelMes = computed(() => {
-  // 1. Calculamos cuántos días tiene el mes actual
   const ultimoDia = new Date(anioActual.value, mesActualNumero.value + 1, 0).getDate();
-  
-  // 2. Calculamos qué día de la semana (0 a 6) es el día 1 de este mes
   const diaDeSemanaInicio = new Date(anioActual.value, mesActualNumero.value, 1).getDay();
-  
-  // 3. Ajustamos el índice porque Date() empieza con Domingo = 0, y tu grid con Lunes = 0
   const offset = diaDeSemanaInicio === 0 ? 6 : diaDeSemanaInicio - 1;
-
-  // 4. Llenamos un arreglo inicial con valores `null` para los espacios vacíos
   const diasEnBlanco = Array(offset).fill(null);
-  
-  // 5. Creamos los días reales del mes
   const diasReales = Array.from({ length: ultimoDia }, (_, i) => i + 1);
-
-  // 6. Concatenamos ambos arreglos
   return [...diasEnBlanco, ...diasReales];
 });
 
@@ -169,7 +160,7 @@ const seleccionarDia = (dia: number) => {
 };
 
 const tieneCita = (dia: number | null) => {
-  if (dia === null) return false; // Prevención de errores con los días en blanco
+  if (dia === null) return false; 
   return citas.value.some(c => c.dia === dia && c.mes === mesActualNumero.value && c.anio === anioActual.value);
 };
 
@@ -189,3 +180,50 @@ const guardarCita = () => {
   form.value = { ecu: '', nombre: '', apellidoPaterno: '', apellidoMaterno: '', sexo: '', nacionalidad: '', fechaNacimiento: '', estadoCivil: '', curp: '', hora: '' };
 };
 </script>
+
+<style scoped>
+/* ==========================================================================
+   ESTRUCTURA BASE (Idéntica a tu vista de pacientes)
+   ========================================================================== */
+.interface-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  display: flex;
+  min-height: calc(100vh - 70px);
+  background-color: #f4f6f9; 
+}
+
+.right-panel-workspace {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Inicia el contenido desde arriba SIEMPRE */
+  padding-left: 100px; /* Protege el espacio del sidebar */
+  min-height: 100%;
+}
+
+.work-area {
+  width: 100%;
+  height: auto; 
+  flex-grow: 1;
+  padding: 2rem; /* Le da aire a la interfaz por los lados y por arriba */
+  
+  /* Agregamos esto para centrar el calendario en la pantalla de trabajo */
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+}
+
+/* 📱 MODO RESPONSIVO PARA LA ESTRUCTURA */
+@media (max-width: 1024px) {
+  .right-panel-workspace {
+    padding-left: 0; 
+    padding-top: 90px; 
+    justify-content: flex-start; 
+  }
+}
+</style>
