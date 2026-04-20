@@ -113,43 +113,79 @@
             </div>
 
             <div class="card border-light shadow-sm mb-4">
-              <div class="card-body">
-                <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
-                  <h5 class="text-danger mb-0">Información Socioeconómica</h5>
-                  <button 
-                    class="btn btn-sm btn-outline-danger" 
-                    @click="mostrarModalSocioeconomico = true"
-                    :disabled="!paciente?.tieneInfoSocioeconomica"
-                  >
-                    <span v-if="paciente?.tieneInfoSocioeconomica">Ver Expediente Completo</span>
-                    <span v-else>No hay datos registrados</span>
-                  </button>
-                </div>
+  <div class="card-body">
+    <div class="d-flex justify-content-between align-items-center mb-4 border-bottom pb-2">
+      <h5 class="text-danger mb-0">Información Socioeconómica</h5>
+      <button 
+        class="btn btn-sm btn-outline-danger" 
+        @click="mostrarModalSocioeconomico = true"
+        :disabled="!paciente?.tieneInfoSocioeconomica"
+      >
+        <span v-if="paciente?.tieneInfoSocioeconomica">Ver Expediente Completo</span>
+        <span v-else>No hay datos registrados</span>
+      </button>
+    </div>
 
-                <div v-if="paciente?.tieneInfoSocioeconomica" class="d-flex flex-wrap">
-                  <div class="data-item mr-5 mb-3">
-                    <label class="text-muted small d-block mb-1">Ocupación Actual</label>
-                    <span class="h6 text-dark font-weight-bold">{{ paciente?.resumenSocioeconomico?.ocupacion || 'N/A' }}</span>
-                  </div>
-                  <div class="data-item mr-5 mb-3">
-                    <label class="text-muted small d-block mb-1">Grado de Estudios</label>
-                    <span class="h6 text-dark font-weight-bold">{{ paciente?.resumenSocioeconomico?.gradoEstudios || 'N/A' }}</span>
-                  </div>
-                  <div class="data-item mr-5 mb-3">
-                    <label class="text-muted small d-block mb-1">Ingreso Mensual</label>
-                    <span class="h6 text-dark font-weight-bold">
-                      {{ paciente?.resumenSocioeconomico?.ingresoMensual && paciente?.resumenSocioeconomico?.ingresoMensual !== 'N/A' ? '$' + paciente?.resumenSocioeconomico?.ingresoMensual : 'N/A' }}
-                    </span>
-                  </div>
-                  <div class="data-item mr-5 mb-3">
-                    <label class="text-muted small d-block mb-1">Afiliación Médica</label>
-                    <span class="h6 text-dark font-weight-bold">{{ paciente?.resumenSocioeconomico?.afiliacion || 'N/A' }}</span>
-                  </div>
-                </div>
-                
-                <p v-else class="text-muted mb-0"><em>El paciente no cuenta con un estudio socioeconómico registrado.</em></p>
-              </div>
-            </div>
+    <div v-if="paciente?.tieneInfoSocioeconomica" class="d-flex flex-wrap">
+      <div class="data-item mr-5 mb-3">
+        <label class="text-muted small d-block mb-1">Ocupación Actual</label>
+        <span class="h6 text-dark font-weight-bold">{{ paciente.resumenSocioeconomico?.ocupacion || 'N/A' }}</span>
+      </div>
+      <div class="data-item mr-5 mb-3">
+        <label class="text-muted small d-block mb-1">Grado de Estudios</label>
+        <span class="h6 text-dark font-weight-bold">{{ paciente.resumenSocioeconomico?.gradoEstudios || 'N/A' }}</span>
+      </div>
+      <div class="data-item mr-5 mb-3">
+        <label class="text-muted small d-block mb-1">Ingreso Mensual</label>
+        <span class="h6 text-dark font-weight-bold">
+          {{ paciente.resumenSocioeconomico?.ingresoMensual !== 'N/A' ? '$' + paciente.resumenSocioeconomico?.ingresoMensual : 'N/A' }}
+        </span>
+      </div>
+      <div class="data-item mr-5 mb-3">
+        <label class="text-muted small d-block mb-1">Afiliación Médica</label>
+        <span class="h6 text-dark font-weight-bold">{{ paciente.resumenSocioeconomico?.afiliacion || 'N/A' }}</span>
+      </div>
+    </div>
+    
+    <p v-else class="text-muted mb-0"><em>El paciente no cuenta con un estudio socioeconómico registrado.</em></p>
+  </div>
+</div>
+
+<div v-if="mostrarModalSocioeconomico" class="card border-danger shadow-sm mb-4">
+  <div class="card-header bg-white border-bottom d-flex justify-content-between align-items-center">
+    <h5 class="text-danger mb-0">Expediente Socioeconómico Completo</h5>
+    <button class="btn btn-sm btn-light font-weight-bold text-danger" @click="mostrarModalSocioeconomico = false">
+      Cerrar ✕
+    </button>
+  </div>
+  
+  <div class="card-body p-0">
+    <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+      <table class="table table-sm table-striped table-hover mb-0">
+        <thead class="bg-dark text-white sticky-top">
+          <tr>
+            <th class="py-2 px-3">Pregunta</th>
+            <th class="py-2 px-3">Respuesta</th>
+            <th class="py-2 px-3">Detalles / Abierta</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="item in paciente?.expedienteCompleto" :key="item.id">
+            <td class="font-weight-bold text-dark px-3 align-middle">{{ item.pregunta }}</td>
+            <td class="px-3 align-middle">
+              <span class="badge" style="background-color: #9b59b6; color: white; padding: 6px 10px;">
+                {{ item.respuesta || 'N/A' }}
+              </span>
+            </td>
+            <td class="text-muted px-3 align-middle">
+              {{ item.respuestaAbierta || '-' }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
 
           </div> </div> <div v-if="tabActual === 'medicos'">
           <div class="card border-light shadow-sm mb-4">
@@ -180,8 +216,7 @@
           </div>
         </div>
 
-      </div> </div> <div v-if="mostrarModalSocioeconomico" class="modal-overlay" @click.self="mostrarModalSocioeconomico = false">
-      <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 800px; background: white; max-height: 90vh; overflow-y: auto;">
+      </div> </div>
         
 
         <div v-if="paciente?.infoSocioeconomica" class="row">
@@ -267,8 +302,6 @@
         </div>
 
       </div>
-    </div>
-  </div>
 </template>
 
 <script setup lang="ts">

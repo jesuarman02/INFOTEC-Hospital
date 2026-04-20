@@ -1,17 +1,13 @@
 <template>
   <div class="interface-container">
     
-    <!-- 1. PANEL IZQUIERDO: Tu Sidebar -->
     <aside class="left-panel-glass">
-      <!-- Nota: Si no vas a poner un buscador aquí, el evento toggle-search no hará nada visualmente, pero lo dejamos preparado -->
       <SidebarModule @toggle-search="irPacientes" />
     </aside>
 
-    <!-- 2. PANEL DERECHO: Tu Área de Trabajo (Calendario) -->
     <main class="right-panel-workspace">
       
       <div class="calendar-card">
-        <!-- IZQUIERDA INFO DEL DIA -->
         <div class="left-section">
           <h2 class="mes">{{ mesNombre }} {{ anioActual }}</h2>
           <div class="numero-dia">{{ diaSeleccionado }}</div>
@@ -26,7 +22,6 @@
           </div>
         </div>
 
-        <!-- DERECHA CALENDARIO -->
         <div class="right-section">
           <div class="month-switch d-flex justify-content-between align-items-center mb-4">
             <button class="btn btn-light btn-sm" @click="cambiarMes(-1)">◀</button>
@@ -40,11 +35,12 @@
 
           <div class="days-grid">
             <div
-              v-for="dia in diasDelMes"
-              :key="dia"
+              v-for="(dia, index) in diasDelMes"
+              :key="index"
               class="day"
               :class="{ selected: dia === diaSeleccionado, cita: tieneCita(dia) }"
-              @click="seleccionarDia(dia)"
+              :style="{ visibility: dia === null ? 'hidden' : 'visible' }"
+              @click="dia !== null && seleccionarDia(dia)"
             >
               {{ dia }}
             </div>
@@ -52,7 +48,6 @@
         </div>
       </div>
 
-      <!-- Botón de agendar debajo de la tarjeta del calendario -->
       <div class="d-flex justify-content-end mt-4">
         <button class="btn btn-danger px-4 py-2 shadow-sm" @click="abrirModal">
           Agendar Cita
@@ -61,7 +56,6 @@
 
     </main>
 
-    <!-- 3. MODAL DE CITA (Fuera del flujo Flexbox para que cubra toda la pantalla) -->
     <div v-if="modalAbierta" class="modal-overlay">
       <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 500px; background: white;">
         <h3 class="text-danger border-bottom pb-2 mb-4">Registrar Cita</h3>
@@ -103,16 +97,15 @@
 </template>
 
 <script setup lang="ts">
-// ¡Mucho más limpio con <script setup>! No necesitamos "defineComponent" ni retornar variables.
 import { ref, computed } from 'vue';
 import { useRouter } from 'vue-router';
 import SidebarModule from '@/intefaz/sidebarModule.vue';
-import '../../../content/css/calendario.css'; // Asegúrate de que esta ruta sea correcta
+import '../../../content/css/calendario.css';
 
 const router = useRouter();
 
 const irPacientes = () => {
-  router.push('/interfaz-pacientes'); // o '/pacientes' según tu ruta
+  router.push('/interfaz-pacientes'); 
 };
 
 // Variables de estado
@@ -130,7 +123,7 @@ const form = ref({
 
 // Datos simulados (Mock)
 const citas = ref([
-  { dia: 6, mes: 2, anio: 2026, hora: '09:00', paciente: 'Juan Pérez' },
+  { dia: 6, mes: 2, anio: 2026, hora: '09:00', paciente: 'Juan Pérez' }, // Mes 2 es Marzo (0-index)
   { dia: 6, mes: 2, anio: 2026, hora: '12:30', paciente: 'Ana López' },
   { dia: 10, mes: 2, anio: 2026, hora: '15:00', paciente: 'Carlos Ruiz' }
 ]);
@@ -140,9 +133,25 @@ const anioActual = computed(() => fecha.value.getFullYear());
 const mesActualNumero = computed(() => fecha.value.getMonth());
 const mesNombre = computed(() => fecha.value.toLocaleString('es-MX', { month: 'short' }).toUpperCase());
 
+// AQUÍ ESTÁ LA MAGIA PRINCIPAL
 const diasDelMes = computed(() => {
+  // 1. Calculamos cuántos días tiene el mes actual
   const ultimoDia = new Date(anioActual.value, mesActualNumero.value + 1, 0).getDate();
-  return Array.from({ length: ultimoDia }, (_, i) => i + 1);
+  
+  // 2. Calculamos qué día de la semana (0 a 6) es el día 1 de este mes
+  const diaDeSemanaInicio = new Date(anioActual.value, mesActualNumero.value, 1).getDay();
+  
+  // 3. Ajustamos el índice porque Date() empieza con Domingo = 0, y tu grid con Lunes = 0
+  const offset = diaDeSemanaInicio === 0 ? 6 : diaDeSemanaInicio - 1;
+
+  // 4. Llenamos un arreglo inicial con valores `null` para los espacios vacíos
+  const diasEnBlanco = Array(offset).fill(null);
+  
+  // 5. Creamos los días reales del mes
+  const diasReales = Array.from({ length: ultimoDia }, (_, i) => i + 1);
+
+  // 6. Concatenamos ambos arreglos
+  return [...diasEnBlanco, ...diasReales];
 });
 
 const citasDelDia = computed(() =>
@@ -159,7 +168,8 @@ const seleccionarDia = (dia: number) => {
   diaSeleccionado.value = dia;
 };
 
-const tieneCita = (dia: number) => {
+const tieneCita = (dia: number | null) => {
+  if (dia === null) return false; // Prevención de errores con los días en blanco
   return citas.value.some(c => c.dia === dia && c.mes === mesActualNumero.value && c.anio === anioActual.value);
 };
 
@@ -167,7 +177,7 @@ const abrirModal = () => { modalAbierta.value = true; };
 const cerrarModal = () => { modalAbierta.value = false; };
 
 const guardarCita = () => {
-  if(!form.value.hora || !form.value.nombre) return; // Pequeña validación básica
+  if(!form.value.hora || !form.value.nombre) return; 
   citas.value.push({
     dia: diaSeleccionado.value,
     mes: mesActualNumero.value,
@@ -176,7 +186,6 @@ const guardarCita = () => {
     paciente: `${form.value.nombre} ${form.value.apellidoPaterno}`.trim()
   });
   cerrarModal();
-  // Limpiamos el formulario
   form.value = { ecu: '', nombre: '', apellidoPaterno: '', apellidoMaterno: '', sexo: '', nacionalidad: '', fechaNacimiento: '', estadoCivil: '', curp: '', hora: '' };
 };
 </script>
