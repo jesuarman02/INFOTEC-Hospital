@@ -285,12 +285,20 @@ export default defineComponent({
 
       isSaving.value = true;
 
-      try {
+try {
+        let respuestaBackend;
+        
         if (paciente.value.id) {
-          await pacienteService().update(paciente.value);
+          respuestaBackend = await pacienteService().update(paciente.value);
         } else {
-          await pacienteService().create(paciente.value);
+          respuestaBackend = await pacienteService().create(paciente.value);
         }
+
+        // 🔥 EXTRAEMOS EL PACIENTE CON SU NUEVO ID GENERADO POR LA BD 🔥
+
+        // Le decimos a TypeScript que esto puede ser cualquier cosa para que no llore por el .data
+          const res: any = respuestaBackend;
+          const pacienteGuardado = res.data ? res.data : res;
 
         Swal.fire({
           icon: 'success',
@@ -300,7 +308,8 @@ export default defineComponent({
           timer: 1500
         });
 
-        emit('saved'); // Le avisamos al componente padre que ya terminamos
+        // 🔥 ENVIAMOS EL PACIENTE REAL (CON ID) AL WIZARD 🔥
+        emit('saved', pacienteGuardado); 
         limpiarFormulario();
         emit('update:visible', false);
 

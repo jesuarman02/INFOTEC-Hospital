@@ -8,120 +8,138 @@ import SidebarModule from '@/intefaz/sidebarModule.vue'
 import Modulos from '@/intefaz/modulos.vue'
 import TablaModule from '@/intefaz/tablaModule.vue'
 
-// Extraemos todo lo que nos da tu composable
 const { searchQuery, resultados, estaCargando, error, buscarPorEcu } = usePacienteSearch()
 
-// 🔥 FUNCIÓN MEJORADA
 const manejarBusqueda = async () => {
-
-  // ⚠️ VALIDAR CAMPO VACÍO
   if (!searchQuery.value.trim()) {
-    Swal.fire({
-      title: 'Campo vacío',
-      text: 'Escribe un nombre o ECU para buscar',
-      icon: 'warning',
-      confirmButtonColor: '#3085d6'
-    })
+    Swal.fire({ title: 'Campo vacío', text: 'Escribe un nombre o ECU para buscar', icon: 'warning', confirmButtonColor: '#5c1830' })
     return
   }
 
-  // 🔥 LOADER DIRECTO
   Swal.fire({
     title: 'Buscando...',
     text: 'Consultando en la base de datos',
     allowOutsideClick: false,
-    didOpen: () => {
-      Swal.showLoading()
-    }
+    didOpen: () => { Swal.showLoading() }
   })
 
   await buscarPorEcu()
-
   Swal.close()
 
-  // 🔥 RESULTADO FINAL
   if (resultados.value.length > 0) {
-    Swal.fire({
-      title: 'Paciente encontrado',
-      icon: 'success',
-      timer: 1500,
-      showConfirmButton: false
-    })
+    Swal.fire({ title: 'Paciente encontrado', icon: 'success', timer: 1500, showConfirmButton: false })
   } else {
-    Swal.fire({
-      title: 'Paciente no encontrado',
-      text: 'Verifica los datos ingresados',
-      icon: 'error'
-    })
+    Swal.fire({ title: 'Paciente no encontrado', text: 'Verifica los datos ingresados', icon: 'error' })
   }
 }
-// 🔥 CONTROL DE VISTAS
+
 const mostrarBuscador = ref(true)
 const mostrarClipboard = ref(false)
 
 watch(mostrarBuscador, (val) => {
-  if (val) {
-    resultados.value.splice(0)
-  }
+  if (val) resultados.value.splice(0)
 })
 </script>
 
 <template>
   <div class="interface-container">
-    <aside class="left-panel-glass">
+    
+    <sidebarModule 
+      @toggle-search="() => { mostrarBuscador = true; mostrarClipboard = false; resultados.splice(0) }"
+      @toggle-clipboard="() => { mostrarClipboard = true; mostrarBuscador = false }"
+    />
 
-      <!-- 🔥 SIDEBAR -->
-      <sidebarModule 
-        @toggle-search="() => { mostrarBuscador = true; mostrarClipboard = false; resultados.splice(0) }"
-        @toggle-clipboard="() => { mostrarClipboard = true; mostrarBuscador = false }"
-      />
-
-      <!-- 🔍 SEARCH NORMAL -->
-      <div v-show="mostrarBuscador" class="search-section glass-sidebar">
+    <main class="right-panel-workspace">
+      
+      <div v-show="mostrarBuscador && resultados.length === 0" class="search-section-centered">
         <searchModule
           :key="'buscador-' + mostrarBuscador" 
           v-model="searchQuery" 
           @buscar="manejarBusqueda"
           @ocultar-header="mostrarBuscador = false"
         />
-
-        <p v-if="estaCargando" class="status-text status-area">
-          Buscando en la base de datos...
-        </p>
-
-        <p v-else-if="error" class="status-text status-area" style="color: #ff4d4f;">
-          {{ error }}
-        </p>
-
-        <p v-else-if="resultados.length === 0" class="status-text status-area">
-          Esperando búsqueda de paciente...
-        </p>
-
-        <p v-else class="status-text status-area" style="color: #52c41a;">
-          Paciente localizado.
+        <p v-if="estaCargando" class="text-muted mt-3 font-weight-bold text-center">
+          <span class="spinner-border spinner-border-sm mr-2"></span> Buscando en la base de datos...
         </p>
       </div>
 
-      <!-- 📋 SEARCH CLIPBOARD -->
-      <div v-show="mostrarClipboard" class="search-section glass-sidebar">
+      <div v-show="mostrarClipboard && resultados.length === 0" class="search-section-centered">
         <searchModule2 
           :key="'clipboard-' + mostrarClipboard"
           v-model="searchQuery"
           :mostrarHeader="mostrarClipboard"
+          @ir-buscar="mostrarBuscador = true; mostrarClipboard = false"
         />
       </div>
 
-    </aside>
-
-    <main class="right-panel-workspace">
       <section class="work-area" v-show="resultados.length > 0">
         <div class="paciente-data-preview">
           <modulos :paciente="resultados[0]" />
           <tablaModule :paciente="resultados[0]" />
         </div>
       </section>  
+
     </main>
   </div>
 </template>
 
 <style scoped src="../../../content/css/main.css"></style>
+
+<style scoped>
+.interface-container {
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  display: flex;
+  min-height: calc(100vh - 70px);
+  background-color: #f4f6f9; 
+}
+
+.right-panel-workspace {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  
+  /* 🔥 LA SOLUCIÓN AL CORTE 🔥 */
+  justify-content: flex-start; /* Inicia el contenido desde arriba SIEMPRE */
+  
+  padding-left: 100px; /* Protege el espacio del sidebar */
+  min-height: 100%;
+}
+
+.search-section-centered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  
+  /* 🔥 EL TRUCO PARA EL BUSCADOR 🔥 */
+  flex-grow: 1; /* Empuja el buscador al centro cuando está solo */
+  min-height: calc(100vh - 150px); 
+  padding: 2rem;
+}
+
+.work-area {
+  width: 100%;
+  height: auto; 
+  flex-grow: 1;
+  padding: 2rem; /* Le da aire a la interfaz por los lados y por arriba */
+}
+
+/* 📱 MODO RESPONSIVO PARA LA ESTRUCTURA */
+@media (max-width: 1024px) {
+  .right-panel-workspace {
+    padding-left: 0; 
+    padding-top: 90px; 
+    justify-content: flex-start; 
+  }
+  .search-section-centered {
+    min-height: auto; /* En celular no forzamos el alto completo */
+    margin-top: 2rem;
+  }
+}
+</style>

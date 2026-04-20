@@ -44,8 +44,8 @@ public class LoggingAspect {
      */
     @Pointcut(
         "within(mx.infotec.gateway.repository..*)" +
-        " || within(mx.infotec.gateway.service..*)" +
-        " || within(mx.infotec.gateway.web.rest..*)"
+        " || within(mx.infotec.gateway.service..*)"
+        //" || within(mx.infotec.gateway.web.rest..*)"
     )
     public void applicationPackagePointcut() {
         // Method is empty as this is just a Pointcut, the implementations are in the advices.

@@ -1,13 +1,9 @@
-/* 1. CONTENEDOR PRINCIPAL Y MARCA DE AGUA */
 .main-content {
     position: relative;
-    min-height: 100vh;
     height: auto;
     overflow-x: hidden;
-    padding: 2rem;
+    padding: 1rem 2rem; /* Relleno limpio sin empujar nada */
     box-sizing: border-box;
-    /* 🔥 QUITAMOS el margin-left: 80px porque 'sticky' empuja el contenido naturalmente 🔥 */
-    margin-left: 0; 
 }
 .body{
     overflow-y: auto;
@@ -256,21 +252,18 @@
     flex: 1 1 100%;
   }
 }
-/* 📱 RESPONSIVE (Celulares y Tablets) */
+/*
 @media (max-width: 1024px) {
   .main-content {
-    margin-left: 0 !important; /* Evita que la tabla se vaya a la derecha */
-    
-    /* 🔥 EL EMPUJÓN: 70px de la barra + 20px de espacio para que respire 🔥 */
-    padding-top: 90px !important; 
-    
+    margin-left: 0 !important; 
+    padding-top: 90px !important; /* Respeta la barra que ahora está arriba en celular 
     padding-bottom: 2rem !important; 
   }
 }
-/* 📱 CELULARES EN HORIZONTAL */
 @media (max-width: 950px) and (orientation: landscape) {
   .main-content {
-    margin-left: 60px; /* Respeta la barra delgada que hicimos para landscape */
+    margin-left: 60px; /* Respeta la barra delgada que hicimos para landscape 
     padding-bottom: 2rem !important;
   }
 }
+*/

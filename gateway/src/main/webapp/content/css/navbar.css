@@ -3,23 +3,24 @@
 /* ========================================= */
 .sidebar-wrapper {
   background-color: #5c1830; 
-  width: 80px;
+  width: 100px;
   
-  /* 🔥 SOLUCIÓN PC Y FOOTER 🔥 */
-  position: sticky; /* Te sigue al scrollear, pero RESPETA el footer */
-  top: 70px;        /* Se queda pegada 70px abajo del techo (por tu header) */
-  height: calc(100vh - 70px); 
-  
+  /* 🔥 EL SECRETO PROFESIONAL 🔥 */
+  position: sticky !important; 
+  top: 0;
+  align-self: flex-start; /* ESTO EVITA LOS SALTOS Y COMPORTAMIENTOS FLOTANTES */
+height: 100vh; /* Que ocupe el 100% del alto */
+
+  margin: 0 !important; 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start; 
-  padding-top: 25px;
+  padding-top: 30px;
   box-shadow: 4px 0 15px rgba(0,0,0,0.15);
   z-index: 1000;
   transition: all 0.3s ease;
 }
-
 .sidebar-icons {
   width: 100%;
 }
@@ -28,20 +29,20 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 50px; /* 🔥 MAYOR SEPARACIÓN ENTRE ICONOS */
 }
 
 .icon-separator {
-  width: 40px;
+  width: 50px;
   height: 2px;
   background-color: rgba(255,255,255,0.15);
-  margin: 15px 0;
+  margin: 10px 0;
   border-radius: 2px;
 }
 
 .icon-item {
-  width: 50px;
-  height: 50px;
+  width: 58px; /* 🔥 CAJAS MÁS GRANDES */
+  height: 58px;
   border-radius: 14px;
   display: flex;
   justify-content: center;
@@ -52,7 +53,7 @@
 }
 
 .icon-item:hover {
-  transform: translateY(-3px) scale(1.05);
+  transform: translateY(-3px) scale(1.08); /* Salto sutil más notorio */
   box-shadow: 0 6px 12px rgba(0,0,0,0.25);
   background-color: rgba(255,255,255,0.2);
 }
@@ -61,13 +62,9 @@
   transform: translateY(0) scale(0.95);
 }
 
-.icon-yellow:hover { background-color: #ffeeba; }
-.icon-blue:hover { background-color: #cff4fc; }
-.icon-green:hover { background-color: #d1e7dd; }
-
 .sidebar-svg {
-  width: 24px;
-  height: 24px;
+  width: 28px; /* 🔥 ICONOS SVG MÁS GRANDES */
+  height: 28px;
   filter: brightness(0) invert(1);
   transition: filter 0.3s ease;
 }
@@ -76,28 +73,26 @@
   filter: brightness(0); 
 }
 
-.emoji-icon {
-  font-size: 1.6rem;
-}
-
+/* Colores interactivos */
+.icon-yellow:hover { background-color: #ffeeba; }
+.icon-blue:hover { background-color: #cff4fc; }
+.icon-green:hover { background-color: #d1e7dd; }
 
 /* ========================================= */
-/* MODO CELULAR (Anclado arriba correctamente) */
+/* MODO CELULAR (Anclado arriba)             */
 /* ========================================= */
 @media (max-width: 1024px) {
   .sidebar-wrapper {
-    /* 🔥 USAMOS FIXED PARA SACARLO DE LA FILA HORIZONTAL 🔥 */
     position: fixed !important; 
-    top: 70px !important;    /* Lo clavamos debajo de INFOTEC */
-    bottom: auto !important; /* Ignoramos el fondo */
-    
+    top: 70px !important;    
+    bottom: auto !important; 
     width: 100vw;
     height: 70px;
     left: 0;
     padding-top: 0;
     flex-direction: row;
     justify-content: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15); /* Sombra hacia abajo */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
     z-index: 9999;
   }
 
@@ -112,7 +107,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     width: 100%;
-    gap: 0;
+    gap: 0; /* En celular el gap es 0 para que quepan */
     padding: 0 10px;
   }
 
@@ -121,8 +116,8 @@
   }
 
   .icon-item {
-    width: 48px;
-    height: 48px;
+    width: 50px; /* Un poco más chicos en celular para no desbordar */
+    height: 50px;
   }
 
   .icon-item:hover {

@@ -15,7 +15,7 @@
         <div class="custom-modal-body">
           <form @submit.prevent="guardar">
             
-            <div class="search-section" v-if="!direccion.id">
+            <div class="search-section" v-if="!direccion.id && !pacientePreCargado">
               <h5 class="section-title">
                 <img src="/content/images/search.svg" class="icon-label" /> Identificación del paciente
               </h5>
@@ -47,9 +47,19 @@
               </div>
             </div>
 
-            <hr class="divider" v-if="pacienteEncontrado || direccion.id" />
+            <div class="search-section" style="background-color: #fdf2f5; border-color: #fbcfe8;" v-if="!direccion.id && pacientePreCargado">
+               <h5 class="section-title mb-2" style="color: #5c1830;">
+                <img src="/content/images/person-vcard.svg" class="icon-label" /> Asignando dirección a:
+              </h5>
+              <div class="d-flex align-items-center bg-white p-2 rounded border">
+                <span class="badge badge-secondary mr-2" style="font-size: 0.9rem;">ECU: {{ pacientePreCargado.ecu }}</span>
+                <span class="font-weight-bold">{{ pacientePreCargado.nombreCompleto }}</span>
+              </div>
+            </div>
 
-            <div class="formulario-grid" v-if="pacienteEncontrado || direccion.id">
+            <hr class="divider" v-if="pacienteEncontrado || direccion.id || pacientePreCargado" />
+
+            <div class="formulario-grid" v-if="pacienteEncontrado || pacientePreCargado || direccion.id">              
               
               <div class="form-group col-span-2" v-if="direccion.id">
                 <label>ID Dirección</label>
@@ -111,12 +121,11 @@
                     <span class="loading-badge"><img src="/content/images/arrow-repeat.svg" class="spinner icon-small" /> Buscando...</span>
                   </div>
                 </div>
-                              <span v-if="coloniasOptions.length > 0 && !isSearchingCP" class="success-text">
-                <img src="/content/images/check-circle.svg" class="icon-small success-icon-filter" />
-                Código postal válido. Seleccione su colonia abajo.
-              </span>
+                <span v-if="coloniasOptions.length > 0 && !isSearchingCP" class="success-text">
+                  <img src="/content/images/check-circle.svg" class="icon-small success-icon-filter" />
+                  Código postal válido. Seleccione su colonia abajo.
+                </span>
               </div>
-
 
               <div class="form-group col-span-2">
                 <label><img src="/content/images/buildings.svg" class="icon-label" /> Colonia / Asentamiento <span class="text-danger">*</span></label>
@@ -131,7 +140,6 @@
                 </div>
                 <span v-if="v$.codigoPostalInfo.$error" class="error-text"><img src="/content/images/exclamation-lg.svg" class="icon-error" /> Seleccione una colonia.</span>
               </div>
-
 
               <div class="form-group">
                 <label><img src="/content/images/buildings.svg" class="icon-label" /> Municipio / Alcaldía</label>
@@ -151,7 +159,7 @@
           <button class="custom-btn btn-cancel" @click="cerrarModal">
             <img src="/content/images/ban.svg" class="btn-icon" /> Cancelar
           </button>
-          <button class="custom-btn btn-save" @click="guardar" :disabled="isSaving || (!pacienteEncontrado && !direccion.id)">
+          <button class="custom-btn btn-save" @click="guardar" :disabled="isSaving || (!pacienteEncontrado && !pacientePreCargado && !direccion.id)">
             <span v-if="isSaving" class="d-flex align-center">
               <img src="/content/images/tropical-storm.svg" class="btn-icon spinner" /> Guardando...
             </span>
@@ -168,6 +176,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, watch, inject } from 'vue';
+import type { PropType } from 'vue';
 import useVuelidate from '@vuelidate/core';
 import { required, minLength, maxLength, numeric } from '@vuelidate/validators';
 import Swal from 'sweetalert2';
@@ -179,22 +188,22 @@ import PacienteService from '@/entities/pacientems/paciente/paciente.service';
 
 export default defineComponent({
   name: 'DireccionModal',
-  props: { visible: { type: Boolean, required: true } },
+  props: { 
+    visible: { type: Boolean, required: true },
+    pacientePreCargado: { type: Object as PropType<any>, default: null }
+  },
   emits: ['update:visible', 'saved'],
   
   setup(props, { emit }) {
-    // Servicios
     const direccionService = inject('direccionService', () => new DireccionService());
     const tipoVialidadService = inject('tipoVialidadService', () => new TipoVialidadService());
     const codigoPostalService = inject('codigoPostalService', () => new CodigoPostalService());
     const pacienteService = inject('pacienteService', () => new PacienteService());
 
-    // Estados de UI
     const isSaving = ref(false);
     const isSearchingEcu = ref(false);
     const isSearchingCP = ref(false);
 
-    // Estados de Datos
     const tipoVialidads = ref<any[]>([]);
     const coloniasOptions = ref<any[]>([]);
     const ecuSearchString = ref('');
@@ -203,7 +212,6 @@ export default defineComponent({
     const estadoDisplay = ref('');
     const pacienteEncontrado = ref<any | null>(null);
 
-    // Formulario Reactivo
     const direccion = ref({
       id: null,
       tipoVialidad: null,
@@ -211,10 +219,10 @@ export default defineComponent({
       numExterior: '',
       numInterior: '',
       telefono: '',
-      codigoPostalInfo: null
+      codigoPostalInfo: null,
+      paciente: null
     } as any);
 
-    // 🚀 Validaciones actualizadas con límites de caracteres
     const rules = {
       tipoVialidad: { required },
       nombreVialidad: { required, maxLength: maxLength(100) },
@@ -224,7 +232,6 @@ export default defineComponent({
     };
     const v$ = useVuelidate(rules, direccion);
 
-    // Inicializar Selects
     const initRelationships = async () => {
       try {
         const res = await tipoVialidadService().retrieve();
@@ -235,13 +242,11 @@ export default defineComponent({
     };
     initRelationships();
 
-    // 🚀 LÓGICA DE AUTO-BÚSQUEDA PACIENTE CON DEBOUNCE
     let ecuTimeout: ReturnType<typeof setTimeout>;
 
     watch(ecuSearchString, (newVal) => {
       clearTimeout(ecuTimeout);
       if (newVal && newVal.trim() !== '') {
-        // Esperamos 800ms después de que el usuario deje de escribir
         ecuTimeout = setTimeout(() => {
           buscarPaciente();
         }, 800);
@@ -263,10 +268,11 @@ export default defineComponent({
         if (encontrado) {
           if (encontrado.direccion && encontrado.direccion.id) {
             Swal.fire({ icon: 'warning', title: 'Paciente con dirección', text: `El paciente con ECU ${ecuNumerico} ya tiene una dirección registrada.`, confirmButtonColor: '#611232' });
-            ecuSearchString.value = ''; // Reseteamos si no es válido
+            ecuSearchString.value = ''; 
           } else {
             pacienteEncontrado.value = encontrado;
-Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder a registrar su dirección.', showConfirmButton: false, timer: 4000 });          }
+            Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder a registrar su dirección.', showConfirmButton: false, timer: 4000 });          
+          }
         } else {
           Swal.fire({ icon: 'error', title: 'No encontrado', text: 'No existe un paciente con ese ECU.', confirmButtonColor: '#611232' });
         }
@@ -282,7 +288,6 @@ Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder
       ecuSearchString.value = '';
     };
 
-    // LÓGICA DE BÚSQUEDA CÓDIGO POSTAL
     watch(cpSearchString, async (newVal) => {
       if (newVal && newVal.length === 5) {
         isSearchingCP.value = true;
@@ -320,14 +325,12 @@ Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder
       }
     };
 
-    // 🚀 UTILERÍAS DE LIMPIEZA Y FORMATO
     const bloquearLetras = (campo: 'ecuSearchString' | 'telefono' | 'cpSearchString') => {
       if(campo === 'ecuSearchString') ecuSearchString.value = ecuSearchString.value.replace(/\D/g, '');
       if(campo === 'telefono') direccion.value.telefono = direccion.value.telefono.replace(/\D/g, '');
       if(campo === 'cpSearchString') cpSearchString.value = cpSearchString.value.replace(/\D/g, '');
     };
 
-    // Bloqueador agresivo para símbolos en el teléfono
     const bloquearSignosNumericos = (e: KeyboardEvent) => {
       if (['e', 'E', '+', '-', '.', ','].includes(e.key)) {
         e.preventDefault();
@@ -345,7 +348,7 @@ Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder
     };
 
     const limpiarFormulario = () => {
-      direccion.value = { id: null, tipoVialidad: null, nombreVialidad: '', numExterior: '', numInterior: '', telefono: '', codigoPostalInfo: null };
+      direccion.value = { id: null, tipoVialidad: null, nombreVialidad: '', numExterior: '', numInterior: '', telefono: '', codigoPostalInfo: null, paciente: null };
       ecuSearchString.value = '';
       cpSearchString.value = '';
       pacienteEncontrado.value = null;
@@ -355,7 +358,6 @@ Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder
       v$.value.$reset();
     };
 
-    // MANEJO DEL MODAL (CERRAR Y GUARDAR)
     const hayCambiosSinGuardar = () => {
       return (ecuSearchString.value !== '' || direccion.value.nombreVialidad !== '' || direccion.value.telefono !== '');
     };
@@ -395,25 +397,46 @@ Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder
 
       isSaving.value = true;
       try {
-        let direccionGuardada;
-        if (direccion.value.id) {
-          direccionGuardada = await direccionService().update(direccion.value);
+        const pacienteParaVincular = pacienteEncontrado.value || props.pacientePreCargado;
+
+        // 🔥 EL PAYLOAD DEFINITIVO (Misma estructura que el update.component.ts) 🔥
+        const payload = {
+          ...direccion.value,
+          tipoVialidad: direccion.value.tipoVialidad,
+          codigoPostalInfo: direccion.value.codigoPostalInfo,
+        };
+
+        if (direccion.value.tipoVialidad) {
+          payload.tipoVialidadId = direccion.value.tipoVialidad.id;
+        }
+        if (direccion.value.codigoPostalInfo) {
+          payload.codigoPostalInfoId = direccion.value.codigoPostalInfo.id;
+        }
+
+        let respuestaDir;
+        if (payload.id) {
+          respuestaDir = await direccionService().update(payload);
         } else {
-          direccionGuardada = await direccionService().create(direccion.value);
+          respuestaDir = await direccionService().create(payload);
+        }
+        
+        // Atrapamos la dirección recién guardada
+        const resDir: any = respuestaDir;
+        const dirGuardada = resDir.data ? resDir.data : resDir;
+
+        // 🔥 Vinculamos al paciente 🔥
+        if (pacienteParaVincular && pacienteParaVincular.id && dirGuardada.id) {
+          pacienteParaVincular.direccion = { id: dirGuardada.id };
+          await pacienteService().update(pacienteParaVincular);
         }
 
-        // Vincular al paciente si es nuevo registro
-        if (pacienteEncontrado.value && direccionGuardada && direccionGuardada.id) {
-          pacienteEncontrado.value.direccion = { id: direccionGuardada.id };
-          await pacienteService().update(pacienteEncontrado.value);
-        }
-
-        Swal.fire({ icon: 'success', title: '¡Guardado Exitoso!', text: 'La dirección se registró y vinculó correctamente.', showConfirmButton: false, timer: 2000 });
+        Swal.fire({ icon: 'success', title: '¡Guardado Exitoso!', text: 'La dirección se guardó y vinculó correctamente.', showConfirmButton: false, timer: 2000 });
         
         emit('saved');
         limpiarFormulario();
         emit('update:visible', false);
       } catch (error) {
+        console.error("Error del backend:", error);
         Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar la dirección.', confirmButtonColor: '#611232' });
       } finally {
         isSaving.value = false;
@@ -474,7 +497,6 @@ Swal.fire({ icon: 'success', title: 'Paciente Encontrado', text: 'Puede proceder
 
 .custom-modal-body { padding: 1.2rem 1.5rem; overflow-y: auto; flex: 1; text-align: left; }
 
-/* ESTILOS DE LA SECCIÓN DE BÚSQUEDA */
 .search-section { background: #f8fafc; padding: 1rem; border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 1rem; }
 .section-title { font-size: 1rem; font-weight: bold; color: #1e293b; margin-top: 0; margin-bottom: 0.8rem; }
 .text-muted { color: #64748b; }
@@ -517,12 +539,13 @@ select.custom-input { appearance: none; padding-right: 2rem; cursor: pointer; }
 .btn-save:hover:not(:disabled) { background: #4a0d26; }
 .btn-save:disabled { background: #a87b8d; cursor: not-allowed; }
 .btn-cancel .btn-icon, .btn-save .btn-icon, .btn-search .btn-icon { filter: brightness(0) invert(1); }
-.success-text { 
-  color: #0f5132; font-size: 0.8rem; font-weight: 600; 
-  display: flex; align-items: center; margin-top: 6px; 
-  animation: slideDown 0.3s ease-out; 
-}
-.success-icon-filter {
-  filter: invert(29%) sepia(43%) saturate(497%) hue-rotate(97deg) brightness(92%) contrast(94%);
+.success-text { color: #0f5132; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; margin-top: 6px; animation: slideDown 0.3s ease-out; }
+.success-icon-filter { filter: invert(29%) sepia(43%) saturate(497%) hue-rotate(97deg) brightness(92%) contrast(94%); }
+</style>
+
+<style>
+/* 🔥 FUERZA A SWEETALERT A SALIR POR ENCIMA DE CUALQUIER MODAL 🔥 */
+.swal2-container {
+  z-index: 100000 !important;
 }
 </style>
