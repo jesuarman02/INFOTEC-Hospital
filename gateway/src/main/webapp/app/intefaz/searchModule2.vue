@@ -218,8 +218,12 @@
         </div>
       </transition>
 
-      <PacienteModal v-model:visible="mostrarModalPaciente" @save="simularGuardadoPaciente" @saved="simularGuardadoPaciente" />
-      <DireccionModal v-model:visible="mostrarModalDireccion" :pacientePreCargado="pacienteActual" @save="simularGuardadoDireccion" @saved="simularGuardadoDireccion" />
+<PacienteModal 
+        v-model:visible="mostrarModalPaciente" 
+        :pacienteToEdit="pacienteActual"  @save="simularGuardadoPaciente" 
+        @saved="simularGuardadoPaciente" 
+      />
+            <DireccionModal v-model:visible="mostrarModalDireccion" :pacientePreCargado="pacienteActual" @save="simularGuardadoDireccion" @saved="simularGuardadoDireccion" />
 
     </div>
   </transition>

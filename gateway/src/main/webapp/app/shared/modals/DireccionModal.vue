@@ -60,8 +60,7 @@
             <hr class="divider" v-if="pacienteEncontrado || direccion.id || pacientePreCargado" />
 
             <div class="formulario-grid" v-if="pacienteEncontrado || pacientePreCargado || direccion.id">              
-              
-              <div class="form-group col-span-2" v-if="direccion.id">
+              <div class="form-group col-span-2" v-show="false">
                 <label>ID Dirección</label>
                 <input type="text" class="custom-input bg-light" v-model="direccion.id" readonly />
               </div>
@@ -311,6 +310,29 @@ export default defineComponent({
         municipioDisplay.value = '';
         estadoDisplay.value = '';
         direccion.value.codigoPostalInfo = null;
+      }
+    });
+    // 🔥 LÓGICA DE PRECArGA PARA EDICIÓN 🔥
+    watch(() => props.visible, (newVal) => {
+      if (newVal) {
+        // Si venimos del Wizard y el paciente ya tiene una dirección vinculada...
+        if (props.pacientePreCargado && props.pacientePreCargado.direccion) {
+          const dirExistente = props.pacientePreCargado.direccion;
+          
+          // Llenamos el formulario con los datos que vienen de la BD
+          direccion.value = JSON.parse(JSON.stringify(dirExistente));
+          
+          // Casos especiales: Si el código postal es un objeto, extraemos el código para la búsqueda visual
+          if (direccion.value.codigoPostal) {
+            cpSearchString.value = direccion.value.codigoPostal.codigo || '';
+            // Forzamos la carga de colonias para que el selector no salga vacío
+            direccion.value.codigoPostalInfo = direccion.value.codigoPostal;
+            updateLocationDetails();
+          }
+        } else {
+          // Si es un paciente nuevo o no tiene dirección, limpiamos todo
+          limpiarFormulario();
+        }
       }
     });
 

@@ -15,21 +15,22 @@
         <div class="custom-modal-body">
           <form @submit.prevent="guardar" class="formulario-grid">
             
-            <div class="form-group" v-if="paciente.id">
+            <div class="form-group" v-show="false">
               <label><img src="/content/images/fingerprint.svg" class="icon-label" /> ID</label>
               <input type="text" class="custom-input bg-light" v-model="paciente.id" readonly />
             </div>
             
             <div class="form-group">
               <label><img src="/content/images/hash.svg" class="icon-label" /> ECU <span class="text-danger">*</span></label>
-              <!-- 🚀 CAMBIO 1: type="number", min="0" y el @keydown para bloquear signos y letras -->
               <input 
                 type="number" 
                 v-model="v$.ecu.$model" 
                 @keydown="bloquearCaracteresEcu"
                 min="0"
                 required 
-                class="custom-input" 
+                class="custom-input"
+                :class="{ 'bg-light': !!paciente.id }" 
+                :readonly="!!paciente.id" 
                 placeholder="Ej. 123456" 
               />
               <span v-if="v$.ecu.$error" class="error-text">
@@ -104,7 +105,6 @@
                   <option value="UNION_LIBRE">UNION LIBRE</option>
                   <option value="VIUDO">VIUDO(A)</option>
                 </select>
-                <img src="/content/images/arrow-down-square.svg" class="select-icon" />
               </div>
             </div>
 
@@ -138,7 +138,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, watch, inject } from 'vue'; 
+import { defineComponent, ref, watch, inject, type PropType } from 'vue'; 
 import useVuelidate from '@vuelidate/core';
 import { required, minLength, maxLength, integer } from '@vuelidate/validators';
 import Swal from 'sweetalert2';
@@ -153,8 +153,11 @@ const validadorSoloLetras = (value: string | null | undefined) => {
 
 export default defineComponent({
   name: 'PacienteModal',
-  props: { visible: { type: Boolean, required: true } },
-  emits: ['update:visible', 'saved'],
+props: { 
+    visible: { type: Boolean, required: true },
+    pacienteToEdit: { type: Object as PropType<any>, default: null } // 🔥 NUEVO PROP 🔥
+  },
+    emits: ['update:visible', 'saved'],
   
   setup(props, { emit }) {
     const pacienteService = inject('pacienteService', () => new PacienteService());
@@ -233,6 +236,18 @@ export default defineComponent({
       } else if (nuevaNacionalidad === 'MEXICANA') {
         if (paciente.value.curp && paciente.value.curp.startsWith('EXTXX')) {
           paciente.value.curp = '';
+        }
+      }
+    });
+    // 🔥 EL VIGILANTE: Se activa cada que el modal se abre o cierra 🔥
+    watch(() => props.visible, (newVal) => {
+      if (newVal) { // Si el modal se está abriendo...
+        if (props.pacienteToEdit && props.pacienteToEdit.id) {
+          // Si le pasamos un paciente que ya existe, llenamos el formulario (Clonando los datos)
+          paciente.value = JSON.parse(JSON.stringify(props.pacienteToEdit));
+        } else {
+          // Si no le pasamos nada (o es modo Nuevo Paciente), limpiamos el formulario
+          limpiarFormulario();
         }
       }
     });
@@ -336,13 +351,14 @@ try {
 </script>
 
 <style scoped>
+/* ============================= */
 /* ANIMACIONES */
+/* ============================= */
 .modal-fade-enter-active, .modal-fade-leave-active { transition: opacity 0.3s ease; }
 .modal-fade-enter-from, .modal-fade-leave-to { opacity: 0; }
 
 @keyframes elasticPop {
-  0% { transform: scale(0.9); opacity: 0; }
-  70% { transform: scale(1.02); opacity: 1; }
+  0% { transform: scale(0.95); opacity: 0; }
   100% { transform: scale(1); opacity: 1; }
 }
 
@@ -350,143 +366,246 @@ try {
   100% { transform: rotate(360deg); }
 }
 
-/* MODAL ESTRUCTURA */
+/* ============================= */
+/* OVERLAY */
+/* ============================= */
 .custom-modal-overlay {
-  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  position: fixed;
+  inset: 0;
   background-color: rgba(20, 20, 20, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
-  display: flex; justify-content: center; align-items: center;
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
   z-index: 9999;
 }
 
+/* ============================= */
+/* MODAL BOX */
+/* ============================= */
 .custom-modal-box {
-  background: #ffffff; 
-  width: 90%; max-width: 700px;
-  max-height: 85vh; 
-  border-radius: 12px; 
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.3);
-  display: flex; flex-direction: column; overflow: hidden;
-  animation: elasticPop 0.3s ease-out;
+  background: #ffffff;
+  width: 100%;
+  max-width: 900px;
+
+  height: 100%;
+  max-height: 95vh;
+
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+
+  animation: elasticPop 0.25s ease-out;
 }
 
+/* 📱 MODO MOBILE FULLSCREEN */
+@media (max-width: 640px) {
+  .custom-modal-box {
+    border-radius: 0;
+    max-height: 100vh;
+  }
+}
+
+/* ============================= */
+/* HEADER */
+/* ============================= */
 .custom-modal-header {
-  background-color: #611232; 
-  padding: 1rem 1.5rem; 
-  display: flex; justify-content: space-between; align-items: center;
-  border-bottom: 3px solid #4a0d26; 
+  background-color: #611232;
+  padding: 0.9rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.title-text { 
-  color: #ffffff; margin: 0; font-weight: bold; font-size: 1.15rem;
-  display: flex; align-items: center;
+.title-text {
+  color: #fff;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
 }
 
-.close-btn { 
-  background: rgba(255,255,255,0.1); border: none; 
-  width: 30px; height: 30px; border-radius: 50%;
-  cursor: pointer; display: flex; justify-content: center; align-items: center;
-  transition: all 0.2s ease; 
-}
-.close-btn:hover { background: rgba(255,255,255,0.25); transform: rotate(90deg); }
-
-/* CLASES DE ICONOS SVG/PNG */
-.icon-title { 
-  width: 22px; height: 22px; margin-right: 8px; 
-  /* Lo convierte a blanco brillante */
-  filter: brightness(0) invert(1);
-}
-.icon-close {
-  width: 16px; height: 16px; 
-  filter: brightness(0) invert(1);
-}
-.icon-label {
-  width: 15px; height: 15px; margin-right: 6px;
-  vertical-align: text-bottom;
-  opacity: 0.7; /* Suaviza el negro para que no sea tan agresivo */
-}
-.icon-error {
-  width: 14px; height: 14px; margin-right: 4px;
-  /* Lo convierte al color rojo de error #e63946 usando filtros CSS */
-  filter: invert(27%) sepia(91%) saturate(5436%) hue-rotate(345deg) brightness(93%) contrast(97%);
-}
-.btn-icon {
-  width: 16px; height: 16px; margin-right: 6px;
-}
-.select-icon { 
-  position: absolute; right: 12px; top: 50%; transform: translateY(-50%); 
-  width: 16px; height: 16px; opacity: 0.6; pointer-events: none; 
-}
-.spinner { animation: spin 1s linear infinite; }
-
-.d-flex { display: flex; }
-.align-center { align-items: center; }
-
-/* CUERPO Y GRID */
-.custom-modal-body { 
-  padding: 1.2rem 1.5rem; overflow-y: auto; flex: 1; text-align: left;
+.close-btn {
+  background: rgba(255,255,255,0.1);
+  border: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
 }
 
-.formulario-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
-.col-span-2 { grid-column: span 2; }
+/* ============================= */
+/* BODY */
+/* ============================= */
+.custom-modal-body {
+  padding: 1rem;
+  overflow-y: auto;
+  flex: 1;
+}
 
-.form-group { display: flex; flex-direction: column; }
-.form-group label { margin-bottom: 0.3rem; font-weight: 700; color: #333; font-size: 0.85rem;}
-.text-danger { color: #e63946; }
+/* ============================= */
+/* GRID RESPONSIVO */
+/* ============================= */
+.formulario-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.9rem;
+}
+
+/* Tablet */
+@media (min-width: 640px) {
+  .formulario-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Desktop grande */
+@media (min-width: 1024px) {
+  .formulario-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.2rem;
+  }
+}
+
+.col-span-2 {
+  grid-column: span 1;
+}
+
+/* En pantallas grandes sí ocupa 2 columnas */
+@media (min-width: 640px) {
+  .col-span-2 {
+    grid-column: span 2;
+  }
+}
+
+/* ============================= */
+/* FORM */
+/* ============================= */
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
 
 .custom-input {
-  padding: 0.55rem 0.8rem; 
+  padding: 0.55rem 0.7rem;
   border: 1px solid #cbd5e1;
-  border-radius: 6px; font-size: 0.95rem; color: #1e293b;
-  font-weight: 500; background-color: #f8fafc;
-  transition: all 0.2s ease;
-  width: 100%; box-sizing: border-box;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: #f8fafc;
 }
-.custom-input:hover { border-color: #94a3b8; }
-.custom-input:focus { 
-  outline: none; border-color: #611232; 
-  background-color: #ffffff;
-  box-shadow: 0 0 0 3px rgba(97, 18, 50, 0.1); 
-}
-.curp-input { font-family: monospace; font-size: 1rem; letter-spacing: 1px; text-transform: uppercase; }
 
-.custom-radio-box { display: flex; gap: 0.8rem; }
+.custom-input:focus {
+  border-color: #611232;
+  background: #fff;
+  box-shadow: 0 0 0 2px rgba(97, 18, 50, 0.1);
+}
+
+.curp-input {
+  font-family: monospace;
+  letter-spacing: 1px;
+}
+
+/* ============================= */
+/* RADIO */
+/* ============================= */
+.custom-radio-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
 .radio-label {
-  display: flex; align-items: center; gap: 0.5rem;
-  padding: 0.5rem 0.8rem; border: 1px solid #cbd5e1; border-radius: 6px;
-  cursor: pointer; transition: all 0.2s; background: #f8fafc; flex: 1; justify-content: center;
-  margin: 0; font-size: 0.9rem;
+  flex: 1;
+  text-align: center;
+  padding: 0.45rem;
+  border: 1px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.85rem;
 }
-.radio-label:hover { border-color: #611232; background: #fff5f8; }
-.radio-label input[type="radio"] { accent-color: #611232; }
 
-.select-wrapper { position: relative; }
-select.custom-input { appearance: none; padding-right: 2rem; cursor: pointer; }
-
-.error-text { color: #e63946; font-size: 0.75rem; margin-top: 0.2rem; font-weight: 600; display: flex; align-items: center; }
-.text-highlight { color: #611232 !important; }
-.box-highlight { border-left: 3px solid #611232; padding-left: 8px; }
-
+/* ============================= */
 /* FOOTER */
+/* ============================= */
 .custom-modal-footer {
-  padding: 1rem 1.5rem; background-color: #f8fafc;
-  display: flex; justify-content: flex-end; gap: 1rem;
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+
+  background: #f8fafc;
   border-top: 1px solid #e2e8f0;
 }
 
-.custom-btn { 
-  padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; 
-  font-size: 0.95rem; font-weight: 700; border: none; 
-  display: flex; align-items: center; transition: all 0.2s; 
+/* Botones en fila en pantallas grandes */
+@media (min-width: 640px) {
+  .custom-modal-footer {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
 }
-.btn-cancel { background: #94a3b8; color: white; }
-.btn-cancel:hover { background: #64748b; }
-.btn-save { background: #611232; color: white; }
-.btn-save:hover { background: #4a0d26; }
-.btn-save:disabled { background: #a87b8d; cursor: not-allowed; }
 
-/* Invertir colores de íconos en botones primarios y secundarios */
-.btn-cancel .btn-icon, .btn-save .btn-icon {
+.custom-btn {
+  padding: 0.6rem;
+  font-size: 0.9rem;
+  border-radius: 6px;
+  font-weight: 600;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-cancel {
+  background: #94a3b8;
+  color: white;
+}
+
+.btn-save {
+  background: #611232;
+  color: white;
+}
+
+/* ============================= */
+/* ICONOS */
+/* ============================= */
+.icon-title {
+  width: 20px;
+  margin-right: 6px;
   filter: brightness(0) invert(1);
+}
+
+.icon-close {
+  width: 16px;
+  filter: brightness(0) invert(1);
+}
+
+.icon-label {
+  width: 14px;
+  margin-right: 4px;
+  opacity: 0.7;
+}
+
+.btn-icon {
+  width: 15px;
+  margin-right: 5px;
+  filter: brightness(0) invert(1);
+}
+
+.spinner {
+  animation: spin 1s linear infinite;
+}
+
+/* ============================= */
+/* ERRORES */
+/* ============================= */
+.error-text {
+  font-size: 0.7rem;
+  color: #e63946;
+  margin-top: 2px;
 }
 </style>
