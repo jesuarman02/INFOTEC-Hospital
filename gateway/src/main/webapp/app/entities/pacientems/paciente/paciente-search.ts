@@ -44,11 +44,18 @@ export function usePacienteSearch() {
                 // 3. Vamos por la info socioeconómica
                 if (pacienteEncontrado.id) {
                     try {
-                        // Pedimos TODAS las respuestas asociadas a este paciente (filtrando por pacienteId)
+                        // Pedimos las respuestas al backend (esperando que nos haga caso)
                         const infoRes = await axios.get(`services/pacientesms/api/info-socioeconomicas?pacienteId.equals=${pacienteEncontrado.id}`);
 
-                        const todasLasRespuestas = infoRes.data; // Esto será un arreglo con las 30 respuestas
-                        console.log("TODAS LAS RESPUESTAS:", todasLasRespuestas);
+                        // 🔥 EL ESCUDO ANTI-FANTASMAS: 
+                        // Filtramos manualmente la lista por si el backend nos mandó respuestas de otros pacientes
+                        const todasLasRespuestas = infoRes.data.filter((respuesta: any) => {
+                            // Buscamos si la respuesta tiene el ID del paciente actual
+                            const idDueño = respuesta.paciente?.id || respuesta.pacienteId;
+                            return idDueño === pacienteEncontrado.id;
+                        });
+
+
 
                         if (todasLasRespuestas && todasLasRespuestas.length > 0) {
                             // Función espía para pescar la respuesta que queremos
@@ -66,9 +73,10 @@ export function usePacienteSearch() {
                             };
                             pacienteEncontrado.expedienteCompleto = todasLasRespuestas;
 
-                            // Le decimos a Vue que active el botón rojo
+                            // Le decimos a Vue que active la pestaña
                             pacienteEncontrado.tieneInfoSocioeconomica = true;
                         } else {
+                            // Si el arreglo quedó vacío después de nuestro filtro, no tiene info
                             pacienteEncontrado.tieneInfoSocioeconomica = false;
                         }
 
