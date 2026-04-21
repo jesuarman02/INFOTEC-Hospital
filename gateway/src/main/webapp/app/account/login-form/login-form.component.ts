@@ -2,6 +2,7 @@ import axios from 'axios';
 import { type Ref, defineComponent, inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import Swal from 'sweetalert2'; // 🔥 AGREGADO
 import type AccountService from '../account.service';
 import type LoginService from '@/account/login.service';
 
@@ -37,8 +38,22 @@ export default defineComponent({
         }
 
         authenticationError.value = false;
+        
+        Swal.fire({
+          icon: 'success',
+          title: 'Bienvenido',
+          html: `<b style="color:#ffb74d">${login.value}</b>`,
+          background: 'rgba(20,20,20,0.95)',
+          color: '#fff',
+          confirmButtonColor: '#ff8c00',
+          timer: 2000,
+          showConfirmButton: false,
+          backdrop: `rgba(0,0,0,0.8)`
+        });
+
         loginService.hideLogin();
         await accountService.retrieveAccount();
+
         if (route.path === '/forbidden') {
           previousState();
         }
@@ -46,6 +61,7 @@ export default defineComponent({
         authenticationError.value = true;
       }
     };
+
     return {
       authenticationError,
       login,

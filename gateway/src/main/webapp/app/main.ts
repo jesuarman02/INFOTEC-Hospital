@@ -17,6 +17,7 @@ import { useStore, useTranslationStore } from '@/store';
 
 import '../content/scss/global.scss';
 import '../content/scss/vendor.scss';
+import "../content/css/app.css"
 import TranslationService from '@/locale/translation.service';
 
 const pinia = createPinia();

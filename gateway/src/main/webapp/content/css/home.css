@@ -1,0 +1,247 @@
+/* FONDO GLOBAL */
+.home-container {
+  min-height: 100vh;
+  width: 100%;
+  background-image: url('/content/images/fondo.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+/* CAPA OSCURA */
+.home-container::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 0;
+}
+
+.home-container::after {
+  content: "";
+  position: absolute;
+  bottom: -750px;
+  right: -750px;
+  width: 2000px;
+  height: 2000px;
+  background: radial-gradient(circle, rgba(168, 95, 22, 0.35) 0%, transparent 82%);
+  filter: blur(10px);
+  z-index: 0;
+  pointer-events: none;
+}
+
+.home {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+/* 🔥 CAJA PRINCIPAL (UNIFICADO) */
+.content-box {
+  background: rgba(233, 20, 20, 0.08);
+  border-radius: 20px;
+  padding: 30px;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  animation: fadeInUp 1s ease;
+
+  /* tipografía */
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: 0.4px;
+  line-height: 1.6;
+}
+
+/* 🔥 ALERTA (UNIFICADO) */
+.alert {
+  font-size: 1rem;
+  border-radius: 15px;
+  padding: 15px;
+  background: rgba(185, 80, 80, 0.12);
+  border: 1px solid rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  letter-spacing: 0.4px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.alert:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* IMAGEN */
+.hipster {
+  display: block;
+  width: 100%;
+  height: 220px;
+  background: url('/content/images/logom.png') center/contain no-repeat;
+  animation: float 4s ease-in-out infinite;
+}
+
+/* TEXTO */
+.titulo-principal {
+  font-size: 4.5rem;
+  font-weight: 800;
+  letter-spacing: 4px;
+  margin-bottom: 55px;
+  background: linear-gradient(120deg, #ffffff, #ffffff, #ffffff);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shineText 4s linear infinite;
+  text-shadow: 0 15px 25px rgba(0,0,0,0.7);
+}
+
+.bienvenido {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 8px;
+  text-transform: uppercase;
+  text-shadow: 0 0 20px rgba(255, 254, 254, 0.4);
+}
+
+.subtexto {
+  font-size: 1.3rem;
+  color: rgba(255,255,255,0.75);
+  font-style: italic;
+  letter-spacing: 0.7px;
+  border-left: 8px solid #ffffff;
+  padding-left: 20px;
+}
+
+/* BADGE */
+.estado {
+  display: inline-block;
+  background: linear-gradient(135deg, rgba(221, 128, 14, 0.25), rgba(255, 208, 0, 0.15));
+  padding: 10px 22px;
+  border-radius: 50px;
+  color: #e9d5ff;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(227, 148, 22, 0.2);
+  box-shadow: 0 5px 20px rgba(217, 123, 8, 0.4);
+  transition: all 0.3s ease;
+}
+
+.estado:hover {
+  transform: scale(1.05);
+  box-shadow: 0 8px 25px rgba(182, 113, 22, 0.6);
+}
+
+/* LINKS */
+.alert-link {
+  color: #a32424;
+  font-weight: 700;
+  position: relative;
+}
+
+.alert-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: #ff9966;
+  bottom: -2px;
+  left: 0;
+  transform: scaleX(0);
+  transition: transform 0.3s ease;
+}
+
+.alert-link:hover::after {
+  transform: scaleX(1);
+}
+
+/* LAYOUT */
+.custom-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* BODY */
+body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* ANIMACIONES */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes shineText {
+  0% { background-position: 0% center; }
+  100% { background-position: 200% center; }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .content-box {
+    padding: 20px;
+  }
+
+  .titulo-principal {
+    font-size: 2.2rem;
+  }
+
+  .custom-layout {
+    gap: 15px;
+  }
+
+  .hipster {
+    height: 150px;
+  }
+}
+/* 🔥 SOLUCION ESPACIO BLANCO */
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CONTENEDOR PRINCIPAL CRECE */
+.container-fluid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 !important;
+}
+
+/* EL CARD OCUPA TODO */
+.jh-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* TU HOME OCUPA TODO */
+.home-container {
+  flex: 1;
+}

@@ -30,3 +30,4 @@
 </template>
 
 <script lang="ts" src="./app.component.ts"></script>
+<style scoped src="../../../content/css/app.css"></style>
