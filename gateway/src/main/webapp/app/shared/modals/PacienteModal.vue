@@ -265,15 +265,15 @@ props: {
 
     const cerrarModal = () => {
       if (hayCambiosSinGuardar()) {
-        Swal.fire({
-          title: '¿Cerrar sin guardar?',
-          text: "Tienes datos escritos que se perderán.",
+      Swal.fire({
+          title: '¿Cancelar registro?',
+          text: "Los datos ingresados se perderán.",
           icon: 'warning',
           showCancelButton: true,
-          confirmButtonColor: '#611232',
-          cancelButtonColor: '#94a3b8',
+          confirmButtonColor: '#888',      // Color gris para "Sí, salir"
+          cancelButtonColor: '#611232',    // Color guinda para "Continuar editando"
           confirmButtonText: 'Sí, salir',
-          cancelButtonText: 'Cancelar'
+          cancelButtonText: 'Continuar editando'
         }).then((result) => {
           if (result.isConfirmed) {
             limpiarFormulario();

@@ -1,4 +1,5 @@
 import { computed, defineComponent, inject, ref, type Ref, watch } from 'vue';
+import type { PropType } from 'vue'; // 🔥 Importamos PropType 🔥
 import { useVuelidate } from '@vuelidate/core';
 import { required, numeric, minValue, maxValue, minLength, maxLength, requiredIf } from '@vuelidate/validators';
 import Swal from 'sweetalert2';
@@ -9,7 +10,10 @@ import { type IPaciente } from '@/shared/model/pacientems/paciente.model';
 
 export default defineComponent({
   name: 'InfoSocioeconomicaWizardModal',
-  props: { visible: { type: Boolean, required: true } },
+  props: { 
+    visible: { type: Boolean, required: true },
+    pacientePreCargado: { type: Object as PropType<any>, default: null } // 🔥 Atrapamos el paciente del Dashboard 🔥
+  },
   emits: ['update:visible', 'saved'],
   
   setup(props, { emit }) {
@@ -190,21 +194,50 @@ export default defineComponent({
       seccionAbierta.value = seccionAbierta.value === num ? 0 : num;
     };
 
-    const cerrarModal = () => {
+const cerrarModal = () => {
       if (mostrarCuestionario.value) {
         Swal.fire({
-          title: '¿Pausar estudio?', text: "Tu progreso se guardará como borrador en tu computadora.", icon: 'warning',
-          showCancelButton: true, confirmButtonColor: '#611232', cancelButtonColor: '#888', confirmButtonText: 'Sí, salir', cancelButtonText: 'Continuar editando'
+          title: '¿Pausar estudio?',
+          text: "Tu progreso se guardará como borrador.",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#888',      // Color gris para "Sí, salir"
+          cancelButtonColor: '#611232',    // Color guinda para "Continuar editando"
+          confirmButtonText: 'Sí, salir',
+          cancelButtonText: 'Continuar editando'
         }).then((result) => {
-          if (result.isConfirmed) resetModal();
+          if (result.isConfirmed) {
+            resetModal();
+          }
         });
-      } else { resetModal(); }
+      } else { 
+        resetModal(); 
+      }
     };
 
     const resetModal = () => {
       mostrarCuestionario.value = false; ecuSearchString.value = ''; pacienteEncontrado.value = null;
       initForm(); v$.value.$reset(); emit('update:visible', false);
     };
+
+    // 🔥 EL VIGILANTE QUE SE SALTA LA BÚSQUEDA 🔥
+    // Cuando el modal se abre, revisamos si ya tenemos al paciente
+    watch(() => props.visible, (newVal) => {
+      if (newVal) {
+        if (props.pacientePreCargado) {
+          // Guardamos al paciente en la variable local
+          pacienteEncontrado.value = props.pacientePreCargado;
+          // Ejecutamos iniciarCuestionario() directo para saltarnos la pantalla de búsqueda
+          // (Esto también respeta tu lógica del LocalStorage por si hay un borrador)
+          iniciarCuestionario();
+        }
+      } else {
+        // Al cerrar el modal nos aseguramos de que no queden datos pegados
+        if (!props.pacientePreCargado) {
+          pacienteEncontrado.value = null;
+        }
+      }
+    });
 
     // 🚀 GUARDADO REAL A BASE DE DATOS
     const save = async () => {
@@ -295,10 +328,10 @@ export default defineComponent({
       infoSocioeconomica, ecuSearchString, pacienteEncontrado, isSearchingEcu,
       mostrarCuestionario, seccionAbierta, toggleSeccion, iniciarCuestionario, cerrarModal,
       buscarPaciente, limpiarBusqueda, nombreCompleto, edadCalculada, formatoSexo,
-      totalHabitantes, // <-- Exportado
-      limpiarTelefonos, limpiarInputNumerico, limpiarEnfermedad, // <-- Exportados
-      limpiarLengua, limpiarGrupoIndigena, limpiarPension, // <-- Exportados
+      totalHabitantes,
+      limpiarTelefonos, limpiarInputNumerico, limpiarEnfermedad,
+      limpiarLengua, limpiarGrupoIndigena, limpiarPension,
       isSaving, save, v$,
     };
   },
-});
+}); 

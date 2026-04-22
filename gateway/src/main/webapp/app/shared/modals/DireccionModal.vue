@@ -13,9 +13,9 @@
         </div>
 
         <div class="custom-modal-body">
-          <form @submit.prevent="guardar">
+<form @submit.prevent="guardar">
             
-            <div class="search-section" v-if="!direccion.id && !pacientePreCargado">
+            <div class="search-section" v-if="!pacientePreCargado">
               <h5 class="section-title">
                 <img src="/content/images/search.svg" class="icon-label" /> Identificación del paciente
               </h5>
@@ -47,9 +47,9 @@
               </div>
             </div>
 
-            <div class="search-section" style="background-color: #fdf2f5; border-color: #fbcfe8;" v-if="!direccion.id && pacientePreCargado">
+            <div class="search-section" style="background-color: #fdf2f5; border-color: #fbcfe8;" v-if="pacientePreCargado">
                <h5 class="section-title mb-2" style="color: #5c1830;">
-                <img src="/content/images/person-vcard.svg" class="icon-label" /> Asignando dirección a:
+                <img src="/content/images/person-vcard.svg" class="icon-label" /> Dirección de:
               </h5>
               <div class="d-flex align-items-center bg-white p-2 rounded border">
                 <span class="badge badge-secondary mr-2" style="font-size: 0.9rem;">ECU: {{ pacientePreCargado.ecu }}</span>
@@ -59,7 +59,7 @@
 
             <hr class="divider" v-if="pacienteEncontrado || direccion.id || pacientePreCargado" />
 
-            <div class="formulario-grid" v-if="pacienteEncontrado || pacientePreCargado || direccion.id">              
+            <div class="formulario-grid" v-if="pacienteEncontrado || pacientePreCargado || direccion.id">             
               <div class="form-group col-span-2" v-show="false">
                 <label>ID Dirección</label>
                 <input type="text" class="custom-input bg-light" v-model="direccion.id" readonly />
@@ -254,6 +254,44 @@ export default defineComponent({
       }
     });
 
+    // 🔥 EL VIGILANTE DE EDICIÓN CORREGIDO 🔥
+    watch(() => props.visible, async (newVal) => {
+      if (newVal) {
+        // Si venimos del Wizard y el paciente ya tiene una dirección vinculada...
+        if (props.pacientePreCargado && props.pacientePreCargado.direccion && props.pacientePreCargado.direccion.id) {
+          isSaving.value = true; 
+          try {
+            // Traemos todos los datos completos de esa dirección desde el backend
+            const dirCompleta = await direccionService().find(props.pacientePreCargado.direccion.id);
+            direccion.value = dirCompleta;
+            
+            // 💡 Solución Error 1: Usamos "any" para que TS no se queje si usamos codigoPostal
+            const cpObj = dirCompleta.codigoPostalInfo || (dirCompleta as any).codigoPostal;
+            if (cpObj) {
+              cpSearchString.value = cpObj.codigo || '';
+              coloniasOptions.value = [cpObj]; 
+              direccion.value.codigoPostalInfo = cpObj;
+              updateLocationDetails();
+            }
+            
+            // 💡 Solución Error 2: Usamos "?." por si a TS se le olvida que ya comprobamos que existe
+            if (dirCompleta.tipoVialidad) {
+              const tipoEncontrado = tipoVialidads.value.find(t => t.id === dirCompleta.tipoVialidad?.id);
+              if (tipoEncontrado) direccion.value.tipoVialidad = tipoEncontrado;
+            }
+            
+          } catch (error) {
+            console.error("Error al precargar la dirección:", error);
+          } finally {
+            isSaving.value = false;
+          }
+        } else {
+          // Si es un paciente nuevo o no tiene dirección, limpiamos todo
+          limpiarFormulario();
+        }
+      }
+    });
+
     const buscarPaciente = async () => {
       if (!ecuSearchString.value) return;
       isSearchingEcu.value = true;
@@ -310,29 +348,6 @@ export default defineComponent({
         municipioDisplay.value = '';
         estadoDisplay.value = '';
         direccion.value.codigoPostalInfo = null;
-      }
-    });
-    // 🔥 LÓGICA DE PRECArGA PARA EDICIÓN 🔥
-    watch(() => props.visible, (newVal) => {
-      if (newVal) {
-        // Si venimos del Wizard y el paciente ya tiene una dirección vinculada...
-        if (props.pacientePreCargado && props.pacientePreCargado.direccion) {
-          const dirExistente = props.pacientePreCargado.direccion;
-          
-          // Llenamos el formulario con los datos que vienen de la BD
-          direccion.value = JSON.parse(JSON.stringify(dirExistente));
-          
-          // Casos especiales: Si el código postal es un objeto, extraemos el código para la búsqueda visual
-          if (direccion.value.codigoPostal) {
-            cpSearchString.value = direccion.value.codigoPostal.codigo || '';
-            // Forzamos la carga de colonias para que el selector no salga vacío
-            direccion.value.codigoPostalInfo = direccion.value.codigoPostal;
-            updateLocationDetails();
-          }
-        } else {
-          // Si es un paciente nuevo o no tiene dirección, limpiamos todo
-          limpiarFormulario();
-        }
       }
     });
 
@@ -421,7 +436,6 @@ export default defineComponent({
       try {
         const pacienteParaVincular = pacienteEncontrado.value || props.pacientePreCargado;
 
-        // 🔥 EL PAYLOAD DEFINITIVO (Misma estructura que el update.component.ts) 🔥
         const payload = {
           ...direccion.value,
           tipoVialidad: direccion.value.tipoVialidad,
@@ -442,11 +456,9 @@ export default defineComponent({
           respuestaDir = await direccionService().create(payload);
         }
         
-        // Atrapamos la dirección recién guardada
         const resDir: any = respuestaDir;
         const dirGuardada = resDir.data ? resDir.data : resDir;
 
-        // 🔥 Vinculamos al paciente 🔥
         if (pacienteParaVincular && pacienteParaVincular.id && dirGuardada.id) {
           pacienteParaVincular.direccion = { id: dirGuardada.id };
           await pacienteService().update(pacienteParaVincular);
@@ -563,10 +575,42 @@ select.custom-input { appearance: none; padding-right: 2rem; cursor: pointer; }
 .btn-cancel .btn-icon, .btn-save .btn-icon, .btn-search .btn-icon { filter: brightness(0) invert(1); }
 .success-text { color: #0f5132; font-size: 0.8rem; font-weight: 600; display: flex; align-items: center; margin-top: 6px; animation: slideDown 0.3s ease-out; }
 .success-icon-filter { filter: invert(29%) sepia(43%) saturate(497%) hue-rotate(97deg) brightness(92%) contrast(94%); }
+
+/* ======================================= */
+/* 📱 RESPONSIVE (Celulares y Tablets)     */
+/* ======================================= */
+@media (max-width: 768px) {
+  .custom-modal-box {
+    width: 95%; /* Ocupa casi toda la pantalla */
+    max-height: 90vh; /* Da un poco más de espacio vertical */
+  }
+
+  .custom-modal-header, .custom-modal-body, .custom-modal-footer {
+    padding: 1rem; /* Reduce un poco los márgenes internos */
+  }
+
+  .formulario-grid {
+    grid-template-columns: 1fr; /* 🔥 MAGIA: Todo en una sola columna hacia abajo 🔥 */
+    gap: 0.8rem;
+  }
+
+  .col-span-2 {
+    grid-column: span 1; /* Evita que los campos de "Teléfono" y "Código Postal" se desborden */
+  }
+
+  .custom-modal-footer {
+    flex-direction: column; /* Botones apilados uno sobre otro */
+    gap: 0.8rem;
+  }
+
+  .custom-modal-footer .custom-btn {
+    width: 100%; /* Botones de lado a lado para ser amigables al tacto */
+    justify-content: center;
+  }
+}
 </style>
 
 <style>
-/* 🔥 FUERZA A SWEETALERT A SALIR POR ENCIMA DE CUALQUIER MODAL 🔥 */
 .swal2-container {
   z-index: 100000 !important;
 }
