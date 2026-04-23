@@ -1,0 +1,134 @@
+/* =========================================
+   Variables Locales
+   ========================================= */
+.navbar-gob {
+    --nav-gob-bg: #611232;
+    --nav-gob-text: #ffffff;
+}
+
+.navbar-main {
+    --nav-main-text: #000000;
+    --nav-main-hover: #555555;
+}
+
+/* =========================================
+   Barra Superior (Gobierno) - Ajustes Móvil
+   ========================================= */
+.navbar-gob {
+    background-color: var(--nav-gob-bg);
+    border-bottom: 1px solid var(--nav-gob-text);
+    min-height: 48px;
+    /* Reducido un poco para móvil */
+    padding: 0.5rem 1rem;
+}
+
+/* El logo debe ser fluido para no aplastar los textos en móviles pequeños */
+.logo-gob {
+    width: 100%;
+    max-width: 90px;
+    /* Más pequeño en móvil */
+    height: auto;
+}
+
+/* Forzar que los links estén uno al lado del otro */
+.navbar-gob .nav-gob-links {
+    gap: 0.25rem;
+}
+
+/* Ajuste de tipografía y espaciado para que quepan en móviles (ej. iPhone SE) */
+.navbar-gob .nav-gob-links .nav-link {
+    color: var(--nav-gob-text);
+    font-weight: 300;
+    font-size: 12px;
+    /* Reducido para móvil */
+    padding: 0.2rem 0.4rem !important;
+    transition: opacity 0.2s ease;
+}
+
+.navbar-gob .nav-gob-links .nav-link:hover {
+    opacity: 0.8;
+}
+
+/* Ajustes para Tablets y Desktop */
+@media screen and (min-width: 768px) {
+    .logo-gob {
+        max-width: 128px;
+    }
+
+    .navbar-gob .nav-gob-links {
+        gap: 1rem;
+    }
+
+    .navbar-gob .nav-gob-links .nav-link {
+        font-size: 14px;
+        padding: 0.5rem 1rem !important;
+    }
+}
+
+/* =========================================
+   Barra Principal (INFOTEC / App)
+   ========================================= */
+.navbar-main {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Toque sutil para separarlo del contenido */
+}
+
+.logo-main {
+    max-height: 45px;
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Alineación de contenido en los enlaces */
+.nav-content {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    /* Espaciado moderno entre ícono y texto */
+    font-weight: 500;
+}
+
+.icon-custom {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+}
+
+.dropdown-icon {
+    margin-right: 0.5rem;
+    width: 16px;
+    text-align: center;
+}
+
+/* Control de colores para la barra blanca mediante especificidad */
+.navbar-main .nav-main-links .nav-link,
+.navbar-main .nav-main-links .nav-link svg {
+    color: var(--nav-main-text);
+    transition: color 0.2s ease;
+}
+
+.navbar-main .nav-main-links .nav-link:hover,
+.navbar-main .nav-main-links .nav-link:hover svg {
+    color: var(--nav-main-hover);
+}
+
+/* =========================================
+   Responsive Adjustments
+   ========================================= */
+@media screen and (min-width: 768px) {
+    .jh-navbar-toggler {
+        display: none;
+    }
+
+    .navbar-main .nav-main-links .nav-link {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+}
+
+/* Ocultar texto en resoluciones medias para evitar que la barra colapse feo */
+@media screen and (min-width: 768px) and (max-width: 1150px) {
+    .nav-content>span:not(.dropdown-icon) {
+        display: none;
+    }
+}
