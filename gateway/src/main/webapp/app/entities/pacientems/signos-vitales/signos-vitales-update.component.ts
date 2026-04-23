@@ -17,7 +17,13 @@ export default defineComponent({
   setup() {
     const signosVitalesService = inject('signosVitalesService', () => new SignosVitalesService());
     const alertService = inject('alertService', () => useAlertService(), true);
-    const signosVitales: Ref<ISignosVitales> = ref(new SignosVitales());
+    
+    // 🔥 CAMBIO: Inicializamos con la fecha/hora actual por defecto
+    const signosVitales: Ref<ISignosVitales> = ref({
+      ...new SignosVitales(),
+      fechaRegistro: new Date() 
+    });
+    
     const pacienteService = inject('pacienteService', () => new PacienteService());
     const pacientes: Ref<IPaciente[]> = ref([]);
     const isSaving = ref(false);
@@ -52,13 +58,13 @@ export default defineComponent({
     };
     initRelationships();
 
-    // 💥 SOLUCIÓN 1: Búsqueda en vivo del paciente por ECU
+    // Búsqueda en vivo del paciente por ECU
     const pacienteEncontrado = computed(() => {
       if (!signosVitales.value.pacienteEcu) return null;
       return pacientes.value.find(p => p.ecu === signosVitales.value.pacienteEcu) || null;
     });
 
-    // 💥 SOLUCIÓN 3: Adiós al error de updateInstantField. Manejo nativo de fechas.
+    // Manejo nativo de fechas
     const fechaRegistroLocal = computed({
       get: () => {
         if (!signosVitales.value.fechaRegistro) return '';
@@ -75,7 +81,7 @@ export default defineComponent({
     const { t: t$ } = useI18n();
     const validations = useValidation();
     
-    // 💥 SOLUCIÓN 2: Validaciones estrictas
+    // Validaciones estrictas
     const validationRules = {
       fechaRegistro: {
         required: validations.required(t$('entity.validation.required').toString()),
@@ -132,11 +138,11 @@ export default defineComponent({
       t$,
     };
   },
+// ... (código de arriba)
   methods: {
     save(): void {
       this.isSaving = true;
 
-      // Al guardar, asignamos los datos del paciente encontrado al payload
       if (this.pacienteEncontrado) {
         this.signosVitales.pacienteNombre = this.pacienteEncontrado.nombre;
         this.signosVitales.pacienteApellidoPaterno = this.pacienteEncontrado.apellidoPaterno;
@@ -168,6 +174,17 @@ export default defineComponent({
             this.alertService.showHttpError(error.response);
           });
       }
-    },
+    }, // <-- ¡Asegúrate de que esta coma esté aquí!
+
+    // 🔥 AGREGA LA FUNCIÓN AQUÍ 🔥
+    getColorDolor(valor: number) {
+      if (valor === 0) return 'text-success';
+      if (valor >= 1 && valor <= 3) return 'text-info';
+      if (valor >= 4 && valor <= 6) return 'text-warning';
+      if (valor >= 7 && valor <= 9) return 'text-danger';
+      if (valor === 10) return 'text-dark';
+      return '';
+    }
+
   },
 });

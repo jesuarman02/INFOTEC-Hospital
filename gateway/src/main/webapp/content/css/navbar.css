@@ -81,46 +81,64 @@ height: 100vh; /* Que ocupe el 100% del alto */
 /* ========================================= */
 /* MODO CELULAR (Anclado arriba)             */
 /* ========================================= */
+
+/* ========================================= */
+/* 📱 MODO CELULAR Y TABLET (Navegación Inferior) */
+/* ========================================= */
 @media (max-width: 1024px) {
   .sidebar-wrapper {
+    /* 🔥 LO PEGAMOS AL SUELO PARA NO ESTORBAR AL LOGO 🔥 */
     position: fixed !important; 
-    top: 70px !important;    
-    bottom: auto !important; 
-    width: 100vw;
-    height: 70px;
-    left: 0;
-    padding-top: 0;
-    flex-direction: row;
-    justify-content: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-    z-index: 9999;
+    bottom: 0 !important; 
+    top: auto !important; 
+    
+    left: 0 !important;
+    right: 0 !important;
+    width: 100vw !important; 
+    height: 75px !important; 
+    margin: 0 !important; 
+    padding: 0 !important;
+    flex-direction: row !important;
+    justify-content: center !important; 
+    background-color: #5c1830;
+    
+    /* Sombra hacia arriba y bordes curvos para estilo app nativa */
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.2) !important; 
+    border-top-left-radius: 18px; 
+    border-top-right-radius: 18px;
+    z-index: 9999 !important;
   }
 
   .sidebar-icons {
     height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center; 
     width: 100%;
   }
 
   .icon-group {
     flex-direction: row;
-    justify-content: space-evenly;
+    justify-content: space-around; /* Reparte el espacio equitativamente */
     width: 100%;
-    gap: 0; /* En celular el gap es 0 para que quepan */
+    max-width: 500px; /* En tablets evita que los iconos queden lejísimos */
+    gap: 0; 
     padding: 0 10px;
   }
 
   .icon-separator {
-    display: none; 
+    display: none !important; 
   }
 
   .icon-item {
-    width: 50px; /* Un poco más chicos en celular para no desbordar */
-    height: 50px;
+    width: 55px !important; 
+    height: 55px !important;
+    background-color: transparent !important; /* Más limpio en celular */
   }
 
-  .icon-item:hover {
-    transform: translateY(-5px) scale(1.05); 
+  .icon-item:hover, .icon-item:active {
+    /* El salto de animación ahora es hacia ARRIBA */
+    transform: translateY(-8px) scale(1.05) !important; 
+    background-color: rgba(255,255,255,0.15) !important;
   }
 }
