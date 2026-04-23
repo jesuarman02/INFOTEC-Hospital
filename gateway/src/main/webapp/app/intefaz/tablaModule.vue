@@ -6,15 +6,15 @@
         <ul class="nav nav-tabs border-bottom-0">
           <li class="nav-item">
             <a class="nav-link text-secondary" style="cursor: pointer;" 
-               :class="{ 'active font-weight-bold': tabActual === 'datos' }"
-               :style="tabActual === 'datos' ? 'color: #ffff !important;' : ''"
-               @click="tabActual = 'datos'">Datos del Paciente</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link text-secondary" style="cursor: pointer;" 
                :class="{ 'active font-weight-bold': tabActual === 'medicos' }"
                :style="tabActual === 'medicos' ? 'color: #ffff !important;' : ''"
                @click="tabActual = 'medicos'">Historial Médico</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-secondary" style="cursor: pointer;" 
+               :class="{ 'active font-weight-bold': tabActual === 'datos' }"
+               :style="tabActual === 'datos' ? 'color: #ffff !important;' : ''"
+               @click="tabActual = 'datos'">Datos del Paciente</a>
           </li>
         </ul>
       </div>

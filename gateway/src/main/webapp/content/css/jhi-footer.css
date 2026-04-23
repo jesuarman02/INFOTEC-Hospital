@@ -1,0 +1,150 @@
+/* =========================================
+   Variables y Tipografía Base
+   ========================================= */
+.footer {
+    background-color: #611232;
+    color: #ffffff;
+    padding: 3rem 1.5rem;
+
+    /* --- TRUCO PARA OCUPAR EL 100% DE LA PANTALLA --- */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+/* =========================================
+   Layout Responsivo (CSS Grid)
+   ========================================= */
+.footer-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    /* Móvil: 1 columna */
+    gap: 2.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+
+/* Tablet: 2 columnas */
+@media (min-width: 768px) {
+    .footer-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Desktop: 4 columnas */
+@media (min-width: 1024px) {
+    .footer-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+}
+
+.footer-col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   Elementos y Tipografía
+   ========================================= */
+.logo-gob {
+    max-width: 130px;
+    width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+}
+
+.footer-title {
+    font-size: 1.125rem;
+    /* 18px */
+    font-weight: 600;
+    margin: 0 0 1.25rem 0;
+    letter-spacing: -0.1px;
+}
+
+.footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.footer-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 1rem;
+    /* 16px */
+    font-weight: 300;
+    line-height: 1.5;
+    transition: opacity 0.2s ease;
+}
+
+.footer-link:hover,
+.footer-link-inline:hover {
+    text-decoration: underline;
+    opacity: 0.8;
+}
+
+.footer-text {
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.5;
+    margin: 0 0 1rem 0;
+}
+
+.footer-link-inline {
+    color: #ffffff;
+    text-decoration: underline;
+    font-weight: 400;
+    margin-left: 0.25rem;
+}
+
+.footer-link-main {
+    font-weight: 600;
+    text-decoration: underline;
+    line-height: 1.2;
+}
+
+/* =========================================
+   Redes Sociales y Utilidades
+   ========================================= */
+.mt-spaced {
+    margin-top: 2rem;
+}
+
+.social-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.social-link {
+    display: inline-flex;
+    transition: transform 0.2s ease;
+}
+
+.social-link:hover {
+    transform: translateY(-2px);
+}
+
+.social-icon {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+}
+
+.contact-banner {
+    display: block;
+    margin-top: auto;
+}
+
+.contact-img {
+    max-width: 100%;
+    height: auto;
+    min-height: 56px;
+    border-radius: 4px;
+}
