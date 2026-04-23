@@ -43,6 +43,42 @@ body {
 }
 
 
+/* 🔥🔥🔥 SOLUCIÓN REAL ESPACIO BLANCO 🔥🔥🔥 */
+
+/* APP COMO FLEX */
+#app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* CONTENEDOR CRECE */
+.container-fluid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CARD CRECE */
+.jh-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* CONTENIDO PRINCIPAL */
+.router-view,
+.view-container,
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* FOOTER NO EMPUJA */
+footer {
+  margin-top: 0 !important;
+}
 
 /* 🔥 MODAL */
 .modal-content {
@@ -124,7 +160,7 @@ a:hover {
   text-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
 }
 
-/* 🔥 ALERTAS (CONSISTENTE CON TU SISTEMA) */
+/* 🔥 ALERTAS */
 .alert {
   background: rgba(249, 247, 247, 0.493);
   border: 1px solid rgba(155, 155, 155, 0.3);

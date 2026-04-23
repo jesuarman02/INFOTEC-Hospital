@@ -218,6 +218,9 @@ body {
   .hipster {
     height: 150px;
   }
+  body, #app, .container-fluid, .jh-card {
+  background: transparent !important;
+}
 }
 /* 🔥 SOLUCION ESPACIO BLANCO */
 #app {
@@ -233,15 +236,27 @@ body {
   flex-direction: column;
   padding: 0 !important;
 }
-
-/* EL CARD OCUPA TODO */
 .jh-card {
   flex: 1;
   display: flex;
   flex-direction: column;
+  background: transparent !important;
 }
 
 /* TU HOME OCUPA TODO */
 .home-container {
   flex: 1;
+  min-height: 100vh;
+}
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  width: 100%;
+  height: 100%;
+}
+
+.image-container {
+  flex: 0 0 250px;
 }

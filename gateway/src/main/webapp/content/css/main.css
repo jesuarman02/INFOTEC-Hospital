@@ -180,3 +180,31 @@ body,
   }
 
 }
+/* 🔥 DEBUG FUERTE (elimina espacio blanco sí o sí) */
+
+body {
+  margin: 0 !important;
+}
+
+#app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container-fluid {
+  flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.jh-card {
+  flex: 1 !important;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔥 EL SOSPECHOSO REAL */
+footer {
+  display: none !important;
+}
