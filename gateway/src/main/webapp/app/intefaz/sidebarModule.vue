@@ -14,10 +14,7 @@
         <div class="icon-item icon-blue" @click="irCalendario" title="Calendario">
           <img src="/content/images/calendario.svg" class="sidebar-svg" />
         </div>
-        
-        <div class="icon-item icon-green" @click="$emit('update:mostrarSubirArchivos', true)" title="Expedientes">
-          <img src="/content/images/carpeta.svg" class="sidebar-svg" />
-        </div>
+
         
       </div>
     </nav>

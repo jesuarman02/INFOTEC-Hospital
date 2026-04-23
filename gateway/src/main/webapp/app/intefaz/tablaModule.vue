@@ -243,80 +243,173 @@
         <div v-if="tabActual === 'medicos'">
           <div v-if="paciente?.datosMedicos" class="row">
             
-            <div class="col-md-6">
-              <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid #9F2241 !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #9F2241; padding: 10px 15px;">Alergias</div>
-                <div class="card-body p-3 bg-white">
-                  <div v-if="paciente.datosMedicos.alergias.tiene && paciente.datosMedicos.alergias.detalles.length > 0">
-                    <div v-for="(alergia, index) in paciente.datosMedicos.alergias.detalles" :key="index" class="border-bottom pb-2 mb-2">
-                      <strong class="text-uppercase">{{ alergia.tipoAlergia || 'ALERGIA' }}</strong><br>
-                      <small><b>Reacciones:</b> {{ alergia.reaccionesAlergia ? alergia.reaccionesAlergia.join(', ') : 'N/A' }}</small><br>
-                      <small><b>Gravedad:</b> <span class="badge" style="background-color: #B38E5D; color: white;">{{ alergia.gravedadAlergia }}</span></small><br>
-                      <small><b>Tratamiento:</b> {{ alergia.tratamientoAlergia }}</small>
+            <div class="col-12 mb-4">
+              <div class="card shadow-sm" style="border: 1px solid #9F2241; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #9F2241; padding: 10px 15px; border-bottom: none;">
+                  Signos y Biométricos
+                </div>
+                <div class="card-body bg-white p-3">
+                  <div class="row align-items-center">
+                    <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
+                      <strong class="text-dark">Altura: <span class="font-weight-normal">{{ paciente.datosMedicos.biometricos?.altura || '-' }} cm</span></strong>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
+                      <strong class="text-dark">Peso: <span class="font-weight-normal">{{ paciente.datosMedicos.biometricos?.peso || '-' }} kg</span></strong>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
+                      <strong class="text-dark">IMC: 
+                        <span class="badge ml-1" style="background-color: #8E44AD; color: white; padding: 5px 8px;">
+                          {{ paciente.datosMedicos.biometricos?.imc || '-' }}
+                        </span>
+                      </strong>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
+                      <strong class="text-dark">Grupo Sanguíneo: 
+                        <span class="badge bg-danger text-white ml-1" style="padding: 5px 8px;">
+                          {{ paciente.datosMedicos.biometricos?.grupoSanguineo || '' }}{{ paciente.datosMedicos.biometricos?.factorRh || '' }}
+                        </span>
+                      </strong>
                     </div>
                   </div>
-                  <div v-else class="text-muted font-italic small">No reporta alergias.</div>
-                </div>
-              </div>
-
-              <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid #235B4E !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #235B4E; padding: 10px 15px;">Cirugías Previas</div>
-                <div class="card-body p-3 bg-white">
-                  <p v-if="paciente.datosMedicos.cirugiasPrevias.tiene" class="text-dark small mb-0">Sí reporta cirugías previas.</p>
-                  <p v-else class="text-muted font-italic small mb-0">No se reportan cirugías previas.</p>
-                </div>
-              </div>
-
-              <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid #B38E5D !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #B38E5D; padding: 10px 15px;">Antecedentes Familiares</div>
-                <div class="card-body p-3 bg-white">
-                  <p v-if="paciente.datosMedicos.antecedentesFamiliares.tiene" class="text-dark small mb-0">Sí reporta antecedentes.</p>
-                  <p v-else class="text-muted font-italic small mb-0">Sin antecedentes familiares de importancia.</p>
                 </div>
               </div>
             </div>
 
             <div class="col-md-6">
-              <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid #9F2241 !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #9F2241; padding: 10px 15px;">Enfermedades Crónicas</div>
+              
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #235B4E; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #235B4E; padding: 10px 15px; border-bottom: none;">Alergias</div>
+                <div class="card-body p-3 bg-white">
+                  <div v-if="paciente.datosMedicos.alergias.tiene && paciente.datosMedicos.alergias.detalles.length > 0">
+                    <div v-for="(alergia, index) in paciente.datosMedicos.alergias.detalles" :key="index" class="border-bottom pb-2 mb-2">
+                      <strong class="text-uppercase">{{ alergia.tipoAlergia || 'ALERGIA' }} /</strong><br>
+                      <small><b>Reacciones:</b> {{ alergia.reaccionesAlergia ? alergia.reaccionesAlergia.join(', ') : 'N/A' }}</small><br>
+                      <small><b>Gravedad:</b> <span class="badge" style="background-color: #fd7e14; color: white;">{{ alergia.gravedadAlergia }}</span></small><br>
+                      <small><b>Tratamiento Habitual:</b> {{ alergia.tratamientoAlergia }}</small><br>
+                      <small><b>Último Episodio:</b> {{ alergia.ultimoEpisodioAlergia || 'Desconocida' }}</small>
+                    </div>
+                  </div>
+                  <div v-else class="text-muted font-italic small p-2">No reporta alergias.</div>
+                </div>
+              </div>
+
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #9F2241 ; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #9F2241; padding: 10px 15px; border-bottom: none;">
+                  <i class="fas fa-procedures mr-2"></i> Cirugías Previas
+                </div>
+                <div class="card-body p-3 bg-white">
+                  <p v-if="paciente.datosMedicos.cirugiasPrevias.tiene" class="text-dark small mb-0 p-2">Sí reporta cirugías previas.</p>
+                  <p v-else class="text-muted font-italic small mb-0 p-2">No se reportan cirugías previas.</p>
+                </div>
+              </div>
+
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #B38E5D; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #B38E5D; padding: 10px 15px; border-bottom: none;">
+                  <i class="fas fa-users mr-2"></i> Antecedentes Familiares
+                </div>
+                <div class="card-body p-3 bg-white">
+                  <p v-if="paciente.datosMedicos.antecedentesFamiliares.tiene" class="text-dark small mb-0 p-2">Sí reporta antecedentes familiares.</p>
+                  <p v-else class="text-muted font-italic small mb-0 p-2">Sin antecedentes familiares de importancia.</p>
+                </div>
+              </div>
+
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #235B4E; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #235B4E; padding: 10px 15px; border-bottom: none;">
+                  <i class="fas fa-smoking mr-2"></i> Hábitos, Consumo y Otros
+                </div>
+                <div class="card-body p-3 bg-white">
+                  
+                  <div class="row text-left border-bottom pb-2 mb-2 mx-0">
+                    <div class="col-4 px-1">
+                      <small class="text-dark font-weight-bold d-block mb-2 border-bottom pb-1">Tabaco</small>
+                      <strong :class="paciente.datosMedicos.habitos?.tabaco === 'Fuma actualmente' ? 'text-danger' : 'text-dark'" style="font-size: 0.85rem; display: block; min-height: 20px;">
+                        {{ paciente.datosMedicos.habitos?.tabaco || 'No fuma' }}
+                      </strong>
+                      <small class="text-muted" style="font-size: 0.75rem;">Frecuencia: <span class="text-dark">{{ paciente.datosMedicos.habitos?.tabacoFrecuencia || '-' }}</span></small>
+                    </div>
+                    <div class="col-4 px-1">
+                      <small class="text-dark font-weight-bold d-block mb-2 border-bottom pb-1">Alcohol</small>
+                      <strong class="text-dark" style="font-size: 0.85rem; display: block; min-height: 20px;">{{ paciente.datosMedicos.habitos?.alcohol || 'No' }}</strong>
+                      <small class="text-muted" style="font-size: 0.75rem;">Frecuencia: <span class="text-dark">{{ paciente.datosMedicos.habitos?.alcoholFrecuencia || '-' }}</span></small>
+                    </div>
+                    <div class="col-4 px-1">
+                      <small class="text-dark font-weight-bold d-block mb-2 border-bottom pb-1">Drogas</small>
+                      <strong :class="paciente.datosMedicos.habitos?.drogas === 'Sí' ? 'text-danger' : 'text-dark'" style="font-size: 0.85rem; display: block; min-height: 20px;">
+                        {{ paciente.datosMedicos.habitos?.drogas || 'No' }}
+                      </strong>
+                      <small class="text-muted" style="font-size: 0.75rem; display: block;">Tipo: <span class="text-dark">{{ paciente.datosMedicos.habitos?.drogasTipo || 'N/A' }}</span></small>
+                      <small class="text-muted" style="font-size: 0.75rem;">Frecuencia: <span class="text-dark">{{ paciente.datosMedicos.habitos?.drogasFrecuencia || '-' }}</span></small>
+                    </div>
+                  </div>
+
+                  <div class="row text-left mx-0 pt-1">
+                    <div class="col-6 px-1">
+                      <small class="text-dark font-weight-bold d-block mb-2 border-bottom pb-1">Vacunación</small>
+                      <small class="text-muted" style="font-size: 0.8rem;">Esquema: <span class="text-dark">{{ paciente.datosMedicos.habitos?.esquemaVacunacion || 'Desconoce' }}</span></small>
+                    </div>
+                    <div class="col-6 px-1">
+                      <small class="text-dark font-weight-bold d-block mb-2 border-bottom pb-1">Discapacidad</small>
+                      <strong :style="paciente.datosMedicos.habitos?.tieneDiscapacidad === 'Sí' ? 'color: #8E44AD; font-size: 0.85rem;' : 'color: #343a40; font-size: 0.85rem;'">
+                        {{ paciente.datosMedicos.habitos?.tieneDiscapacidad || 'No' }}
+                      </strong><br>
+                      <small class="text-muted" style="font-size: 0.8rem;">Tipo: <span class="text-dark">{{ paciente.datosMedicos.habitos?.tipoDiscapacidad || '-' }}</span></small>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
+            <div class="col-md-6">
+              
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #B38E5D; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #B38E5D; padding: 10px 15px; border-bottom: none;">
+                  <i class="fas fa-heartbeat mr-2"></i> Enfermedades Crónicas
+                </div>
                 <div class="card-body p-3 bg-white">
                   <div v-if="paciente.datosMedicos.enfermedadesCronicas.tiene && paciente.datosMedicos.enfermedadesCronicas.detalles.length > 0">
                     <div v-for="(enf, index) in paciente.datosMedicos.enfermedadesCronicas.detalles" :key="index" class="border-bottom pb-2 mb-2">
                       <strong class="text-uppercase">{{ enf.nombreEnfermedad || 'Enfermedad' }}</strong>
                     </div>
                   </div>
-                  <div v-else class="text-muted font-italic small">No reporta enfermedades crónicas.</div>
+                  <div v-else class="text-muted font-italic small p-2">El paciente no reporta o desconoce tener enfermedades crónicas.</div>
                 </div>
               </div>
 
-              <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid #235B4E !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #235B4E; padding: 10px 15px;">Medicamentos Actuales</div>
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #9F2241; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #9F2241; padding: 10px 15px; border-bottom: none;">
+                  <i class="fas fa-pills mr-2"></i> Medicamentos Actuales
+                </div>
                 <div class="card-body p-3 bg-white">
                   <div v-if="paciente.datosMedicos.medicamentosActuales.tiene && paciente.datosMedicos.medicamentosActuales.detalles.length > 0">
                     <div v-for="(med, index) in paciente.datosMedicos.medicamentosActuales.detalles" :key="index" class="border-bottom pb-2 mb-2">
                       <strong class="text-uppercase">{{ med.nombre || 'Medicamento' }}</strong>
                     </div>
                   </div>
-                  <div v-else class="text-muted font-italic small">No toma medicamentos actualmente.</div>
+                  <div v-else class="text-muted font-italic small p-2">No toma medicamentos actualmente.</div>
                 </div>
               </div>
 
-              <div class="card mb-3 shadow-sm border-0" style="border-left: 5px solid #B38E5D !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #B38E5D; padding: 10px 15px;">Personales Patológicos</div>
+              <div class="card mb-4 shadow-sm" style="border: 1px solid #235B4E; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #235B4E; padding: 10px 15px; border-bottom: none;">
+                  <i class="fas fa-notes-medical mr-2"></i> Antecedentes Personales Patológicos
+                </div>
                 <div class="card-body p-3 bg-white">
-                  <p v-if="paciente.datosMedicos.antecedentesPatologicos.tiene" class="text-dark small mb-0">Sí reporta antecedentes.</p>
-                  <p v-else class="text-muted font-italic small mb-0">Sin antecedentes patológicos previos.</p>
+                  <p v-if="paciente.datosMedicos.antecedentesPatologicos.tiene" class="text-dark small mb-0 p-2">Sí reporta antecedentes patológicos.</p>
+                  <p v-else class="text-muted font-italic small mb-0 p-2">Sin antecedentes patológicos previos.</p>
                 </div>
               </div>
+
             </div>
 
             <div class="col-12 mt-2">
-               <div class="card shadow-sm border-0" style="border-left: 5px solid #4A4A49 !important;">
-                <div class="card-header text-white font-weight-bold" style="background-color: #4A4A49; padding: 10px 15px;">Observaciones Médicas Generales</div>
+               <div class="card shadow-sm" style="border: 1px solid #9F2241; border-radius: 4px;">
+                <div class="card-header text-white font-weight-bold" style="background-color: #9F2241; padding: 10px 15px; border-bottom: none;">
+                  Observaciones Médicas Generales
+                </div>
                 <div class="card-body p-3 bg-white">
-                  <p class="text-dark small mb-0" style="white-space: pre-wrap;">
-                    {{ paciente.datosMedicos.observacionesGenerales || 'Sin observaciones registradas.' }}
-                  </p>
+                  <p class="text-dark small mb-0 p-2" style="white-space: pre-wrap;">{{ paciente.datosMedicos.observacionesGenerales || 'Sin observaciones registradas.' }}</p>
                 </div>
               </div>
             </div>

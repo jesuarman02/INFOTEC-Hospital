@@ -109,6 +109,7 @@ export function usePacienteSearch() {
                             // Armamos nuestro objeto limpio y estructurado
                             pacienteEncontrado.datosMedicos = {
                                 observacionesGenerales: rawData.observacionesGenerales,
+                                datosBiometricos: safeParse(rawData.datosBiometricosSanguineos),
                                 alergias: safeParse(rawData.alergias),
                                 enfermedadesCronicas: safeParse(rawData.enfermedadesCronicas),
                                 medicamentosActuales: safeParse(rawData.medicamentosActuales),
