@@ -86,6 +86,49 @@ export function usePacienteSearch() {
                     }
                 }
 
+                // 4. Vamos por el Historial Médico Completo (El endpoint maestro) 🩺
+                if (pacienteEncontrado.id) {
+                    try {
+                        // Hacemos UNA sola petición al endpoint que viste en tu red (ajusta la URL si es necesario)
+                        const medicosRes = await axios.get(`services/pacientesms/api/historial-medicos?pacienteId.equals=${pacienteEncontrado.id}`);
+
+                        if (medicosRes.data && medicosRes.data.length > 0) {
+                            const rawData = medicosRes.data[0]; // Tomamos el primer registro
+
+                            // 🔥 HERRAMIENTA MAGICA: Función para convertir el texto raro a Objetos JSON
+                            const safeParse = (jsonString: any) => {
+                                if (!jsonString) return { tiene: false, detalles: [] };
+                                try {
+                                    return JSON.parse(jsonString);
+                                } catch (e) {
+                                    console.error("Error al traducir el JSON:", jsonString);
+                                    return { tiene: false, detalles: [] };
+                                }
+                            };
+
+                            // Armamos nuestro objeto limpio y estructurado
+                            pacienteEncontrado.datosMedicos = {
+                                observacionesGenerales: rawData.observacionesGenerales,
+                                datosBiometricos: safeParse(rawData.datosBiometricosSanguineos),
+                                alergias: safeParse(rawData.alergias),
+                                enfermedadesCronicas: safeParse(rawData.enfermedadesCronicas),
+                                medicamentosActuales: safeParse(rawData.medicamentosActuales),
+                                cirugiasPrevias: safeParse(rawData.cirugiasPrevias),
+                                antecedentesFamiliares: safeParse(rawData.antecedentesFamiliaresHereditarios),
+                                antecedentesPatologicos: safeParse(rawData.antecedentesPersonalesPatologicos),
+                                habitos: safeParse(rawData.habitosConsumoOtros),
+                                biometricos: safeParse(rawData.datosBiometricosSanguineos)
+                            };
+                        } else {
+                            pacienteEncontrado.datosMedicos = null;
+                        }
+
+                    } catch (errorMedicos) {
+                        console.warn("Falló la carga del historial médico:", errorMedicos);
+                        pacienteEncontrado.datosMedicos = null;
+                    }
+                }
+
                 // Finalmente, mandamos al paciente a la variable reactiva
                 resultados.value = [pacienteEncontrado];
             }
