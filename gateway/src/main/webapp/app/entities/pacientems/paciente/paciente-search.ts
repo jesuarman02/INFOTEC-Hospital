@@ -89,11 +89,21 @@ export function usePacienteSearch() {
                 // 4. Vamos por el Historial Médico Completo (El endpoint maestro) 🩺
                 if (pacienteEncontrado.id) {
                     try {
-                        // Hacemos UNA sola petición al endpoint que viste en tu red (ajusta la URL si es necesario)
+                        // Hacemos la petición al endpoint
                         const medicosRes = await axios.get(`services/pacientesms/api/historial-medicos?pacienteId.equals=${pacienteEncontrado.id}`);
 
-                        if (medicosRes.data && medicosRes.data.length > 0) {
-                            const rawData = medicosRes.data[0]; // Tomamos el primer registro
+                        // 🔥 EL ESCUDO ANTI-FANTASMAS (Versión Historial Médico)
+                        // Revisamos uno por uno los registros que nos mandó el backend y nos quedamos SOLO con el que coincida con nuestro paciente actual.
+                        const historialRealDelPaciente = medicosRes.data.filter((registro: any) => {
+                            const idDueño = registro.paciente?.id || registro.pacienteId;
+                            return idDueño === pacienteEncontrado.id;
+                        });
+
+                        // Si después de filtrar sí quedó un registro de este paciente...
+                        if (historialRealDelPaciente && historialRealDelPaciente.length > 0) {
+
+                            // Ahora sí, tomamos con seguridad el primer registro de nuestra lista FILTRADA
+                            const rawData = historialRealDelPaciente[0];
 
                             // 🔥 HERRAMIENTA MAGICA: Función para convertir el texto raro a Objetos JSON
                             const safeParse = (jsonString: any) => {
@@ -120,6 +130,7 @@ export function usePacienteSearch() {
                                 biometricos: safeParse(rawData.datosBiometricosSanguineos)
                             };
                         } else {
+                            // Si el filtro no encontró coincidencias, este paciente no tiene historial
                             pacienteEncontrado.datosMedicos = null;
                         }
 

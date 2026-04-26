@@ -72,12 +72,19 @@ watch(mostrarBuscador, (val) => {
         />
       </div>
 
-      <section class="work-area" v-show="resultados.length > 0">
-        <div class="paciente-data-preview">
-          <modulos :paciente="resultados[0]" />
-          <tablaModule :paciente="resultados[0]" />
-        </div>
-      </section>  
+     <section class="work-area" v-show="resultados.length > 0">
+  <div class="paciente-data-preview">
+    
+    <div class="columna-izquierda">
+      <modulos :paciente="resultados[0]" />
+    </div>
+
+    <div class="columna-derecha">
+      <tablaModule :paciente="resultados[0]" />
+    </div>
+
+  </div>
+</section>
 
     </main>
   </div>

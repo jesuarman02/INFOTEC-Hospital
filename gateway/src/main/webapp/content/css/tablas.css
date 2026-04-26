@@ -1,71 +1,195 @@
-/* CONTENEDOR PRINCIPAL */
-.main-content{
-    position: relative;
-    min-height:100vh;
-    overflow:visible;
-    padding:2rem;
-    box-sizing:border-box;
+/* =========================================
+   1. CONTENEDOR Y RESETEO
+   ========================================= */
+.tabla-module-container {
+    width: 100%;
+    height: auto;
+    background: transparent;
+    animation: fadeIn 0.4s ease-in-out;
 }
 
-/* SECCION DE TABS */
-.tabs-section{
-    position: relative;
-    z-index:1;
-    margin-top:40px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
-/* CONTENIDO DE LAS TABS */
-.tab-content{
-    overflow:visible !important;
-    height:auto !important;
+/* =========================================
+   2. PESTAÑAS (TABS) MINIMALISTAS
+   ========================================= */
+.card-header.bg-white.pb-0 {
+    border-bottom: 1px solid #eaeaea !important;
+    padding-bottom: 0 !important;
+    background: transparent !important;
 }
 
-.tab-pane{
-    overflow:visible !important;
-    height:auto !important;
+.nav-tabs {
+    border-bottom: none !important;
+    gap: 1.5rem;
+    padding-left: 1rem;
 }
 
-/* ESTILO INTERNO */
-.tab-content-custom{
-    padding:20px;
-    font-size:16px;
-    color:#333;
+.nav-tabs .nav-link {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #9ca3af !important;
+    /* Gris suave para inactivos */
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+    padding: 12px 5px;
+    background: transparent !important;
+    transition: all 0.3s ease;
 }
 
-/* NAV TABS */
-.nav-tabs .nav-link{
-    font-weight:600;
-    color:#611232;
+.nav-tabs .nav-link:hover {
+    color: #611232 !important;
 }
 
-.nav-tabs .nav-link.active{
-    background-color:#611232 !important;
-    color:white !important;
-    border-radius:10px 10px 0 0;
+/* Tab Activa: Línea inferior elegante en lugar de un bloque entero */
+.nav-tabs .nav-link.active {
+    color: #611232 !important;
+    border-bottom: 3px solid #611232 !important;
+    background: transparent !important;
 }
 
-/* TABS FIJAS ARRIBA */
-.b-tabs .nav-tabs{
-    position:sticky;
-    top:0;
-    z-index:10;
-    background:white;
+/* =========================================
+   3. TARJETAS DE DATOS (ADIÓS BORDES DUROS)
+   ========================================= */
+/* Quitamos las líneas gruesas de la izquierda y los bordes completos */
+.card {
+    border: 1px solid #f0f2f5 !important;
+    border-radius: 16px !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02) !important;
+    /* Sombra casi invisible */
+    margin-bottom: 1.5rem !important;
+    background: #ffffff !important;
+    overflow: hidden;
 }
 
-/* EVITAR ALTURAS FIJAS DE BOOTSTRAP */
-.b-tabs,
-.b-tabs .tab-content,
-.b-tabs .tab-pane{
-    height:auto !important;
-    max-height:none !important;
-    overflow:visible !important;
+/* =========================================
+   4. ENCABEZADOS DE SECCIÓN (TEXTO EN VEZ DE FONDO)
+   ========================================= */
+/* Apagamos los fondos guindas, verdes y cafés de los headers */
+.card-header {
+    background: #ffffff !important;
+    border-bottom: 1px solid #f0f2f5 !important;
+    padding: 1.2rem 1.5rem !important;
 }
 
-/* DASHBOARD CONTENT */
-.dashboard-content{
-    height:auto;
-    overflow:visible;
+/* Convertimos el texto blanco en color oscuro elegante */
+.card-header.text-white {
+    color: #1a1a1a !important;
+    font-size: 1.05rem;
+    font-weight: 700 !important;
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
 }
-.tabs-section{
-    margin-top: 80px; /* aumenta esto si quieres más separación */
+
+/* Los íconos en los headers toman el color guinda de acento */
+.card-header i {
+    color: #611232 !important;
+    margin-right: 10px;
+}
+
+.card-body {
+    background: #ffffff !important;
+    padding: 1.5rem !important;
+}
+
+/* =========================================
+   5. LIMPIEZA DE TIPOGRAFÍA Y ETIQUETAS
+   ========================================= */
+/* Las etiquetas (ej. "Nombre", "CURP") */
+small.text-muted,
+.text-muted.d-block {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #a0a0a0 !important;
+    margin-bottom: 6px;
+    font-weight: 600;
+}
+
+/* Los valores (ej. "ALAN VELASCO") */
+strong.text-dark {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #2b2b2b !important;
+    border-left: none !important;
+    /* Eliminamos las barritas de colores de los textos */
+    padding-left: 0 !important;
+    display: block;
+}
+
+/* Badges (Pastillas de colores como IMC o Sangre) */
+.badge {
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 6px 10px !important;
+    letter-spacing: 0.5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Líneas divisorias internas más suaves */
+.border-bottom {
+    border-bottom: 1px solid #f4f6f9 !important;
+}
+
+/* 🔥 ESTILO CALLOUT MINIMALISTA (Para Historial Médico) 🔥 */
+.callout-card {
+    background-color: #fafbfc;
+    /* Fondo gris súper tenue */
+    border: 1px solid #f0f2f5;
+    border-left: 4px solid #611232;
+    /* La línea guinda de acento */
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+}
+
+.callout-card:hover {
+    background-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+}
+
+.callout-icon {
+    font-size: 1.2rem;
+    color: #611232;
+    width: 25px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.callout-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #a0a0a0;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+/* =========================================
+   6. RESPONSIVE
+   ========================================= */
+@media (max-width: 768px) {
+    .nav-tabs {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        /* Permite deslizar las tabs en móvil */
+        padding-bottom: 5px;
+    }
+
+    .card-body {
+        padding: 1rem !important;
+    }
 }
