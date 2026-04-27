@@ -2,7 +2,7 @@ package mx.infotec.pacientesms.repository.rowmapper;
 
 import io.r2dbc.spi.Row;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.function.BiFunction;
 import mx.infotec.pacientesms.domain.SignosVitales;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class SignosVitalesRowMapper implements BiFunction<Row, String, SignosVit
     public SignosVitales apply(Row row, String prefix) {
         SignosVitales entity = new SignosVitales();
         entity.setId(converter.fromRow(row, prefix + "_id", Long.class));
-        entity.setFechaRegistro(converter.fromRow(row, prefix + "_fecha_registro", Instant.class));
+        entity.setFechaRegistro(converter.fromRow(row, prefix + "_fecha_registro", LocalDateTime.class));
         entity.setFrecuenciaCardiaca(converter.fromRow(row, prefix + "_frecuencia_cardiaca", Integer.class));
         entity.setTensionArterial(converter.fromRow(row, prefix + "_tension_arterial", String.class));
         entity.setFrecuenciaRespiratoria(converter.fromRow(row, prefix + "_frecuencia_respiratoria", Integer.class));

@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.Transient;
 import org.springframework.data.relational.core.mapping.Column;
@@ -25,7 +25,7 @@ public class SignosVitales implements Serializable {
 
     @NotNull(message = "must not be null")
     @Column("fecha_registro")
-    private Instant fechaRegistro;
+    private LocalDateTime fechaRegistro;
 
     @Column("frecuencia_cardiaca")
     private Integer frecuenciaCardiaca;
@@ -106,19 +106,19 @@ public class SignosVitales implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+// ✅ DESPUÉS
+public LocalDateTime getFechaRegistro() {
+    return this.fechaRegistro;
+}
 
-    public Instant getFechaRegistro() {
-        return this.fechaRegistro;
-    }
+public void setFechaRegistro(LocalDateTime fechaRegistro) {
+    this.fechaRegistro = fechaRegistro;
+}
+public SignosVitales fechaRegistro(LocalDateTime fechaRegistro) {
+    this.setFechaRegistro(fechaRegistro);
+    return this;
+}
 
-    public SignosVitales fechaRegistro(Instant fechaRegistro) {
-        this.setFechaRegistro(fechaRegistro);
-        return this;
-    }
-
-    public void setFechaRegistro(Instant fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
 
     public Integer getFrecuenciaCardiaca() {
         return this.frecuenciaCardiaca;

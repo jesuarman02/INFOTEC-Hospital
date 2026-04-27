@@ -4,6 +4,7 @@ import jakarta.validation.constraints.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -15,7 +16,7 @@ public class SignosVitalesDTO implements Serializable {
     private Long id;
 
     @NotNull(message = "must not be null")
-    private Instant fechaRegistro;
+    private LocalDateTime fechaRegistro;
 
     private Integer frecuenciaCardiaca;
 
@@ -52,14 +53,13 @@ public class SignosVitalesDTO implements Serializable {
         this.id = id;
     }
 
-    public Instant getFechaRegistro() {
-        return fechaRegistro;
-    }
+public LocalDateTime getFechaRegistro() {
+    return this.fechaRegistro;
+}
 
-    public void setFechaRegistro(Instant fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
-
+public void setFechaRegistro(LocalDateTime fechaRegistro) {
+    this.fechaRegistro = fechaRegistro;
+}
     public Integer getFrecuenciaCardiaca() {
         return frecuenciaCardiaca;
     }

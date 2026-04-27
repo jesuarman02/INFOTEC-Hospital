@@ -30,4 +30,4 @@
 </template>
 
 <script lang="ts" src="./app.component.ts"></script>
-<style src="../../content/css/login.css"></style>
+<style src="../../webapp/content/css/login.css"></style>

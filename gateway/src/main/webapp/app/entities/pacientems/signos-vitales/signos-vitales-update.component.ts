@@ -65,13 +65,18 @@ export default defineComponent({
     });
 
     // Manejo nativo de fechas
+// 🔥 MANEJO PURO LOCAL (Ignoramos UTC por completo) 🔥
     const fechaRegistroLocal = computed({
       get: () => {
-        if (!signosVitales.value.fechaRegistro) return '';
-        const date = new Date(signosVitales.value.fechaRegistro);
-        const offset = date.getTimezoneOffset() * 60000;
-        const localDate = new Date(date.getTime() - offset);
-        return localDate.toISOString().slice(0, 16);
+        const d = signosVitales.value.fechaRegistro;
+        if (!d) return '';
+        
+        const dateObj = new Date(d);
+        if (isNaN(dateObj.getTime())) return '';
+        
+        // Extraemos los números tal cual los ves en tu pantalla
+        const pad = (n: number) => (n < 10 ? '0' + n : n);
+        return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
       },
       set: (val: string) => {
         signosVitales.value.fechaRegistro = val ? new Date(val) : undefined;

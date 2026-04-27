@@ -48,19 +48,35 @@ export default defineComponent({
 
     const signosVitales = ref<any>(initSignos());
 
-    // 🔥 VOLVEMOS AL MÉTODO QUE TE FUNCIONA PERFECTO EN UPDATE.TS 🔥
-    const fechaRegistroLocal = computed({
-      get: () => {
-        if (!signosVitales.value.fechaRegistro) return '';
-        const date = new Date(signosVitales.value.fechaRegistro);
-        const offset = date.getTimezoneOffset() * 60000;
-        const localDate = new Date(date.getTime() - offset);
-        return localDate.toISOString().slice(0, 16);
-      },
-      set: (val: string) => {
-        signosVitales.value.fechaRegistro = val ? new Date(val) : undefined;
-      }
-    });
+// 🔥 MANEJO PURO LOCAL (CORREGIDO) 🔥
+const fechaRegistroLocal = computed({
+  get: () => {
+    const d = signosVitales.value.fechaRegistro;
+    if (!d) return '';
+
+    const dateObj = new Date(d);
+    if (isNaN(dateObj.getTime())) return '';
+
+    const pad = (n: number) => (n < 10 ? '0' + n : n);
+
+    return `${dateObj.getFullYear()}-${pad(dateObj.getMonth() + 1)}-${pad(dateObj.getDate())}T${pad(dateObj.getHours())}:${pad(dateObj.getMinutes())}`;
+  },
+
+  // 🔥 CORRECCIÓN IMPORTANTE AQUÍ
+  set: (val: string) => {
+    if (!val) {
+      signosVitales.value.fechaRegistro = undefined;
+      return;
+    }
+
+    // 🔥 Parseo manual SIN UTC
+    const [datePart, timePart] = val.split('T');
+    const [year, month, day] = datePart.split('-').map(Number);
+    const [hours, minutes] = timePart.split(':').map(Number);
+
+    signosVitales.value.fechaRegistro = new Date(year, month - 1, day, hours, minutes);
+  }
+});
 
     const rules = {
       fechaRegistro: { required },
@@ -75,7 +91,6 @@ export default defineComponent({
     };
     const v$ = useVuelidate(rules, signosVitales);
 
-    // VIGILANTE: Conectar con el Dashboard y cargar datos previos
     watch(() => props.visible, async (newVal) => {
       if (newVal) {
         if (props.pacientePreCargado) {
@@ -89,7 +104,7 @@ export default defineComponent({
             if (signosExistentes) {
               const datosCargados = { ...signosExistentes };
               
-              // Al recuperar, nos aseguramos de que sea un objeto Date
+              // Nos aseguramos de parsear la fecha de la base de datos a un objeto Date nativo
               if (datosCargados.fechaRegistro) {
                 datosCargados.fechaRegistro = new Date(datosCargados.fechaRegistro);
               }
@@ -156,36 +171,57 @@ export default defineComponent({
       });
     };
 
-    const save = async () => {
-      isSaving.value = true;
-      try {
-        const payload = { ...signosVitales.value };
+const save = async () => {
+  isSaving.value = true;
 
-        if (pacienteEncontrado.value) {
-          payload.pacienteNombre = pacienteEncontrado.value.nombre;
-          payload.pacienteApellidoPaterno = pacienteEncontrado.value.apellidoPaterno;
-          payload.paciente = { id: pacienteEncontrado.value.id };
-          payload.pacienteEcu = pacienteEncontrado.value.ecu;
-        }
+  try {
+    const payload: any = { ...signosVitales.value };
 
-        if (payload.id) {
-          await signosVitalesService().update(payload);
-        } else {
-          await signosVitalesService().create(payload);
-        }
+    // 🔥 CONVERTIR FECHA A STRING LOCAL (SIN UTC)
+    if (payload.fechaRegistro instanceof Date) {
+      const pad = (n: number) => (n < 10 ? '0' + n : n);
+      const d = payload.fechaRegistro;
 
-        Swal.fire({ icon: 'success', title: '¡Guardado Exitoso!', text: `Signos vitales registrados correctamente.`, showConfirmButton: false, timer: 2000 });
-        emit('saved');
-        resetModal();
-        emit('update:visible', false);
-      } catch (error: any) {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar el registro.', confirmButtonColor: '#611232' });
-      } finally {
-        isSaving.value = false;
-      }
-    };
+      payload.fechaRegistro = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:00`;
+    }
 
-    // Función visual para la escala de dolor
+    if (pacienteEncontrado.value) {
+      payload.pacienteNombre = pacienteEncontrado.value.nombre;
+      payload.pacienteApellidoPaterno = pacienteEncontrado.value.apellidoPaterno;
+      payload.paciente = { id: pacienteEncontrado.value.id };
+      payload.pacienteEcu = pacienteEncontrado.value.ecu;
+    }
+
+    if (payload.id) {
+      await signosVitalesService().update(payload);
+    } else {
+      await signosVitalesService().create(payload);
+    }
+
+    Swal.fire({
+      icon: 'success',
+      title: '¡Guardado Exitoso!',
+      text: 'Signos vitales registrados correctamente.',
+      showConfirmButton: false,
+      timer: 2000
+    });
+
+    emit('saved');
+    resetModal();
+    emit('update:visible', false);
+
+  } catch (error: any) {
+    Swal.fire({
+      icon: 'error',
+      title: 'Error',
+      text: 'No se pudo guardar el registro.',
+      confirmButtonColor: '#611232'
+    });
+  } finally {
+    isSaving.value = false;
+  }
+};
+
     const getColorDolor = (valor: number) => {
       if (valor === 0) return 'text-success';
       if (valor >= 1 && valor <= 3) return 'text-info';
@@ -195,7 +231,6 @@ export default defineComponent({
       return '';
     };
 
-    // Al actualizar, inyectamos un Date real para que el setter/getter lo procese nativamente
     const actualizarFechaHora = () => {
       signosVitales.value.fechaRegistro = new Date();
     };

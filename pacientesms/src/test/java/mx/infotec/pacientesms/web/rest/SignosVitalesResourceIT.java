@@ -9,7 +9,9 @@ import static org.hamcrest.Matchers.is;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
@@ -36,8 +38,9 @@ import org.springframework.test.web.reactive.server.WebTestClient;
 @WithMockUser
 class SignosVitalesResourceIT {
 
-    private static final Instant DEFAULT_FECHA_REGISTRO = Instant.ofEpochMilli(0L);
-    private static final Instant UPDATED_FECHA_REGISTRO = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+    private static final LocalDateTime DEFAULT_FECHA_REGISTRO =
+    LocalDateTime.ofInstant(Instant.ofEpochMilli(0L), ZoneId.systemDefault());
+    private static final LocalDateTime UPDATED_FECHA_REGISTRO = LocalDateTime.now().truncatedTo(ChronoUnit.MILLIS);
 
     private static final Integer DEFAULT_FRECUENCIA_CARDIACA = 1;
     private static final Integer UPDATED_FRECUENCIA_CARDIACA = 2;
