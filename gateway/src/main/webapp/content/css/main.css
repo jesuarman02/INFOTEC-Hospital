@@ -1,111 +1,123 @@
 /* 1. RESETEO DEL BODY */
 /* Bloqueamos el scroll global para que la app se sienta nativa, no como una página web */
 body {
-    overflow-y: auto;
-    overflow-x: hidden;
-    background-color: #f4f6f9;
-    margin: 0 !important;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #f4f6f9;
+  margin: 0 !important;
 }
 
 /* 2. CONTENEDOR PRINCIPAL */
 .interface-container {
-    display: flex;
-    height: 100vh;
-    width: 100%;
-    /*overflow: hidden;
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  /*overflow: hidden;
     /* Nada sale de este contenedor */
 }
 
 /* 3. PANEL IZQUIERDO (Sidebar + Búsqueda) */
 /* 3. PANEL IZQUIERDO (Sidebar guinda + Búsqueda blanca) */
 .left-panel-glass {
-    display: flex;
-    flex-direction: row;
-    height: 100%;
+  display: flex;
+  flex-direction: row;
+  height: 100%;
 }
 
 
 .search-section {
-    width: 320px;
-    /* Le damos su propio ancho para que no desaparezca */
-    flex-shrink: 0;
-    /* Evita que el contenedor lo comprima */
-    padding: 2.5rem 1.5rem;
-    display: flex;
-    flex-direction: column;
+  width: 320px;
+  /* Le damos su propio ancho para que no desaparezca */
+  flex-shrink: 0;
+  /* Evita que el contenedor lo comprima */
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
 }
 
 .status-text {
-    margin-top: 2rem;
-    color: #9ca3af;
-    font-size: 0.85rem;
-    text-align: center;
-    font-weight: 500;
+  margin-top: 2rem;
+  color: #9ca3af;
+  font-size: 0.85rem;
+  text-align: center;
+  font-weight: 500;
 }
 
 .work-area {
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 /* 4. PANEL DERECHO - Cambia hidden por auto */
 .right-panel-workspace {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    /* Aseguramos que ocupe el alto de la pantalla */
-    overflow-y: auto;
-    /* PERMITE EL SCROLL AQUÍ */
-    background-color: #f4f6f9;
-    /* Color de fondo consistente */
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  /* Aseguramos que ocupe el alto de la pantalla */
+  overflow-y: auto;
+  /* PERMITE EL SCROLL AQUÍ */
+  background-color: #f4f6f9;
+  /* Color de fondo consistente */
 }
 
 /* Ajusta el área de trabajo */
 .work-area {
-    display: flex;
-    flex-direction: column;
-    /* Quitamos el height: 100% para que pueda crecer hacia abajo */
-    padding: 2rem;
-    gap: 2rem;
-    /* Reducimos el gap de 10rem a algo más sensato */
+  display: flex;
+  flex-direction: column;
+  /* Quitamos el height: 100% para que pueda crecer hacia abajo */
+  padding: 2rem;
+  gap: 2rem;
+  /* Reducimos el gap de 10rem a algo más sensato */
 }
 
 /* Quita el height: 100% de aquí para que la tabla empuje el contenedor */
 .paciente-data-preview {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-    /* height: 100%;  <-- ELIMINA ESTA LÍNEA */
+  display: grid !important;
+  /* Aquí está la magia: Columna 1 = 350px fijos. Columna 2 = El resto del espacio disponible */
+  grid-template-columns: 350px minmax(0, 1fr) !important;
+  gap: 2rem !important;
+  /* Espacio entre las dos columnas */
+  align-items: start !important;
+  /* Para que no se estiren a lo alto */
+  width: 100% !important;
+}
+
+/* Quitamos los márgenes por defecto para evitar problemas */
+.columna-izquierda,
+.columna-derecha {
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Asegúrate de que la tabla tenga visibilidad */
 .table-scroll-section {
-    background: white;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-top: 1rem;
-    min-height: 200px;
-    /* Un mínimo para que siempre se vea algo */
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-top: 1rem;
+  min-height: 200px;
+  /* Un mínimo para que siempre se vea algo */
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
 }
 
 .dashboard-card {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
-    border: 1px solid rgba(0, 0, 0, 0.02);
-    height: 100%;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  height: 100%;
 }
 
 html,
 body,
 #app {
-    height: 100%;
-    margin: 0;
-    /*overflow: hidden;*/
+  height: 100%;
+  margin: 0;
+  /*overflow: hidden;*/
 }
+
 /* 🔥 CONTENEDOR GENERAL */
 .interface-container {
   display: flex;
@@ -169,15 +181,9 @@ body,
 }
 
 /* 🔥 EXTRA PEQUEÑO */
-@media (max-width: 480px) {
-
-  .status-text {
-    font-size: 0.8rem;
-    text-align: center;
+@media (max-width: 1024px) {
+  .paciente-data-preview {
+    /* En pantallas chicas, volvemos a 1 sola columna */
+    grid-template-columns: 1fr !important;
   }
-
-  .right-panel-workspace {
-    padding: 5px;
-  }
-
 }
