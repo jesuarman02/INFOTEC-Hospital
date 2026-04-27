@@ -41,6 +41,16 @@ import { faUsersCog } from '@fortawesome/free-solid-svg-icons/faUsersCog';
 import { faWrench } from '@fortawesome/free-solid-svg-icons/faWrench';
 // Agrega estos a tu lista de imports de '@fortawesome/free-solid-svg-icons':
 import {
+  faClipboardList,
+  faCalendarAlt,
+  faUserNurse,
+  faWaveSquare,
+  faTint,
+  faLungs,
+  faThermometerHalf,
+  faWind,
+  faCubes,
+  faClipboardCheck,
   faFileMedical,
   faUserInjured,
   faWeight,
@@ -48,7 +58,8 @@ import {
   faHeartbeat,
   faProcedures,
   faPills,
-  faSmoking
+  faSmoking,
+  faClock
 } from '@fortawesome/free-solid-svg-icons';
 
 const datetimeFormats: IntlDateTimeFormats = {
@@ -154,6 +165,17 @@ export function initFortAwesome(vue) {
   faProcedures,
   faPills,
   faSmoking,
+  faClipboardList,
+  faCalendarAlt,
+  faUserNurse,
+  faWaveSquare,
+  faTint,
+  faLungs,
+  faThermometerHalf,
+  faWind,
+  faCubes,
+  faClipboardCheck,
+  faClock,
   );
 }
 export function initI18N(opts: any = {}) {

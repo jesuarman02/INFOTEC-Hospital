@@ -218,25 +218,35 @@
         </div>
       </transition>
 
-        <PacienteModal 
+      <PacienteModal 
         v-model:visible="mostrarModalPaciente" 
         :pacienteToEdit="pacienteActual"  @save="simularGuardadoPaciente" 
         @saved="simularGuardadoPaciente" 
-       />
-            <DireccionModal v-model:visible="mostrarModalDireccion" :pacientePreCargado="pacienteActual" @save="simularGuardadoDireccion" @saved="simularGuardadoDireccion" />
-
-            <InfoSocioeconomicaWizardModal 
+      />
+      <DireccionModal 
+        v-model:visible="mostrarModalDireccion" 
+        :pacientePreCargado="pacienteActual" 
+        @save="simularGuardadoDireccion" 
+        @saved="simularGuardadoDireccion" 
+      />
+      <InfoSocioeconomicaWizardModal 
         v-model:visible="mostrarModalSocio" 
         :pacientePreCargado="pacienteActual" 
         @save="simularGuardadoSocio" 
         @saved="simularGuardadoSocio" 
       />
-              <HistorialMedicoModal 
-          v-model:visible="mostrarModalHistorial" 
-          :pacientePreCargado="pacienteActual" 
-          @save="simularGuardadoHistorial" 
-          @saved="simularGuardadoHistorial" 
-        />
+      <HistorialMedicoModal 
+        v-model:visible="mostrarModalHistorial" 
+        :pacientePreCargado="pacienteActual" 
+        @save="simularGuardadoHistorial" 
+        @saved="simularGuardadoHistorial" 
+      />
+      <SignosVitalesModal 
+        v-model:visible="mostrarModalSignos" 
+        :pacientePreCargado="pacienteActual" 
+        @save="simularGuardadoSignos" 
+        @saved="simularGuardadoSignos" 
+      />
 
     </div>
   </transition>
@@ -245,14 +255,15 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import Swal from 'sweetalert2'
-import axios from 'axios' // 🔥 IMPORTAMOS AXIOS PARA EL MODAL CURP 🔥
+import axios from 'axios'
 
 import PacienteModal from '@/shared/modals/PacienteModal.vue'
 import DireccionModal from '@/shared/modals/DireccionModal.vue'
 import InfoSocioeconomicaWizardModal from '@/shared/modals/info-socioeconomica-wizard.vue'
 import HistorialMedicoModal from '@/shared/modals/historial-medico-modal.vue'
+// 🔥 IMPORTAMOS EL MODAL DE SIGNOS VITALES 🔥
+import SignosVitalesModal from '@/shared/modals/signos-vitales-modal.vue'
 import PacienteService from '@/entities/pacientems/paciente/paciente.service';
-
 
 const props = defineProps({ mostrarHeader: { type: Boolean, default: true } })
 
@@ -279,13 +290,16 @@ const mostrarModalPaciente = ref(false)
 const mostrarModalDireccion = ref(false)
 const mostrarModalSocio = ref(false)
 const mostrarModalHistorial = ref(false)
+// 🔥 VARIABLE REACTIVA PARA EL MODAL DE SIGNOS VITALES 🔥
+const mostrarModalSignos = ref(false)
 
 const pasos = [
   { id: 1, key: 'paciente', short: 'Paciente', titulo: 'Datos del Paciente', desc: 'Registra la información básica: Nombre, apellidos, sexo y CURP.', action: () => mostrarModalPaciente.value = true, svg: '<svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>' },
   { id: 2, key: 'direccion', short: 'Dirección', titulo: 'Dirección de Residencia', desc: 'Ingresa el domicilio actual, código postal, estado, municipio.', action: () => mostrarModalDireccion.value = true, svg: '<svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>' },
   { id: 3, key: 'socio', short: 'Socioec.', titulo: 'Info. Socioeconómica', desc: 'Captura el nivel socioeconómico, ingresos mensuales, y número de dependientes.', action: () => mostrarModalSocio.value = true, svg: '<svg viewBox="0 0 24 24"><path d="M11.8 10.9c-2.27-.59-3-1.2-3-2.15 0-1.09 1.01-1.85 2.7-1.85 1.78 0 2.44.85 2.5 2.1h2.21c-.07-1.72-1.12-3.3-3.21-3.81V3h-3v2.16c-1.94.42-3.5 1.68-3.5 3.61 0 2.31 1.91 3.46 4.7 4.13 2.5.6 3 1.48 3 2.41 0 .69-.49 1.79-2.7 1.79-2.06 0-2.87-.92-2.98-2.1h-2.2c.12 2.19 1.76 3.42 3.68 3.83V21h3v-2.15c1.95-.37 3.5-1.5 3.5-3.55 0-2.84-2.43-3.81-4.7-4.4z"/></svg>' },
   { id: 4, key: 'historial', short: 'Historial', titulo: 'Historial Médico', desc: 'Registra antecedentes familiares, alergias conocidas, y padecimientos crónicos.', action: () => mostrarModalHistorial.value = true, svg: '<svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-1.99.9-1.99 2L3 19c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-1 11h-4v4h-4v-4H6v-4h4V6h4v4h4v4z"/></svg>' },
-  { id: 5, key: 'signos', short: 'Signos', titulo: 'Signos Vitales', desc: 'Ingresa la toma actual de presión arterial, temperatura, peso, y talla.', action: () => console.log('Abrir Modal Signos'), svg: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
+  // 🔥 ACCIÓN ACTUALIZADA PARA ABRIR EL MODAL DE SIGNOS VITALES 🔥
+  { id: 5, key: 'signos', short: 'Signos', titulo: 'Signos Vitales', desc: 'Ingresa la toma actual de presión arterial, temperatura, peso, y talla.', action: () => mostrarModalSignos.value = true, svg: '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' }
 ]
 
 const pasoActualObj = computed(() => pasos.find(p => p.id === pasoWizard.value) || pasos[0])
@@ -312,17 +326,25 @@ const buscarYMostrarDashboard = async () => {
       progreso.value.paciente = true; 
       progreso.value.direccion = !!pacienteEncontrado.direccion; 
       progreso.value.socio = !!pacienteEncontrado.infoSocioeconomica;
-      progreso.value.signos = !!pacienteEncontrado.signosVitales;
 
-      // 🔥 CORRECCIÓN: Buscamos manualmente si tiene Historial Médico 🔥
+      // 🔥 BÚSQUEDA MANUAL DE HISTORIAL MÉDICO
       try {
         const HistorialService = (await import('@/entities/pacientems/historial-medico/historial-medico.service')).default;
         const hs = new HistorialService();
         const resHistorial = await hs.retrieve();
-        const tieneHistorial = resHistorial.data.some((hm: any) => hm.pacienteId === pacienteEncontrado.id);
-        progreso.value.historial = tieneHistorial; // Si lo encuentra, marca "Completo"
+        progreso.value.historial = resHistorial.data.some((hm: any) => hm.pacienteId === pacienteEncontrado.id);
       } catch (e) {
-        progreso.value.historial = !!pacienteEncontrado.historialMedico; // Respaldo
+        progreso.value.historial = !!pacienteEncontrado.historialMedico;
+      }
+
+      // 🔥 BÚSQUEDA MANUAL DE SIGNOS VITALES (NUEVO) 🔥
+      try {
+        const SignosService = (await import('@/entities/pacientems/signos-vitales/signos-vitales.service')).default;
+        const ss = new SignosService();
+        const resSignos = await ss.retrieve();
+        progreso.value.signos = resSignos.data.some((sv: any) => sv.pacienteEcu === pacienteEncontrado.ecu || sv.paciente?.id === pacienteEncontrado.id);
+      } catch (e) {
+        progreso.value.signos = !!pacienteEncontrado.signosVitales;
       }
 
       Swal.close();
@@ -336,7 +358,6 @@ const buscarYMostrarDashboard = async () => {
     Swal.fire({ icon: 'error', title: 'Error', text: 'Fallo al conectar con el servidor.', confirmButtonColor: '#611232' });
   }
 }
-
 const avanzarSiWizard = () => { if (estadoVista.value === 'nuevo' && pasoWizard.value < 5) pasoWizard.value++ }
 
 const simularGuardadoPaciente = (pacienteRegistrado: any) => {
@@ -351,6 +372,8 @@ const simularGuardadoPaciente = (pacienteRegistrado: any) => {
 const simularGuardadoDireccion = () => { progreso.value.direccion = true; avanzarSiWizard(); }
 const simularGuardadoSocio = () => { progreso.value.socio = true; avanzarSiWizard(); }
 const simularGuardadoHistorial = () => { progreso.value.historial = true; avanzarSiWizard(); }
+// 🔥 FUNCIÓN PARA MARCAR SIGNOS VITALES COMO COMPLETADOS 🔥
+const simularGuardadoSignos = () => { progreso.value.signos = true; avanzarSiWizard(); }
 
 const esExtranjero = ref(false);
 const curp = ref('');
@@ -391,7 +414,7 @@ const buscarEcuPorCurp = async () => {
     if (pEncontrado && pEncontrado.ecu) {
       ecuBuscado.value = pEncontrado.ecu.toString();
       cerrarModalCurp();
-      buscarYMostrarDashboard(); // Lanza el Dashboard automáticamente
+      buscarYMostrarDashboard(); 
     } else {
       errorBusqueda.value = 'No se encontró ningún paciente con estos datos.';
     }
