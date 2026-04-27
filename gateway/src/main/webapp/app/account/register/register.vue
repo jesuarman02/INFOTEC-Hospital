@@ -186,3 +186,4 @@
 </template>
 
 <script lang="ts" src="./register.component.ts"></script>
+<style src="../../content/css/register.css"></style>

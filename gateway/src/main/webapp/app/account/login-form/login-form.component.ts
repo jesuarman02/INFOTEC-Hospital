@@ -2,6 +2,8 @@ import axios from 'axios';
 import { type Ref, defineComponent, inject, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
+import Swal from 'sweetalert2'; // 🔥 AGREGADO
+
 import type AccountService from '../account.service';
 import type LoginService from '@/account/login.service';
 
@@ -25,6 +27,7 @@ export default defineComponent({
       try {
         const result = await axios.post('api/authenticate', data);
         const bearerToken = result.headers.authorization;
+
         if (bearerToken && bearerToken.slice(0, 7) === 'Bearer ') {
           const jwt = bearerToken.slice(7, bearerToken.length);
           if (rememberMe.value) {
@@ -37,15 +40,35 @@ export default defineComponent({
         }
 
         authenticationError.value = false;
+
+        // 🔥 ALERTA DE ÉXITO (AQUÍ ES DONDE SÍ FUNCIONA)
+        Swal.fire({
+          icon: 'success',
+          title: 'Bienvenido',
+          text: 'Has iniciado sesión correctamente',
+          timer: 2000,
+          showConfirmButton: false
+        });
+
         loginService.hideLogin();
         await accountService.retrieveAccount();
+
         if (route.path === '/forbidden') {
           previousState();
         }
       } catch (_error) {
         authenticationError.value = true;
+
+        // 🔥 ALERTA DE ERROR (opcional pero recomendado)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Usuario o contraseña incorrectos',
+          confirmButtonText: 'Intentar de nuevo'
+        });
       }
     };
+
     return {
       authenticationError,
       login,

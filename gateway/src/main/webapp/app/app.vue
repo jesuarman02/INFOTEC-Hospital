@@ -16,7 +16,7 @@
       <!-- 🔥 Si es calendario -->
       <router-view v-else></router-view>
 
-      <b-modal id="login-page" hide-footer lazy>
+      <b-modal id="login-page" hide-footer lazy hide-header-close>
         <template #modal-title>
           <span data-cy="loginTitle" id="login-title" v-text="t$('login.title')"></span>
         </template>
@@ -30,3 +30,4 @@
 </template>
 
 <script lang="ts" src="./app.component.ts"></script>
+<style src="../../content/css/login.css"></style>

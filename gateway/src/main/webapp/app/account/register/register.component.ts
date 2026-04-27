@@ -2,6 +2,8 @@ import { type Ref, computed, defineComponent, inject, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useVuelidate } from '@vuelidate/core';
 import { email, helpers, maxLength, minLength, required, sameAs } from '@vuelidate/validators';
+import Swal from 'sweetalert2'; // 🔥 AGREGADO
+
 import type LoginService from '@/account/login.service';
 import RegisterService from '@/account/register/register.service';
 import { EMAIL_ALREADY_USED_TYPE, LOGIN_ALREADY_USED_TYPE } from '@/constants';
@@ -81,19 +83,53 @@ export default defineComponent({
       this.errorUserExists = null;
       this.errorEmailExists = null;
       this.registerAccount.langKey = this.currentLanguage;
+
       this.registerService
         .processRegistration(this.registerAccount)
         .then(() => {
           this.success = true;
+
+          // 🔥 ALERTA DE ÉXITO
+          Swal.fire({
+            icon: 'success',
+            title: 'Registro exitoso',
+            text: 'Tu cuenta ha sido creada correctamente',
+            timer: 2000,
+            showConfirmButton: false
+          });
         })
         .catch(error => {
           this.success = null;
+
           if (error.response.status === 400 && error.response.data.type === LOGIN_ALREADY_USED_TYPE) {
             this.errorUserExists = 'ERROR';
+
+            // 🔥 ALERTA USER EXISTE
+            Swal.fire({
+              icon: 'error',
+              title: 'Usuario existente',
+              text: 'El nombre de usuario ya está en uso'
+            });
+
           } else if (error.response.status === 400 && error.response.data.type === EMAIL_ALREADY_USED_TYPE) {
             this.errorEmailExists = 'ERROR';
+
+            // 🔥 ALERTA EMAIL EXISTE
+            Swal.fire({
+              icon: 'error',
+              title: 'Email existente',
+              text: 'El correo ya está registrado'
+            });
+
           } else {
             this.error = 'ERROR';
+
+            // 🔥 ALERTA GENERAL
+            Swal.fire({
+              icon: 'error',
+              title: 'Error',
+              text: 'Ocurrió un problema al registrarse'
+            });
           }
         });
     },
