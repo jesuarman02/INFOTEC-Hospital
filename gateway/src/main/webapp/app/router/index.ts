@@ -38,6 +38,12 @@ export const createRouter = () =>
         meta: { authorities: ['ROLE_USER'] },
       },
       {
+      path: '/asignaciones',
+      name: 'Asignaciones',
+      component: () => import('@/intefaz/searchModule2.vue'), // O ajusta la ruta si tu archivo se llama SearchModule2 con mayúscula
+      meta: { authorities: ['ROLE_USER'] }
+      },
+      {
        path: '/calendario',
        name: 'Calendario',
        component: Calendario,

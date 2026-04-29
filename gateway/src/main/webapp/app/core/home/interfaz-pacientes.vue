@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import Swal from 'sweetalert2'
 import { ref, watch } from 'vue'
+import { useRouter } from 'vue-router' // 🔥 IMPORTAMOS EL ROUTER
 import { usePacienteSearch } from '@/entities/pacientems/paciente/paciente-search'
 import SearchModule from '@/intefaz/searchModule.vue'
-import SearchModule2 from '@/intefaz/searchModule2.vue'
+// 🔥 Borramos la importación de SearchModule2 de aquí 🔥
 import SidebarModule from '@/intefaz/sidebarModule.vue'
 import Modulos from '@/intefaz/modulos.vue'
 import TablaModule from '@/intefaz/tablaModule.vue'
 
+const router = useRouter() // Inicializamos router
 const { searchQuery, resultados, estaCargando, error, buscarPorEcu } = usePacienteSearch()
 
 const manejarBusqueda = async () => {
@@ -34,7 +36,12 @@ const manejarBusqueda = async () => {
 }
 
 const mostrarBuscador = ref(true)
-const mostrarClipboard = ref(false)
+// 🔥 Eliminamos la variable mostrarClipboard 🔥
+
+// Función para ir a la nueva URL de asignaciones
+const irAsignaciones = () => {
+  router.push('/asignaciones');
+}
 
 watch(mostrarBuscador, (val) => {
   if (val) resultados.value.splice(0)
@@ -45,10 +52,9 @@ watch(mostrarBuscador, (val) => {
   <div class="interface-container">
     
     <sidebarModule 
-      @toggle-search="() => { mostrarBuscador = true; mostrarClipboard = false; resultados.splice(0) }"
-      @toggle-clipboard="() => { mostrarClipboard = true; mostrarBuscador = false }"
+      @toggle-search="() => { mostrarBuscador = true; resultados.splice(0) }"
+      @toggle-clipboard="irAsignaciones" 
     />
-
     <main class="right-panel-workspace">
       
       <div v-show="mostrarBuscador && resultados.length === 0" class="search-section-centered">
@@ -63,32 +69,22 @@ watch(mostrarBuscador, (val) => {
         </p>
       </div>
 
-      <div v-show="mostrarClipboard && resultados.length === 0" class="search-section-centered">
-        <searchModule2 
-          :key="'clipboard-' + mostrarClipboard"
-          v-model="searchQuery"
-          :mostrarHeader="mostrarClipboard"
-          @ir-buscar="mostrarBuscador = true; mostrarClipboard = false"
-        />
-      </div>
+      <section class="work-area" v-show="resultados.length > 0">
+        <div class="paciente-data-preview">
+          
+          <div class="columna-izquierda">
+            <modulos :paciente="resultados[0]" />
+          </div>
 
-     <section class="work-area" v-show="resultados.length > 0">
-  <div class="paciente-data-preview">
-    
-    <div class="columna-izquierda">
-      <modulos :paciente="resultados[0]" />
-    </div>
+          <div class="columna-derecha">
+            <tablaModule :paciente="resultados[0]" />
+          </div>
 
-    <div class="columna-derecha">
-      <tablaModule :paciente="resultados[0]" />
-    </div>
-
-  </div>
-</section>
+        </div>
+      </section>
 
     </main>
   </div>
 </template>
 
 <style scoped src="../../../content/css/main.css"></style>
-
