@@ -1,7 +1,13 @@
 <template>
-  <transition name="fade">
-    <div v-show="mostrarHeader" class="module-wrapper w-100">
+  <div class="interface-container">
+    
+    <SidebarModule 
+      @toggle-search="irPacientes" 
+    />
 
+    <main class="right-panel-workspace d-flex justify-content-center align-items-center w-100">
+  <transition name="fade">
+    <div class="module-wrapper w-100">
       <div v-if="estadoVista === 'inicio'" class="view-container">
         <h3 class="title-main mb-5 text-uppercase">¿QUÉ DESEAS HACER?</h3>
         
@@ -250,12 +256,16 @@
 
     </div>
   </transition>
+  </main>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import Swal from 'sweetalert2'
 import axios from 'axios'
+import { useRouter } from 'vue-router' // 🔥 IMPORTAMOS EL ROUTER
+import SidebarModule from '@/intefaz/sidebarModule.vue' // 🔥 IMPORTAMOS EL SIDEBAR
 
 import PacienteModal from '@/shared/modals/PacienteModal.vue'
 import DireccionModal from '@/shared/modals/DireccionModal.vue'
@@ -275,6 +285,8 @@ const ecuBuscado = ref('')
 
 const pacienteActual = ref<any>(null)
 const mostrarModalCurp = ref(false)
+const router = useRouter();
+const irPacientes = () => { router.push('/interfaz-pacientes'); };
 
 const progreso = ref<Record<string, boolean>>({
   paciente: false, direccion: false, socio: false, historial: false, signos: false
@@ -427,3 +439,41 @@ const buscarEcuPorCurp = async () => {
 </script>
 
 <style scoped src="../../content/css/searchbar2.css"></style>
+<style scoped src="../../content/css/main.css"></style>
+
+<style scoped>
+/* ==========================================================================
+   ESTRUCTURA BASE: FUERZA EL SIDEBAR A LA ORILLA Y CENTRA EL CONTENIDO
+   ========================================================================== */
+.interface-container {
+  display: flex;
+  /* Compensamos los 24px en la altura para que llegue bien hasta abajo */
+  height: calc(100vh - 65px + 24px); 
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  /* 🔥 LA MAGIA: Jalamos todo hacia arriba para matar el espacio blanco 🔥 */
+  margin-top: -24px; 
+  background-color: #f4f6f9;
+  overflow: hidden;
+}
+.right-panel-workspace {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Centra las tarjetas horizontalmente */
+  align-items: center;     /* Centra las tarjetas verticalmente */
+  background-color: #f8f9fa;
+  overflow-y: auto;
+  padding: 2.5rem;
+}
+
+@media (max-width: 768px) {
+  .right-panel-workspace {
+    padding: 1rem;
+  }
+}
+</style>

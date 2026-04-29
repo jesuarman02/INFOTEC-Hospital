@@ -8,14 +8,6 @@
 
     <main class="right-panel-workspace">
 
-      <div v-show="mostrarClipboard" class="search-section-centered">
-        <SearchModule2
-          :key="'clipboard-' + mostrarClipboard"
-          v-model="searchQuery"
-          :mostrarHeader="mostrarClipboard"
-          @ir-buscar="cerrarClipboard"
-        />
-      </div>
 
       <section class="work-area w-100 d-flex flex-column align-items-center" v-show="!mostrarClipboard">
         
@@ -156,6 +148,7 @@
   </div>
 </template>
 
+
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'; 
 import { useRouter } from 'vue-router';
@@ -171,8 +164,11 @@ const mostrarClipboard = ref(false);
 const searchQuery = ref('');
 
 const irPacientes = () => { router.push('/interfaz-pacientes'); };
-const abrirClipboard = () => { mostrarClipboard.value = true; };
-const cerrarClipboard = () => { mostrarClipboard.value = false; };
+const abrirClipboard = () => { 
+  // Pon aquí la ruta de la URL a la que quieres ir.
+  // Puede ser '/asignaciones' o '/interfaz-pacientes' dependiendo de cómo lo llamaste en tu router.
+  router.push('/asignaciones'); 
+};const cerrarClipboard = () => { mostrarClipboard.value = false; };
 
 // --- ESTADO DEL CALENDARIO ---
 const modalAbierta = ref(false);
