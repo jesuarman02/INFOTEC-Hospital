@@ -89,34 +89,6 @@
       "relationshipName": "signosVitales",
       "relationshipSide": "left",
       "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "pacienteEnfermedad",
-      "otherEntityRelationshipName": "paciente",
-      "relationshipName": "misEnfermedades",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "pacienteAlergia",
-      "otherEntityRelationshipName": "paciente",
-      "relationshipName": "misAlergias",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityName": "pacienteMedicamento",
-      "otherEntityRelationshipName": "paciente",
-      "relationshipName": "misMedicamentos",
-      "relationshipSide": "left",
-      "relationshipType": "one-to-many"
-    },
-    {
-      "otherEntityField": "nombre",
-      "otherEntityName": "entidadFederativa",
-      "relationshipName": "entidadNacimiento",
-      "relationshipSide": "left",
-      "relationshipType": "many-to-one"
     }
   ],
   "searchEngine": "no",

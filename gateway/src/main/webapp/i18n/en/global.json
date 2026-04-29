@@ -21,7 +21,8 @@
         "pacientemsPacienteMedicamento": "Paciente Medicamento",
         "pacientesmsEntidadFederativa": "Entidad Federativa",
         "pacientesmsTipoVialidad": "Tipo Vialidad",
-        "pacientesmsCodigoPostal": "Codigo Postal"
+        "pacientesmsCodigoPostal": "Codigo Postal",
+        "pacientemsCita": "Cita"
       },
       "account": {
         "main": "Account",

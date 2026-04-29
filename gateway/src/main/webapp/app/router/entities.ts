@@ -158,6 +158,30 @@ export default {
       meta: { authorities: [Authority.USER] },
     },
     {
+    path: '/cita',
+    name: 'Cita',
+    component: () => import('@/entities/pacientems/cita/cita.vue'),
+    meta: { authorities: ['ROLE_USER'] },
+  },
+  {
+    path: '/cita/new',
+    name: 'CitaCreate',
+    component: () => import('@/entities/pacientems/cita/cita-update.vue'),
+    meta: { authorities: ['ROLE_USER'] },
+  },
+  {
+    path: '/cita/:citaId/edit',
+    name: 'CitaEdit',
+    component: () => import('@/entities/pacientems/cita/cita-update.vue'),
+    meta: { authorities: ['ROLE_USER'] },
+  },
+  {
+    path: '/cita/:citaId/view',
+    name: 'CitaView',
+    component: () => import('@/entities/pacientems/cita/cita-details.vue'),
+    meta: { authorities: ['ROLE_USER'] },
+  },
+    {
       path: 'tipo-vialidad',
       name: 'TipoVialidad',
       component: TipoVialidad,

@@ -1,15 +1,15 @@
 <template>
   <div class="interface-container">
-    
-    <SidebarModule 
-      @toggle-search="irPacientes" 
-      @toggle-clipboard="abrirClipboard" 
+
+    <SidebarModule
+      @toggle-search="irPacientes"
+      @toggle-clipboard="abrirClipboard"
     />
 
     <main class="right-panel-workspace">
-      
+
       <div v-show="mostrarClipboard" class="search-section-centered">
-        <SearchModule2 
+        <SearchModule2
           :key="'clipboard-' + mostrarClipboard"
           v-model="searchQuery"
           :mostrarHeader="mostrarClipboard"
@@ -17,27 +17,48 @@
         />
       </div>
 
-      <section class="work-area" v-show="!mostrarClipboard">
+      <section class="work-area w-100 d-flex flex-column align-items-center" v-show="!mostrarClipboard">
+        
         <div class="calendar-card">
           <div class="left-section">
             <h2 class="mes">{{ mesNombre }} {{ anioActual }}</h2>
             <div class="numero-dia">{{ diaSeleccionado }}</div>
-            <h3 class="titulo-citas">Citas</h3>
+            <h3 class="titulo-citas">Citas del Día</h3>
 
-            <div v-if="citasDelDia.length === 0" class="text-muted mt-3">
-              No hay citas
+            <div class="citas-list">
+              <div v-if="citasDelDia.length === 0" class="text-muted mt-3 font-weight-bold">
+                No hay citas programadas
+              </div>
+
+              <div v-for="(cita, index) in citasDelDia" :key="index" class="cita-card mt-3 p-3 shadow-sm position-relative">
+                <strong class="text-theme" style="font-size: 1.1rem;">
+                  <font-awesome-icon icon="clock" class="mr-1"/> {{ cita.horaDisplay }}
+                </strong> - <span class="font-weight-bold text-dark">{{ cita.paciente }}</span>
+                <div class="small text-muted mt-1">Motivo: {{ cita.motivo }}</div>
+
+                <div class="d-flex justify-content-end mt-2 pt-2 border-top">
+                  <button class="btn btn-sm btn-light text-primary mr-2 shadow-sm" @click="prepararEdicion(cita)" title="Editar">
+                    <font-awesome-icon icon="pencil-alt" />
+                  </button>
+                  <button class="btn btn-sm btn-light text-danger shadow-sm" @click="eliminarCita(cita.id)" title="Eliminar">
+                    <font-awesome-icon icon="trash" />
+                  </button>
+                </div>
+              </div>
             </div>
 
-            <div v-for="(cita, index) in citasDelDia" :key="index" class="cita-card mt-3 p-2 border-left border-danger shadow-sm">
-              <strong>{{ cita.hora }}</strong> - {{ cita.paciente }}
+            <div class="mt-4 pt-3 border-top">
+              <button class="btn btn-theme w-100 py-2 shadow-sm font-weight-bold text-uppercase" @click="abrirModal" style="letter-spacing: 1px;">
+                <font-awesome-icon icon="calendar-plus" class="mr-2" /> Agendar Cita
+              </button>
             </div>
           </div>
 
           <div class="right-section">
             <div class="month-switch d-flex justify-content-between align-items-center mb-4">
-              <button class="btn btn-light btn-sm" @click="cambiarMes(-1)">◀</button>
+              <button class="btn btn-theme-light btn-sm shadow-sm" @click="cambiarMes(-1)">◀</button>
               <h2 class="titulo-mes m-0">{{ mesNombre }} {{ anioActual }}</h2>
-              <button class="btn btn-light btn-sm" @click="cambiarMes(1)">▶</button>
+              <button class="btn btn-theme-light btn-sm shadow-sm" @click="cambiarMes(1)">▶</button>
             </div>
 
             <div class="week-days text-muted font-weight-bold">
@@ -57,12 +78,6 @@
               </div>
             </div>
           </div>
-        </div>
-
-        <div class="d-flex justify-content-end mt-4">
-          <button class="btn btn-danger px-4 py-2 shadow-sm" @click="abrirModal">
-            Agendar Cita
-          </button>
         </div>
       </section>
 
@@ -120,6 +135,7 @@
           <button class="btn btn-light mr-3" @click="cerrarModal">Cancelar</button>
           <button class="btn btn-danger" @click="guardarCita" :disabled="!form.pacienteId || !form.hora">Guardar Cita</button>
         </div>
+
       </div>
     </div>
 
@@ -245,19 +261,19 @@ watch(fecha, () => {
 // --- LÓGICA VISUAL DEL CALENDARIO ---
 const anioActual = computed(() => fecha.value.getFullYear());
 const mesActualNumero = computed(() => fecha.value.getMonth());
-const mesNombre = computed(() => fecha.value.toLocaleString('es-MX', { month: 'short' }).toUpperCase());
+const mesNombre = computed(() => fecha.value.toLocaleString('es-MX', { month: 'long' }).toUpperCase());
 
 const diasDelMes = computed(() => {
   const ultimoDia = new Date(anioActual.value, mesActualNumero.value + 1, 0).getDate();
   const diaDeSemanaInicio = new Date(anioActual.value, mesActualNumero.value, 1).getDay();
   const offset = diaDeSemanaInicio === 0 ? 6 : diaDeSemanaInicio - 1;
-  const diasEnBlanco = Array(offset).fill(null);
-  const diasReales = Array.from({ length: ultimoDia }, (_, i) => i + 1);
-  return [...diasEnBlanco, ...diasReales];
+  return [...Array(offset).fill(null), ...Array.from({ length: ultimoDia }, (_, i) => i + 1)];
 });
 
 const citasDelDia = computed(() =>
   citas.value.filter(c => c.dia === diaSeleccionado.value && c.mes === mesActualNumero.value && c.anio === anioActual.value)
+  // Ordenar por hora
+  .sort((a, b) => a.horaRaw.localeCompare(b.horaRaw))
 );
 
 const cambiarMes = (direccion: number) => {
@@ -338,60 +354,183 @@ const guardarCita = async () => {
 
 <style scoped>
 /* ==========================================================================
-   ESTRUCTURA BASE
+   COLORES INSTITUCIONALES (El Guinda #5c1830)
+   ========================================================================== */
+.text-theme { color: #5c1830 !important; }
+.bg-theme { background-color: #5c1830 !important; }
+
+.btn-theme {
+  background-color: #5c1830;
+  color: white;
+  border: none;
+  transition: all 0.2s ease;
+}
+.btn-theme:hover, .btn-theme:focus {
+  background-color: #431122;
+  color: white;
+  transform: translateY(-2px);
+}
+.btn-theme:disabled { background-color: #8a5768; }
+
+.btn-theme-light {
+  background-color: #5c1830;
+  color: white;
+  border: none;
+  transition: 0.2s;
+}
+.btn-theme-light:hover { background-color: #431122; color: white; }
+
+/* ==========================================================================
+   ESTRUCTURA BASE Y LAYOUT GENERAL
    ========================================================================== */
 .interface-container {
+  display: flex;
+  height: calc(100vh - 65px);
   width: 100vw;
   position: relative;
-  left: 50%;
-  right: 50%;
-  margin-left: -50vw;
-  margin-right: -50vw;
-  display: flex;
-  min-height: calc(100vh - 70px);
-  background-color: #f4f6f9; 
+  left: 50%; right: 50%;
+  margin-left: -50vw; margin-right: -50vw;
+  background-color: #f4f6f9;
+  overflow: hidden;
 }
 
 .right-panel-workspace {
   flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start; 
-  padding-left: 100px; 
-  min-height: 100%;
+  display: flex; flex-direction: column;
+  justify-content: flex-start; align-items: center;
+  padding: 2.5rem;
+  background-color: #f8f9fa;
+  overflow-y: auto;
 }
 
-/* 🔥 CLASE NECESARIA PARA CENTRAR EL SEARCHMODULE2 🔥 */
-.search-section-centered {
+/* ==========================================================================
+   CALENDARIO CARD
+   ========================================================================== */
+.calendar-card {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  flex-grow: 1; 
-  min-height: calc(100vh - 150px); 
-  padding: 2rem;
+  width: 100%; max-width: 1100px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  margin-top: 1rem; 
+  height: calc(100vh - 150px); /* Fija el alto para permitir scroll interno en la lista */
+  min-height: 600px;
 }
 
-.work-area {
-  width: 100%;
-  height: auto; 
+/* IZQUIERDA */
+.left-section {
+  width: 38%;
+  padding: 30px;
+  background: #f5f5f5;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #e2e8f0;
+}
+
+.mes { font-size: 32px; font-weight: 800; color: #1e293b; margin-bottom: 5px; }
+.numero-dia { font-size: 130px; font-weight: 800; color: #334155; line-height: 1; margin-bottom: 10px; }
+.titulo-citas { font-size: 28px; font-weight: 700; color: #1e293b; margin-bottom: 15px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px;}
+
+.citas-list {
   flex-grow: 1;
-  padding: 2rem; 
+  overflow-y: auto;
+  padding-right: 5px;
+}
+/* Scrollbar sutil para las citas */
+.citas-list::-webkit-scrollbar { width: 6px; }
+.citas-list::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+
+.cita-card {
+  background: white;
+  border-radius: 8px;
+  border-left: 4px solid #5c1830 !important; 
+  transition: transform 0.2s;
+}
+.cita-card:hover { transform: translateX(4px); }
+
+/* DERECHA CALENDARIO */
+.right-section {
+  width: 62%;
+  padding: 30px 40px;
   display: flex;
   flex-direction: column;
-  align-items: center; 
 }
 
-@media (max-width: 1024px) {
-  .right-panel-workspace {
-    padding-left: 0; 
-    padding-top: 90px; 
-    justify-content: flex-start; 
-  }
-  .search-section-centered {
-    min-height: auto; 
-    margin-top: 2rem;
-  }
+.month-switch { margin-bottom: 30px; display: flex; justify-content: space-between; align-items: center; }
+.titulo-mes { font-size: 26px; font-weight: 800; color: #1e293b; text-transform: uppercase; letter-spacing: 1px;}
+
+.month-switch button {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.week-days {
+  display: grid; grid-template-columns: repeat(7, 1fr);
+  text-align: center; font-weight: 800; font-size: 15px; color: #64748b; margin-bottom: 15px;
+}
+
+.days-grid {
+  display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; flex-grow: 1;
+}
+
+.day {
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: 600; color: #334155;
+  transition: all 0.2s ease; border: 2px solid transparent; aspect-ratio: 1;
+}
+.day:hover { background: #f1f5f9; border-color: #e2e8f0; }
+
+.selected {
+  background: #5c1830 !important; color: white !important;
+  box-shadow: 0 4px 12px rgba(92, 24, 48, 0.35); transform: scale(1.05);
+}
+
+.cita {
+  background: #f5eef1; color: #5c1830; font-weight: bold; position: relative;
+}
+/* Puntito indicador de cita */
+.cita::after {
+  content: ''; position: absolute; bottom: 8px; width: 6px; height: 6px;
+  background-color: #5c1830; border-radius: 50%;
+}
+.cita.selected::after { background-color: white; }
+
+/* ==========================================================================
+   MODAL
+   ========================================================================== */
+.modal-overlay {
+  position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(15, 23, 42, 0.65); backdrop-filter: blur(5px);
+  display: flex; justify-content: center; align-items: center; z-index: 9999;
+}
+.modal-content {
+  animation: aparecerModal 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  max-height: 90vh; overflow-y: auto; border: none;
+}
+.modal-content input:focus, .modal-content textarea:focus {
+  outline: none; box-shadow: 0 0 0 2px rgba(92, 24, 48, 0.2);
+}
+@keyframes aparecerModal {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   RESPONSIVO
+   ========================================================================== */
+@media (max-width: 992px) {
+  .calendar-card { flex-direction: column; height: auto; min-height: auto; }
+  .left-section { width: 100%; border-right: none; border-bottom: 1px solid #e2e8f0; }
+  .right-section { width: 100%; }
+  .numero-dia { font-size: 100px; }
+  .citas-list { max-height: 300px; }
+}
+@media (max-width: 768px) {
+  .right-panel-workspace { padding: 1rem; }
+  .numero-dia { font-size: 80px; }
+  .day { font-size: 16px; border-radius: 8px; }
+  .modal-content { width: 95% !important; padding: 1.5rem !important; max-height: 85vh; }
 }
 </style>

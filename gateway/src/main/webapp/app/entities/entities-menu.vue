@@ -20,6 +20,10 @@
       <font-awesome-icon icon="asterisk" />
       <span v-text="t$('global.menu.entities.pacientemsSignosVitales')"></span>
     </b-dropdown-item>
+    <b-dropdown-item to="/cita">
+      <font-awesome-icon icon="asterisk" />
+      <span>Cita</span>
+    </b-dropdown-item>
     <b-dropdown-item to="/tipo-vialidad">
       <font-awesome-icon icon="asterisk" />
       <span v-text="t$('global.menu.entities.pacientesmsTipoVialidad')"></span>

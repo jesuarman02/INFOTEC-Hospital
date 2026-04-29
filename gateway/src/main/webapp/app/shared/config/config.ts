@@ -59,7 +59,12 @@ import {
   faProcedures,
   faPills,
   faSmoking,
-  faClock
+  faClock,
+  faTrashAlt,
+  faCalendarPlus,
+  faCalendarCheck,
+  faCalendarDay,
+  faIdCard,
 } from '@fortawesome/free-solid-svg-icons';
 
 const datetimeFormats: IntlDateTimeFormats = {
@@ -176,6 +181,18 @@ export function initFortAwesome(vue) {
   faCubes,
   faClipboardCheck,
   faClock,
+  faTrashAlt,
+  faTrashAlt,
+    faClock,
+    faCalendarPlus,
+    faCalendarCheck,
+    faCalendarDay,
+    faIdCard,
+    faUser,
+    faClipboardList,
+    faSave,
+    faArrowLeft,
+    faAsterisk,
   );
 }
 export function initI18N(opts: any = {}) {

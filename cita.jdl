@@ -1,0 +1,13 @@
+entity Cita {
+    ecu Integer required
+    nombre String required
+    apellidoPaterno String required
+    apellidoMaterno String
+    fechaHora ZonedDateTime required
+    motivo String required
+}
+
+paginate Cita with pagination
+service Cita with serviceImpl
+
+microservice Cita with pacientems
