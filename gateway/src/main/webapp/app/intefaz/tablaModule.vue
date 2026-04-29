@@ -7,15 +7,15 @@
           <li class="nav-item">
             <a class="nav-link" 
                :class="{ 'active': tabActual === 'medicos' }"
-               @click="tabActual = 'medicos'">
-               Historial Médico
+               @click="tabActual = 'medicos'" style="cursor: pointer;">
+               <i class="fas fa-file-medical-alt mr-1"></i> Historial Médico
             </a>
           </li>
           <li class="nav-item">
             <a class="nav-link" 
                :class="{ 'active': tabActual === 'datos' }"
-               @click="tabActual = 'datos'">
-               Datos del Paciente
+               @click="tabActual = 'datos'" style="cursor: pointer;">
+               <i class="fas fa-user-circle mr-1"></i> Datos del Paciente
             </a>
           </li>
         </ul>
@@ -27,7 +27,9 @@
           <div class="container-fluid p-0">
             
             <div class="card mb-4 section-card">
-              <div class="card-header text-uppercase">Datos Generales</div>
+              <div class="card-header text-uppercase font-weight-bold">
+                <i class="fas fa-id-card text-primary mr-2"></i> Datos Generales
+              </div>
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-3 col-sm-6 mb-3">
@@ -71,7 +73,9 @@
             </div>
 
             <div class="card mb-4 section-card">
-              <div class="card-header text-uppercase">Dirección y Contacto</div>
+              <div class="card-header text-uppercase font-weight-bold">
+                <i class="fas fa-map-marker-alt text-danger mr-2"></i> Dirección y Contacto
+              </div>
               <div class="card-body">
                 <div class="row">
                   <div class="col-md-6 mb-3">
@@ -109,12 +113,12 @@
 
             <div class="card mb-4 section-card">
               <div class="card-header d-flex justify-content-between align-items-center">
-                <span class="text-uppercase">Resumen Socioeconómico</span>
+                <span class="text-uppercase font-weight-bold"><i class="fas fa-briefcase text-success mr-2"></i> Resumen Socioeconómico</span>
                 <button class="btn btn-sm btn-outline-secondary rounded-pill px-3" 
                         @click="mostrarModalSocioeconomico = true" 
                         :disabled="!paciente?.tieneInfoSocioeconomica">
-                  <span v-if="paciente?.tieneInfoSocioeconomica">Ver Expediente</span>
-                  <span v-else>Sin datos</span>
+                  <span v-if="paciente?.tieneInfoSocioeconomica"><i class="fas fa-eye mr-1"></i> Ver Expediente</span>
+                  <span v-else><i class="fas fa-ban mr-1"></i> Sin datos</span>
                 </button>
               </div>
               <div class="card-body">
@@ -144,9 +148,9 @@
 
             <div v-if="mostrarModalSocioeconomico" class="card mb-4 section-card border-primary">
               <div class="card-header d-flex justify-content-between align-items-center bg-light">
-                <h6 class="mb-0 text-primary font-weight-bold">Expediente Socioeconómico Completo</h6>
+                <h6 class="mb-0 text-primary font-weight-bold"><i class="fas fa-folder-open mr-2"></i> Expediente Socioeconómico Completo</h6>
                 <button class="btn btn-sm btn-link text-danger text-decoration-none" @click="mostrarModalSocioeconomico = false">
-                  Cerrar ✕
+                  Cerrar <i class="fas fa-times ml-1"></i>
                 </button>
               </div>
               <div class="card-body p-0">
@@ -176,7 +180,7 @@
             <div v-if="paciente?.infoSocioeconomica" class="row">
               <div class="col-md-12 mb-3">
                 <div class="card section-card">
-                  <div class="card-header text-uppercase">Datos de Vivienda</div>
+                  <div class="card-header text-uppercase font-weight-bold"><i class="fas fa-home text-info mr-2"></i> Datos de Vivienda</div>
                   <div class="card-body">
                     <div class="row">
                       <div class="col-md-4 mb-3">
@@ -202,7 +206,7 @@
 
               <div class="col-md-6 mb-3">
                 <div class="card h-100 section-card">
-                  <div class="card-header text-uppercase">Economía y Empleo</div>
+                  <div class="card-header text-uppercase font-weight-bold"><i class="fas fa-coins text-warning mr-2"></i> Economía y Empleo</div>
                   <div class="card-body">
                     <small class="text-muted d-block">Ocupación / Empleo</small>
                     <strong class="text-dark d-block mb-3">{{ paciente?.infoSocioeconomica?.ocupacionActual || 'N/A' }}</strong>
@@ -216,7 +220,7 @@
 
               <div class="col-md-6 mb-3">
                 <div class="card h-100 section-card">
-                  <div class="card-header text-uppercase">Educación y Salud</div>
+                  <div class="card-header text-uppercase font-weight-bold"><i class="fas fa-graduation-cap text-secondary mr-2"></i> Educación y Salud</div>
                   <div class="card-body">
                     <small class="text-muted d-block">Grado de Estudios</small>
                     <strong class="text-dark d-block mb-3">{{ paciente?.infoSocioeconomica?.gradoMaximoEstudios || 'N/A' }}</strong>
@@ -232,200 +236,198 @@
           </div>
         </div>
             
-           <div v-if="tabActual === 'medicos'" class="fade-in">
-          <div v-if="paciente?.datosMedicos" class="row">
+        <div v-if="tabActual === 'medicos'" class="fade-in">
+          <div class="container-fluid p-0">
             
-            <div class="col-12">
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-stethoscope mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Signos y Biométricos</span>
-                    <div class="row align-items-center text-center text-md-left">
-                      <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
-                        <small class="text-muted d-block">Altura</small>
-                        <strong class="text-dark">{{ paciente.datosMedicos.biometricos?.altura || '-' }} cm</strong>
-                      </div>
-                      <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
-                        <small class="text-muted d-block">Peso</small>
-                        <strong class="text-dark">{{ paciente.datosMedicos.biometricos?.peso || '-' }} kg</strong>
-                      </div>
-                      <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
-                        <small class="text-muted d-block">IMC</small>
-                        <span class="badge bg-secondary text-white">{{ paciente.datosMedicos.biometricos?.imc || '-' }}</span>
-                      </div>
-                      <div class="col-md-3 col-sm-6 mb-2 mb-md-0">
-                        <small class="text-muted d-block">Grupo Sanguíneo</small>
-                        <span class="badge bg-danger text-white">{{ paciente.datosMedicos.biometricos?.grupoSanguineo || '' }}{{ paciente.datosMedicos.biometricos?.factorRh || '' }}</span>
-                      </div>
+            <div v-if="paciente?.datosMedicos">
+              
+              <div class="card mb-4 section-card border-light shadow-sm">
+                <div class="card-header bg-white text-uppercase font-weight-bold d-flex justify-content-between align-items-center">
+                  <div><i class="fas fa-heartbeat text-danger mr-2"></i> Signos y Biométricos</div>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-3 col-sm-6 mb-3">
+                      <small class="text-muted d-block text-uppercase"><i class="fas fa-ruler-vertical mr-1"></i> Altura</small>
+                      <strong class="text-dark h5">{{ paciente.datosMedicos.biometricos?.altura || '-' }} cm</strong>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                      <small class="text-muted d-block text-uppercase"><i class="fas fa-weight mr-1"></i> Peso</small>
+                      <strong class="text-dark h5">{{ paciente.datosMedicos.biometricos?.peso || '-' }} kg</strong>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                      <small class="text-muted d-block text-uppercase"><i class="fas fa-calculator mr-1"></i> IMC</small>
+                      <span class="badge bg-dark text-white px-3 py-2" style="font-size: 0.9rem;">
+                        {{ paciente.datosMedicos.biometricos?.imc || '-' }}
+                      </span>
+                    </div>
+                    <div class="col-md-3 col-sm-6 mb-3">
+                      <small class="text-muted d-block text-uppercase"><i class="fas fa-tint mr-1 text-danger"></i> Grupo Sanguíneo</small>
+                      <span class="badge bg-danger text-white px-3 py-2" style="font-size: 0.9rem;">
+                        {{ paciente.datosMedicos.biometricos?.grupoSanguineo || '' }}{{ paciente.datosMedicos.biometricos?.factorRh || '' }}
+                      </span>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
 
-            <div class="col-md-6">
-              
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-allergies mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Alergias</span>
-                    <div v-if="paciente.datosMedicos.alergias.tiene && paciente.datosMedicos.alergias.detalles.length > 0">
-                      <div v-for="(alergia, index) in paciente.datosMedicos.alergias.detalles" :key="index" class="mb-3">
-                        <strong class="text-dark d-block mb-1">{{ alergia.tipoAlergia || 'ALERGIA' }}</strong>
-                        <div style="font-size: 0.85rem; line-height: 1.6;">
-                          <span class="text-muted">Reacciones:</span> <span class="text-dark">{{ alergia.reaccionesAlergia ? alergia.reaccionesAlergia.join(', ') : 'N/A' }}</span><br>
-                          <span class="text-muted">Gravedad:</span> <span class="badge bg-warning text-dark ml-1">{{ alergia.gravedadAlergia }}</span><br>
-                          <span class="text-muted">Tratamiento:</span> <span class="text-dark">{{ alergia.tratamientoAlergia }}</span><br>
-                          <span class="text-muted">Último Episodio:</span> <span class="text-dark">{{ alergia.ultimoEpisodioAlergia || 'Desconocida' }}</span>
+              <div class="card mb-4 section-card border-light shadow-sm">
+                <div class="card-header bg-white text-uppercase font-weight-bold">
+                  <i class="fas fa-notes-medical text-primary mr-2"></i> Antecedentes y Condiciones Clínicas
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    
+                    <div class="col-md-6 mb-4">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-allergies text-warning mr-1"></i> Alergias</small>
+                      <div v-if="paciente.datosMedicos.alergias?.tiene && paciente.datosMedicos.alergias?.detalles?.length > 0" class="p-3 bg-light rounded h-100 border">
+                        <div v-for="(alergia, index) in paciente.datosMedicos.alergias.detalles" :key="index" class="mb-3 border-bottom pb-2">
+                          <strong class="text-dark d-block mb-1">{{ alergia.tipoAlergia || 'ALERGIA' }} <span v-if="alergia.sustanciaAlergia" class="text-muted font-weight-normal">({{ alergia.sustanciaAlergia }})</span></strong>
+                          <span class="text-muted small">Reacciones:</span> <span class="text-dark small">{{ alergia.reaccionesAlergia ? (Array.isArray(alergia.reaccionesAlergia) ? alergia.reaccionesAlergia.join(', ') : alergia.reaccionesAlergia) : 'N/A' }}</span><br>
+                          <span class="text-muted small">Gravedad:</span> <span class="badge bg-warning text-dark ml-1">{{ alergia.gravedadAlergia }}</span><br>
+                          <span class="text-muted small">Tratamiento:</span> <span class="text-dark small">{{ alergia.tratamientoAlergia }}</span><br>
+                          <span class="text-muted small">Último Episodio:</span> <span class="text-dark small">{{ alergia.ultimoEpisodioAlergia || 'Desconocida' }}</span>
                         </div>
                       </div>
+                      <div v-else class="p-3 bg-light rounded h-100 text-muted font-italic border">No reporta alergias.</div>
                     </div>
-                    <div v-else class="text-muted font-italic" style="font-size: 0.9rem;">No reporta alergias.</div>
+
+                    <div class="col-md-6 mb-4">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-lungs-virus text-info mr-1"></i> Enfermedades Crónicas</small>
+                      <div v-if="paciente.datosMedicos.enfermedadesCronicas?.tiene && paciente.datosMedicos.enfermedadesCronicas?.detalles?.length > 0" class="p-3 bg-light rounded h-100 border">
+                        <div v-for="(enf, index) in paciente.datosMedicos.enfermedadesCronicas.detalles" :key="index" class="mb-3 border-bottom pb-2">
+                          <strong class="text-dark d-block mb-1">{{ enf.nombre || 'Enfermedad' }} <span class="badge bg-info text-white ml-1">{{ enf.estado }}</span></strong>
+                          <span class="text-muted small">Diagnóstico:</span> <span class="text-dark small">{{ enf.diagnostico || 'N/A' }}</span> | 
+                          <span class="text-muted small">Tipo:</span> <span class="text-dark small">{{ enf.tipo || 'N/A' }}</span><br>
+                          <span class="text-muted small">Tratamiento:</span> <span class="text-dark small">{{ enf.tratamiento || 'N/A' }}</span><br>
+                          <span v-if="enf.hospital" class="text-muted small">Hospital:</span> <span v-if="enf.hospital" class="text-dark small">{{ enf.hospital }}</span>
+                        </div>
+                      </div>
+                      <div v-else class="p-3 bg-light rounded h-100 text-muted font-italic border">El paciente no reporta enfermedades crónicas.</div>
+                    </div>
+
+                    <div class="col-md-12 mb-4">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-procedures text-secondary mr-1"></i> Cirugías Previas</small>
+                      <div v-if="paciente.datosMedicos.cirugiasPrevias?.tiene && paciente.datosMedicos.cirugiasPrevias?.detalles?.length > 0" class="p-3 bg-light rounded border">
+                        <div class="row">
+                          <div v-for="(cirugia, index) in paciente.datosMedicos.cirugiasPrevias.detalles" :key="index" class="col-md-6 mb-2">
+                            <strong class="text-dark"><i class="fas fa-syringe text-muted mr-1"></i> {{ cirugia.nombre }}</strong> <span class="text-muted small">({{ cirugia.anio || 'Año desc.' }})</span><br>
+                            <span class="text-muted small ml-4">Tipo:</span> <span class="text-dark small">{{ cirugia.tipo }}</span> | 
+                            <span class="text-muted small">Complicaciones:</span> <span class="text-dark small">{{ cirugia.huboComplicaciones }}</span><br>
+                            <span class="text-muted small ml-4">Motivo:</span> <span class="text-dark small">{{ cirugia.motivo || 'N/A' }}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div v-else class="p-3 bg-light rounded text-muted font-italic border">No se reportan cirugías previas.</div>
+                    </div>
+                    
+                    <div class="col-md-6 mb-3">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-microscope text-secondary mr-1"></i> Personales Patológicos</small>
+                      <div v-if="paciente.datosMedicos.antecedentesPatologicos?.tiene && paciente.datosMedicos.antecedentesPatologicos?.detalles?.length > 0" class="p-3 bg-light rounded h-100 border">
+                        <ul class="pl-3 mb-0 text-dark">
+                          <li v-for="(pat, index) in paciente.datosMedicos.antecedentesPatologicos.detalles" :key="index">
+                            {{ pat.enfermedad }} <span  v-if="pat.anio">{{ pat.anio }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div v-else class="p-3 bg-light rounded h-100 text-muted font-italic border">Sin antecedentes patológicos previos.</div>
+                    </div>
+
+                    <div class="col-md-6 mb-3">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-users text-secondary mr-1"></i> Familiares Hereditarios</small>
+                      <div v-if="paciente.datosMedicos.antecedentesFamiliares?.tiene && paciente.datosMedicos.antecedentesFamiliares?.detalles?.length > 0" class="p-3 bg-light rounded h-100 border">
+                        <ul class="pl-3 mb-0 text-dark">
+                          <li v-for="(fam, index) in paciente.datosMedicos.antecedentesFamiliares.detalles" :key="index">
+                            {{ fam.enfermedad }} <span class="text-muted small font-italic">- {{ fam.parentezco }}</span>
+                          </li>
+                        </ul>
+                      </div>
+                      <div v-else class="p-3 bg-light rounded h-100 text-muted font-italic border">Sin antecedentes familiares de importancia.</div>
+                    </div>
+
                   </div>
                 </div>
               </div>
 
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-procedures mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Cirugías Previas</span>
-                    <p v-if="paciente.datosMedicos.cirugiasPrevias.tiene" class="text-dark mb-0" style="font-size: 0.9rem;">Sí reporta cirugías previas.</p>
-                    <p v-else class="text-muted font-italic mb-0" style="font-size: 0.9rem;">No se reportan cirugías previas.</p>
+              <div class="card mb-4 section-card border-light shadow-sm">
+                <div class="card-header bg-white text-uppercase font-weight-bold">
+                  <i class="fas fa-child text-secondary mr-2"></i> Hábitos y Consumo
+                </div>
+                <div class="card-body">
+                  <div class="row text-center text-md-left">
+                    <div class="col-6 col-md-3 mb-3 border-right">
+                      <small class="text-muted d-block mb-1"><i class="fas fa-smoking mr-1"></i> Tabaco</small>
+                      <strong :class="paciente.datosMedicos.habitos?.tabaco !== 'No fuma' ? 'text-danger' : 'text-dark'">
+                        {{ paciente.datosMedicos.habitos?.tabaco || 'No fuma' }}
+                      </strong>
+                      <small class="text-muted d-block mt-1">Frecuencia: {{ paciente.datosMedicos.habitos?.tabacoFrecuencia || 'N/A' }}</small>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3 border-right">
+                      <small class="text-muted d-block mb-1"><i class="fas fa-wine-glass-alt mr-1"></i> Alcohol</small>
+                      <strong class="text-dark">{{ paciente.datosMedicos.habitos?.alcohol || 'No' }}</strong>
+                      <small class="text-muted d-block mt-1">Frecuencia: {{ paciente.datosMedicos.habitos?.alcoholFrecuencia || 'N/A' }}</small>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3 border-right">
+                      <small class="text-muted d-block mb-1"><i class="fas fa-cannabis mr-1"></i> Drogas</small>
+                      <strong :class="paciente.datosMedicos.habitos?.drogas !== 'No' ? 'text-danger' : 'text-dark'">
+                        {{ paciente.datosMedicos.habitos?.drogas || 'No' }}
+                      </strong>
+                      <small class="text-muted d-block mt-1">Tipo: {{ paciente.datosMedicos.habitos?.drogasTipo || 'N/A' }}</small>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                      <small class="text-muted d-block mb-1"><i class="fas fa-shield-virus mr-1"></i> Vacunación</small>
+                      <strong class="text-dark">{{ paciente.datosMedicos.habitos?.esquemaVacunacion || 'Desconoce' }}</strong>
+                    </div>
                   </div>
                 </div>
               </div>
 
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-users mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Antecedentes Familiares</span>
-                    <p v-if="paciente.datosMedicos.antecedentesFamiliares.tiene" class="text-dark mb-0" style="font-size: 0.9rem;">Sí reporta antecedentes familiares.</p>
-                    <p v-else class="text-muted font-italic mb-0" style="font-size: 0.9rem;">Sin antecedentes familiares de importancia.</p>
-                  </div>
+              <div class="card mb-4 section-card border-light shadow-sm">
+                <div class="card-header bg-white text-uppercase font-weight-bold">
+                  <i class="fas fa-prescription-bottle-alt text-success mr-2"></i> Tratamiento y Observaciones
                 </div>
-              </div>
+                <div class="card-body">
+                  <div class="row">
+                    
+                    <div class="col-md-6 mb-3">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-pills text-success mr-1"></i> Medicamentos Actuales</small>
+                      <div v-if="paciente.datosMedicos.medicamentosActuales?.tiene && paciente.datosMedicos.medicamentosActuales?.detalles?.length > 0" class="p-3 bg-light rounded h-100 border">
+                        <div v-for="(med, index) in paciente.datosMedicos.medicamentosActuales.detalles" :key="index" class="mb-2">
+                          <strong class="text-dark d-block"><i class="fas fa-tablets text-muted mr-1"></i> {{ med.nombre }}</strong>
+                          <span class="text-muted small ml-4">Motivo:</span> <span class="text-dark small">{{ med.motivo || 'N/A' }}</span> | 
+                          <span class="text-muted small">Frecuencia:</span> <span class="text-dark small">{{ med.frecuencia || 'N/A' }}</span>
+                        </div>
+                      </div>
+                      <div v-else class="p-3 bg-light rounded h-100 text-muted font-italic border">No toma medicamentos actualmente.</div>
+                    </div>
 
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-smoking mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Hábitos y Consumo</span>
-                    <div class="row text-left mb-2 mx-0">
-                      <div class="col-4 px-1">
-                        <small class="text-muted d-block mb-1">Tabaco</small>
-                        <strong :class="paciente.datosMedicos.habitos?.tabaco === 'Fuma actualmente' ? 'text-danger' : 'text-dark'" style="font-size: 0.85rem; display: block;">
-                          {{ paciente.datosMedicos.habitos?.tabaco || 'No fuma' }}
-                        </strong>
-                        <small class="text-muted" style="font-size: 0.7rem;">Frec.: {{ paciente.datosMedicos.habitos?.tabacoFrecuencia || '-' }}</small>
-                      </div>
-                      <div class="col-4 px-1">
-                        <small class="text-muted d-block mb-1">Alcohol</small>
-                        <strong class="text-dark" style="font-size: 0.85rem; display: block;">{{ paciente.datosMedicos.habitos?.alcohol || 'No' }}</strong>
-                        <small class="text-muted" style="font-size: 0.7rem;">Frec.: {{ paciente.datosMedicos.habitos?.alcoholFrecuencia || '-' }}</small>
-                      </div>
-                      <div class="col-4 px-1">
-                        <small class="text-muted d-block mb-1">Drogas</small>
-                        <strong :class="paciente.datosMedicos.habitos?.drogas === 'Sí' ? 'text-danger' : 'text-dark'" style="font-size: 0.85rem; display: block;">
-                          {{ paciente.datosMedicos.habitos?.drogas || 'No' }}
-                        </strong>
-                        <small class="text-muted d-block" style="font-size: 0.7rem;">Tipo: {{ paciente.datosMedicos.habitos?.drogasTipo || 'N/A' }}</small>
+                    <div class="col-md-6 mb-3">
+                      <small class="text-muted d-block mb-2 text-uppercase font-weight-bold"><i class="fas fa-file-signature text-primary mr-1"></i> Notas del Médico</small>
+                      <div class="p-3 bg-light rounded h-100 border">
+                        <p class="text-dark mb-0" style="white-space: pre-wrap; line-height: 1.6;">
+                          <em v-if="!paciente.datosMedicos.observacionesGenerales" class="text-muted">Sin observaciones registradas en este expediente.</em>
+                          <span v-else>{{ paciente.datosMedicos.observacionesGenerales }}</span>
+                        </p>
                       </div>
                     </div>
-                    <div class="row text-left mx-0 pt-2 border-top">
-                      <div class="col-6 px-1 pt-2">
-                        <small class="text-muted d-block mb-1">Vacunación</small>
-                        <span class="text-dark" style="font-size: 0.8rem;">Esq.: {{ paciente.datosMedicos.habitos?.esquemaVacunacion || 'Desconoce' }}</span>
-                      </div>
-                      <div class="col-6 px-1 pt-2">
-                        <small class="text-muted d-block mb-1">Discapacidad</small>
-                        <strong class="text-dark" style="font-size: 0.85rem;">
-                          {{ paciente.datosMedicos.habitos?.tieneDiscapacidad || 'No' }}
-                        </strong><br>
-                        <small class="text-dark" style="font-size: 0.8rem;">Tipo: {{ paciente.datosMedicos.habitos?.tipoDiscapacidad || '-' }}</small>
-                      </div>
-                    </div>
+
                   </div>
                 </div>
               </div>
 
             </div>
-
-            <div class="col-md-6">
-              
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-heartbeat mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Enfermedades Crónicas</span>
-                    <div v-if="paciente.datosMedicos.enfermedadesCronicas.tiene && paciente.datosMedicos.enfermedadesCronicas.detalles.length > 0">
-                      <div v-for="(enf, index) in paciente.datosMedicos.enfermedadesCronicas.detalles" :key="index">
-                        <strong class="text-dark d-block" style="font-size: 0.9rem;">• {{ enf.nombreEnfermedad || 'Enfermedad' }}</strong>
-                      </div>
-                    </div>
-                    <div v-else class="text-muted font-italic" style="font-size: 0.9rem;">El paciente no reporta enfermedades crónicas.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-pills mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Medicamentos Actuales</span>
-                    <div v-if="paciente.datosMedicos.medicamentosActuales.tiene && paciente.datosMedicos.medicamentosActuales.detalles.length > 0">
-                      <div v-for="(med, index) in paciente.datosMedicos.medicamentosActuales.detalles" :key="index">
-                        <strong class="text-dark d-block" style="font-size: 0.9rem;">• {{ med.nombre || 'Medicamento' }}</strong>
-                      </div>
-                    </div>
-                    <div v-else class="text-muted font-italic" style="font-size: 0.9rem;">No toma medicamentos actualmente.</div>
-                  </div>
-                </div>
-              </div>
-
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <i class="fas fa-notes-medical mr-3 mt-1 callout-icon"></i>
-                  <div class="w-100">
-                    <span class="callout-title">Antecedentes Patológicos</span>
-                    <p v-if="paciente.datosMedicos.antecedentesPatologicos.tiene" class="text-dark mb-0" style="font-size: 0.9rem;">Sí reporta antecedentes patológicos.</p>
-                    <p v-else class="text-muted font-italic mb-0" style="font-size: 0.9rem;">Sin antecedentes patológicos previos.</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="callout-card">
-                <div class="d-flex align-items-start">
-                  <svg class="mr-3 mt-1 callout-icon" style="fill: #611232; width: 22px; height: 22px;" viewBox="0 0 24 24">
-                     <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
-                  </svg>
-                  <div class="w-100">
-                    <span class="callout-title">Observaciones Médicas Generales</span>
-                    <p class="text-dark mb-0" style="white-space: pre-wrap; font-size: 0.9rem; line-height: 1.6;">
-                      <em v-if="!paciente.datosMedicos.observacionesGenerales" class="text-muted">Sin observaciones registradas.</em>
-                      <span v-else>{{ paciente.datosMedicos.observacionesGenerales }}</span>
-                    </p>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-          <div v-else class="text-center py-5">
-             <p class="text-muted">Cargando datos médicos o no hay información registrada.</p>
-          </div>
-        </div>
-
             
-
+            <div v-else class="text-center py-5">
+              <i class="fas fa-folder-open text-muted mb-3" style="font-size: 3rem;"></i>
+              <p class="text-muted h5">Cargando datos médicos o no hay información registrada.</p>
+            </div>
+            
           </div>
         </div>
 
       </div> 
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
