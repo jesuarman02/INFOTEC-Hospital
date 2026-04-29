@@ -71,36 +71,54 @@
     <div v-if="modalAbierta" class="modal-overlay">
       <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 500px; background: white;">
         <h3 class="text-danger border-bottom pb-2 mb-4">Registrar Cita</h3>
-        <p class="text-muted mb-4"><strong>Día:</strong> {{ diaSeleccionado }} {{ mesNombre }} {{ anioActual }}</p>
+        <p class="text-muted mb-4"><strong>Día Seleccionado:</strong> {{ diaSeleccionado }} {{ mesNombre }} {{ anioActual }}</p>
 
         <div class="row">
-          <div class="col-md-6 mb-3"><input class="form-control" v-model="form.ecu" placeholder="ECU"></div>
-          <div class="col-md-6 mb-3"><input class="form-control" v-model="form.nombre" placeholder="Nombre"></div>
-          <div class="col-md-6 mb-3"><input class="form-control" v-model="form.apellidoPaterno" placeholder="Apellido Paterno"></div>
-          <div class="col-md-6 mb-3"><input class="form-control" v-model="form.apellidoMaterno" placeholder="Apellido Materno"></div>
-          <div class="col-md-6 mb-3">
-            <select class="form-control" v-model="form.sexo">
-              <option value="">Sexo</option>
-              <option value="H">Hombre</option>
-              <option value="M">Mujer</option>
-            </select>
+          
+          <div class="col-md-12 mb-4">
+            <label class="font-weight-bold text-dark mb-1">ECU del Paciente <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <input 
+                type="number" 
+                class="form-control" 
+                v-model="form.ecu" 
+                @blur="buscarPacienteParaCita"
+                @keyup.enter="buscarPacienteParaCita"
+                placeholder="Ingrese el ECU..."
+              >
+              <div class="input-group-append">
+                <button class="btn btn-danger" type="button" @click="buscarPacienteParaCita" :disabled="buscandoPaciente">
+                  Buscar
+                </button>
+              </div>
+            </div>
+            <small :class="mensajeClase" class="mt-1 d-block font-weight-bold">{{ mensajeBusqueda }}</small>
+          </div>
+
+          <div class="col-md-12 mb-3">
+            <label class="text-muted small mb-1">Nombre</label>
+            <input class="form-control bg-light" v-model="form.nombre" placeholder="-" disabled>
           </div>
           <div class="col-md-6 mb-3">
-            <select class="form-control" v-model="form.nacionalidad">
-              <option value="">Nacionalidad</option>
-              <option value="Mexicana">Mexicana</option>
-              <option value="Extranjera">Extranjera</option>
-            </select>
+            <label class="text-muted small mb-1">Apellido Paterno</label>
+            <input class="form-control bg-light" v-model="form.apellidoPaterno" placeholder="-" disabled>
           </div>
-          <div class="col-md-6 mb-3"><input class="form-control" type="date" v-model="form.fechaNacimiento"></div>
-          <div class="col-md-6 mb-3"><input class="form-control" v-model="form.estadoCivil" placeholder="Estado Civil"></div>
-          <div class="col-md-6 mb-3"><input class="form-control" v-model="form.curp" placeholder="CURP"></div>
-          <div class="col-md-6 mb-3"><input class="form-control" type="time" v-model="form.hora"></div>
+          <div class="col-md-6 mb-3">
+            <label class="text-muted small mb-1">Apellido Materno</label>
+            <input class="form-control bg-light" v-model="form.apellidoMaterno" placeholder="-" disabled>
+          </div>
+
+          <div class="col-12 border-bottom my-2"></div>
+
+          <div class="col-md-12 mt-3">
+             <label class="font-weight-bold text-dark mb-1">Hora de la Cita <span class="text-danger">*</span></label>
+            <input class="form-control" type="time" v-model="form.hora">
+          </div>
         </div>
 
         <div class="d-flex justify-content-end mt-4 border-top pt-3">
           <button class="btn btn-light mr-3" @click="cerrarModal">Cancelar</button>
-          <button class="btn btn-danger" @click="guardarCita">Guardar Cita</button>
+          <button class="btn btn-danger" @click="guardarCita" :disabled="!form.pacienteId || !form.hora">Guardar Cita</button>
         </div>
       </div>
     </div>
@@ -109,52 +127,122 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from 'vue';
+import { ref, computed, onMounted, watch } from 'vue'; // 🔥 Añadimos onMounted y watch
 import { useRouter } from 'vue-router';
+import axios from 'axios';
 import SidebarModule from '@/intefaz/sidebarModule.vue';
-import SearchModule2 from '@/intefaz/searchModule2.vue'; // Importamos tu componente
+import SearchModule2 from '@/intefaz/searchModule2.vue'; 
 import '../../../content/css/calendario.css';
 
 const router = useRouter();
 
-// Variables de estado nuevas para el Portapapeles
+// --- ESTADO DE NAVEGACIÓN ---
 const mostrarClipboard = ref(false);
 const searchQuery = ref('');
 
-// Control del Toggle
-const irPacientes = () => {
-  router.push('/interfaz-pacientes'); 
-};
+const irPacientes = () => { router.push('/interfaz-pacientes'); };
+const abrirClipboard = () => { mostrarClipboard.value = true; };
+const cerrarClipboard = () => { mostrarClipboard.value = false; };
 
-const abrirClipboard = () => {
-  mostrarClipboard.value = true;
-};
-
-// Al dar click en "ir-buscar" dentro del clipboard, lo ocultamos para volver a mostrar el calendario
-const cerrarClipboard = () => {
-  mostrarClipboard.value = false;
-};
-
-// Variables de estado del Calendario
+// --- ESTADO DEL CALENDARIO ---
 const modalAbierta = ref(false);
 const fecha = ref(new Date());
 const diaSeleccionado = ref(new Date().getDate());
 const diasSemana = ['L','M','X','J','V','S','D'];
 
-// Formulario reactivo
+// --- FORMULARIO ---
 const form = ref({
-  ecu: '', nombre: '', apellidoPaterno: '', apellidoMaterno: '',
-  sexo: '', nacionalidad: '', fechaNacimiento: '', estadoCivil: '', curp: '', hora: ''
+  ecu: '', 
+  pacienteId: null as number | null,
+  nombre: '', 
+  apellidoPaterno: '', 
+  apellidoMaterno: '', 
+  hora: ''
 });
 
-// Datos simulados (Mock)
-const citas = ref([
-  { dia: 6, mes: 2, anio: 2026, hora: '09:00', paciente: 'Juan Pérez' }, 
-  { dia: 6, mes: 2, anio: 2026, hora: '12:30', paciente: 'Ana López' },
-  { dia: 10, mes: 2, anio: 2026, hora: '15:00', paciente: 'Carlos Ruiz' }
-]);
+// --- LÓGICA DE BÚSQUEDA DE PACIENTE ---
+const buscandoPaciente = ref(false);
+const mensajeBusqueda = ref('');
+const mensajeClase = ref('text-muted');
 
-// Propiedades computadas del Calendario
+const buscarPacienteParaCita = async () => {
+  const ecuNum = Number(form.value.ecu);
+  if (!ecuNum || isNaN(ecuNum)) return;
+
+  buscandoPaciente.value = true;
+  mensajeBusqueda.value = 'Buscando paciente...';
+  mensajeClase.value = 'text-info';
+
+  try {
+    const res = await axios.get(`services/pacientesms/api/pacientes/ecu/${ecuNum}`);
+    if (res.data && res.data.id) {
+      form.value.pacienteId = res.data.id;
+      form.value.nombre = res.data.nombre;
+      form.value.apellidoPaterno = res.data.apellidoPaterno;
+      form.value.apellidoMaterno = res.data.apellidoMaterno;
+      mensajeBusqueda.value = '✓ Paciente verificado';
+      mensajeClase.value = 'text-success';
+    }
+  } catch (error) {
+    form.value.pacienteId = null;
+    form.value.nombre = '';
+    form.value.apellidoPaterno = '';
+    form.value.apellidoMaterno = '';
+    mensajeBusqueda.value = '❌ No se encontró el paciente';
+    mensajeClase.value = 'text-danger';
+  } finally {
+    buscandoPaciente.value = false;
+  }
+};
+
+// --- GESTIÓN DE CITAS (CRUD) ---
+interface Cita {
+  id?: number;
+  dia: number;
+  mes: number;
+  anio: number;
+  hora: string;
+  paciente: string;
+  pacienteId: number | null;
+}
+
+const citas = ref<Cita[]>([]); // Empezamos con un array vacío
+
+// 🔥 NUEVA FUNCIÓN: Carga las citas desde la Base de Datos
+const cargarCitas = async () => {
+  try {
+    const res = await axios.get(`services/citasms/api/citas`);
+    
+    // Mapeamos los datos del backend a nuestro formato local
+    citas.value = res.data.map((c: any) => {
+      const f = new Date(c.fecha);
+      return {
+        id: c.id,
+        // Usamos UTC para evitar que la zona horaria nos cambie el día
+        dia: f.getUTCDate(),
+        mes: f.getUTCMonth(),
+        anio: f.getUTCFullYear(),
+        hora: c.hora,
+        pacienteId: c.paciente?.id,
+        paciente: `${c.paciente?.nombre} ${c.paciente?.apellidoPaterno}`
+      };
+    });
+  } catch (error) {
+    console.error("Error al cargar citas:", error);
+  }
+};
+
+// 🔥 EJECUTAR AL CARGAR LA PÁGINA
+onMounted(() => {
+  cargarCitas();
+});
+
+// 🔥 OBSERVAR CAMBIOS DE MES PARA REFRESCAR (Opcional si filtras por mes)
+watch(fecha, () => {
+  cargarCitas();
+});
+
+// --- LÓGICA VISUAL DEL CALENDARIO ---
 const anioActual = computed(() => fecha.value.getFullYear());
 const mesActualNumero = computed(() => fecha.value.getMonth());
 const mesNombre = computed(() => fecha.value.toLocaleString('es-MX', { month: 'short' }).toUpperCase());
@@ -172,15 +260,12 @@ const citasDelDia = computed(() =>
   citas.value.filter(c => c.dia === diaSeleccionado.value && c.mes === mesActualNumero.value && c.anio === anioActual.value)
 );
 
-// Métodos del Calendario
 const cambiarMes = (direccion: number) => {
   fecha.value = new Date(anioActual.value, mesActualNumero.value + direccion, 1);
   diaSeleccionado.value = 1;
 };
 
-const seleccionarDia = (dia: number) => {
-  diaSeleccionado.value = dia;
-};
+const seleccionarDia = (dia: number) => { diaSeleccionado.value = dia; };
 
 const tieneCita = (dia: number | null) => {
   if (dia === null) return false; 
@@ -188,19 +273,66 @@ const tieneCita = (dia: number | null) => {
 };
 
 const abrirModal = () => { modalAbierta.value = true; };
-const cerrarModal = () => { modalAbierta.value = false; };
+const cerrarModal = () => { 
+  modalAbierta.value = false; 
+  form.value = { ecu: '', pacienteId: null, nombre: '', apellidoPaterno: '', apellidoMaterno: '', hora: '' };
+  mensajeBusqueda.value = '';
+};
 
-const guardarCita = () => {
-  if(!form.value.hora || !form.value.nombre) return; 
-  citas.value.push({
-    dia: diaSeleccionado.value,
-    mes: mesActualNumero.value,
-    anio: anioActual.value,
-    hora: form.value.hora,
-    paciente: `${form.value.nombre} ${form.value.apellidoPaterno}`.trim()
-  });
-  cerrarModal();
-  form.value = { ecu: '', nombre: '', apellidoPaterno: '', apellidoMaterno: '', sexo: '', nacionalidad: '', fechaNacimiento: '', estadoCivil: '', curp: '', hora: '' };
+// --- GUARDAR CITA ---
+const guardandoCita = ref(false); // Estado para deshabilitar el botón mientras se guarda
+
+const guardarCita = async () => {
+  // 1. Validaciones de Frontend (Primera capa de robustez)
+  if(!form.value.hora || !form.value.pacienteId) {
+    alert("Datos incompletos. Asegúrese de haber seleccionado un paciente y una hora.");
+    return;
+  }
+
+  guardandoCita.value = true;
+
+  try {
+    // 2. Preparar fecha para PostgreSQL (YYYY-MM-DD)
+    const mesF = (mesActualNumero.value + 1).toString().padStart(2, '0');
+    const diaF = diaSeleccionado.value.toString().padStart(2, '0');
+    const fechaISO = `${anioActual.value}-${mesF}-${diaF}`;
+
+    // 3. Construir el Payload Robusto
+    // Enviamos el objeto 'paciente' solo con su ID para crear la relación en Postgres
+    const citaParaEnviar = {
+      fecha: fechaISO,
+      hora: form.value.hora,
+      paciente: {
+        id: form.value.pacienteId 
+      }
+    };
+
+    // 4. Petición HTTP POST al Microservicio
+    const res = await axios.post(`services/citasms/api/citas`, citaParaEnviar);
+
+    // 5. Verificación de Respuesta
+    if (res.status === 201 || res.status === 200) {
+      // Si el servidor guardó con éxito, refrescamos la lista local
+      await cargarCitas(); // Función que trae las citas actualizadas de Postgres
+      cerrarModal();
+      alert("Cita registrada exitosamente en el sistema.");
+    }
+
+  } catch (error: any) {
+    // Manejo de errores robusto
+    console.error("Error en la persistencia:", error);
+    
+    if (error.response?.status === 400) {
+      alert("Error: Datos inválidos. Revise que el horario sea correcto.");
+    } else if (error.response?.status === 404) {
+      alert("Error: El servidor de citas no responde (404).");
+    } else {
+      alert("No se pudo conectar con la base de datos de PostgreSQL.");
+    }
+  } finally {
+    guardandoCita.value = false;
+  }
+
 };
 </script>
 
