@@ -1,0 +1,33 @@
+{
+  "gatewayApp": {
+    "pacientemsCita": {
+      "home": {
+        "title": "Citas",
+        "refreshListLabel": "Refresh list",
+        "createLabel": "Create a new Cita",
+        "createOrEditLabel": "Create or edit a Cita",
+        "notFound": "No Citas found"
+      },
+      "delete": {
+        "question": "Are you sure you want to delete Cita { id }?"
+      },
+      "detail": {
+        "title": "Cita"
+      },
+      "id": "ID",
+      "ecu": "Ecu",
+      "nombre": "Nombre",
+      "apellidoPaterno": "Apellido Paterno",
+      "apellidoMaterno": "Apellido Materno",
+      "fechaHora": "Fecha Hora",
+      "motivo": "Motivo"
+    }
+  },
+  "pacientemsApp": {
+    "pacientemsCita": {
+      "created": "A new Cita is created with identifier { param }",
+      "updated": "A Cita is updated with identifier { param }",
+      "deleted": "A Cita is deleted with identifier { param }"
+    }
+  }
+}

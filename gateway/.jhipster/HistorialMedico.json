@@ -1,46 +1,39 @@
-[
+{
+  "annotations": {
+    "changelogDate": "20260116042458"
+  },
+  "applications": "*",
+  "clientRootFolder": "pacientems",
+  "databaseType": "sql",
+  "dto": "mapstruct",
+  "fields": [
     {
-      "fieldName": "datosBiometricosSanguineos",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldName": "antecedentesQuirurgicos",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "500"
     },
     {
-      "fieldName": "alergias",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldName": "esquemaVacunacion",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
     },
     {
-      "fieldName": "enfermedadesCronicas",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
-      "fieldName": "cirugiasPrevias",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
-      "fieldName": "medicamentosActuales",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
-      "fieldName": "antecedentesFamiliaresHereditarios",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
-      "fieldName": "antecedentesPersonalesPatologicos",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
-    },
-    {
-      "fieldName": "habitosConsumoOtros",
-      "fieldType": "byte[]",
-      "fieldTypeBlobContent": "text"
+      "fieldName": "habitos",
+      "fieldType": "String",
+      "fieldValidateRules": ["maxlength"],
+      "fieldValidateRulesMaxlength": "255"
     },
     {
       "fieldName": "observacionesGenerales",
       "fieldType": "byte[]",
       "fieldTypeBlobContent": "text"
-    }]
+    }
+  ],
+  "microserviceName": "pacientesms",
+  "name": "HistorialMedico",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceImpl"
+}

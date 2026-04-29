@@ -18,6 +18,7 @@
     <include file="config/liquibase/changelog/20260116042459_added_entity_SignosVitales.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260127204854_added_entity_TipoVialidad.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260127204855_added_entity_CodigoPostal.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20260428213843_added_entity_Cita.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
     <include file="config/liquibase/changelog/20260116042455_added_entity_constraints_Paciente.xml" relativeToChangelogFile="false"/>
     <include file="config/liquibase/changelog/20260116042459_added_entity_constraints_SignosVitales.xml" relativeToChangelogFile="false"/>
