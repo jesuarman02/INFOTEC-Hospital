@@ -84,28 +84,26 @@
     </main>
 
     <div v-if="modalAbierta" class="modal-overlay">
-      <div class="modal-content shadow-lg p-4 rounded-lg" style="width: 100%; max-width: 550px; background: white;">
-        
-        <h3 class="text-theme border-bottom pb-2 mb-4 font-weight-bold">
-          <font-awesome-icon :icon="form.id ? 'edit' : 'calendar-check'" class="mr-2"/> 
-          {{ form.id ? 'Editar Cita' : 'Registrar Cita' }}
-        </h3>
-        
-        <p class="text-muted mb-4 font-weight-bold bg-light p-2 rounded text-center">
-          <font-awesome-icon icon="calendar-day" class="mr-1 text-theme"/> {{ diaSeleccionado }} de {{ mesNombre }} {{ anioActual }}
-        </p>
+      <div class="modal-content shadow-lg p-4 rounded-lg" style="max-width: 500px; background: white;">
+        <h3 class="text-danger border-bottom pb-2 mb-4">Registrar Cita</h3>
+        <p class="text-muted mb-4"><strong>Día Seleccionado:</strong> {{ diaSeleccionado }} {{ mesNombre }} {{ anioActual }}</p>
 
-        <div class="row px-2">
+        <div class="row">
           
           <div class="col-md-12 mb-4">
-            <label class="font-weight-bold text-dark mb-1">
-              <font-awesome-icon icon="id-card" class="text-theme mr-1"/> ECU del Paciente <span class="text-theme">*</span>
-            </label>
-            <div class="input-group shadow-sm rounded">
-              <input type="number" class="form-control border-0 bg-light" v-model="form.ecu" @blur="buscarPacienteParaCita" @keyup.enter="buscarPacienteParaCita" placeholder="Ingrese el ECU..." :disabled="form.id !== null">
+            <label class="font-weight-bold text-dark mb-1">ECU del Paciente <span class="text-danger">*</span></label>
+            <div class="input-group">
+              <input 
+                type="number" 
+                class="form-control" 
+                v-model="form.ecu" 
+                @blur="buscarPacienteParaCita"
+                @keyup.enter="buscarPacienteParaCita"
+                placeholder="Ingrese el ECU..."
+              >
               <div class="input-group-append">
-                <button class="btn btn-theme px-4" type="button" @click="buscarPacienteParaCita" :disabled="buscandoPaciente || form.id !== null">
-                  <font-awesome-icon icon="search" />
+                <button class="btn btn-danger" type="button" @click="buscarPacienteParaCita" :disabled="buscandoPaciente">
+                  Buscar
                 </button>
               </div>
             </div>
@@ -113,41 +111,29 @@
           </div>
 
           <div class="col-md-12 mb-3">
-            <label class="text-muted small mb-1"><font-awesome-icon icon="user" class="mr-1"/> Nombre</label>
-            <input class="form-control bg-light border-0 shadow-sm" v-model="form.nombre" placeholder="-" disabled>
+            <label class="text-muted small mb-1">Nombre</label>
+            <input class="form-control bg-light" v-model="form.nombre" placeholder="-" disabled>
           </div>
           <div class="col-md-6 mb-3">
             <label class="text-muted small mb-1">Apellido Paterno</label>
-            <input class="form-control bg-light border-0 shadow-sm" v-model="form.apellidoPaterno" placeholder="-" disabled>
+            <input class="form-control bg-light" v-model="form.apellidoPaterno" placeholder="-" disabled>
           </div>
           <div class="col-md-6 mb-3">
             <label class="text-muted small mb-1">Apellido Materno</label>
-            <input class="form-control bg-light border-0 shadow-sm" v-model="form.apellidoMaterno" placeholder="-" disabled>
+            <input class="form-control bg-light" v-model="form.apellidoMaterno" placeholder="-" disabled>
           </div>
 
-          <div class="col-12 border-bottom my-3"></div>
+          <div class="col-12 border-bottom my-2"></div>
 
-          <div class="col-md-12 mt-2">
-             <label class="font-weight-bold text-dark mb-1">
-               <font-awesome-icon icon="clock" class="text-theme mr-1"/> Hora de la Cita <span class="text-theme">*</span>
-             </label>
-            <input class="form-control shadow-sm border-0 bg-light" type="time" v-model="form.hora">
-          </div>
-
-          <div class="col-md-12 mt-4">
-             <label class="font-weight-bold text-dark mb-1">
-               <font-awesome-icon icon="clipboard-list" class="text-theme mr-1"/> Motivo <span class="text-theme">*</span>
-             </label>
-            <textarea class="form-control shadow-sm border-0 bg-light" v-model="form.motivo" rows="3" placeholder="Detalle la consulta..."></textarea>
+          <div class="col-md-12 mt-3">
+             <label class="font-weight-bold text-dark mb-1">Hora de la Cita <span class="text-danger">*</span></label>
+            <input class="form-control" type="time" v-model="form.hora">
           </div>
         </div>
 
-        <div class="d-flex justify-content-end mt-4 pt-3 border-top">
-          <button class="btn btn-light mr-3 font-weight-bold shadow-sm" @click="cerrarModal" :disabled="guardandoCita">Cancelar</button>
-          <button class="btn btn-theme font-weight-bold shadow-sm px-4" @click="guardarCita" :disabled="!form.nombre || !form.hora || !form.motivo || guardandoCita">
-            <span v-if="guardandoCita" class="spinner-border spinner-border-sm mr-2"></span>
-            <font-awesome-icon icon="save" class="mr-1" v-else/> {{ form.id ? 'Actualizar' : 'Guardar' }}
-          </button>
+        <div class="d-flex justify-content-end mt-4 border-top pt-3">
+          <button class="btn btn-light mr-3" @click="cerrarModal">Cancelar</button>
+          <button class="btn btn-danger" @click="guardarCita" :disabled="!form.pacienteId || !form.hora">Guardar Cita</button>
         </div>
 
       </div>
@@ -157,12 +143,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'; 
+import { ref, computed, onMounted, watch } from 'vue'; // 🔥 Añadimos onMounted y watch
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import Swal from 'sweetalert2';
 import SidebarModule from '@/intefaz/sidebarModule.vue';
 import SearchModule2 from '@/intefaz/searchModule2.vue'; 
+import '../../../content/css/calendario.css';
 
 const router = useRouter();
 
@@ -182,16 +168,15 @@ const diasSemana = ['L','M','X','J','V','S','D'];
 
 // --- FORMULARIO ---
 const form = ref({
-  id: null as number | null, // Agregamos el ID para saber si es edición
   ecu: '', 
+  pacienteId: null as number | null,
   nombre: '', 
   apellidoPaterno: '', 
   apellidoMaterno: '', 
-  hora: '',
-  motivo: '' 
+  hora: ''
 });
 
-// --- LÓGICA DE BÚSQUEDA ---
+// --- LÓGICA DE BÚSQUEDA DE PACIENTE ---
 const buscandoPaciente = ref(false);
 const mensajeBusqueda = ref('');
 const mensajeClase = ref('text-muted');
@@ -205,19 +190,17 @@ const buscarPacienteParaCita = async () => {
   mensajeClase.value = 'text-info';
 
   try {
-    const res = await axios.get(`services/pacientesms/api/pacientes`);
-    const paciente = res.data.find((p: any) => p.ecu === ecuNum);
-
-    if (paciente) {
-      form.value.nombre = paciente.nombre;
-      form.value.apellidoPaterno = paciente.apellidoPaterno;
-      form.value.apellidoMaterno = paciente.apellidoMaterno;
+    const res = await axios.get(`services/pacientesms/api/pacientes/ecu/${ecuNum}`);
+    if (res.data && res.data.id) {
+      form.value.pacienteId = res.data.id;
+      form.value.nombre = res.data.nombre;
+      form.value.apellidoPaterno = res.data.apellidoPaterno;
+      form.value.apellidoMaterno = res.data.apellidoMaterno;
       mensajeBusqueda.value = '✓ Paciente verificado';
       mensajeClase.value = 'text-success';
-    } else {
-      throw new Error("No encontrado");
     }
   } catch (error) {
+    form.value.pacienteId = null;
     form.value.nombre = '';
     form.value.apellidoPaterno = '';
     form.value.apellidoMaterno = '';
@@ -230,52 +213,52 @@ const buscarPacienteParaCita = async () => {
 
 // --- GESTIÓN DE CITAS (CRUD) ---
 interface Cita {
-  id: number;
+  id?: number;
   dia: number;
   mes: number;
   anio: number;
-  horaDisplay: string;
-  horaRaw: string; // Hora en formato HH:mm para el input
+  hora: string;
   paciente: string;
-  nombre: string;
-  apellidoPaterno: string;
-  apellidoMaterno: string;
-  motivo: string;
-  ecu: number;
+  pacienteId: number | null;
 }
 
-const citas = ref<Cita[]>([]); 
+const citas = ref<Cita[]>([]); // Empezamos con un array vacío
 
+// 🔥 NUEVA FUNCIÓN: Carga las citas desde la Base de Datos
 const cargarCitas = async () => {
   try {
-    const res = await axios.get(`services/pacientesms/api/citas`); 
+    const res = await axios.get(`services/citasms/api/citas`);
     
+    // Mapeamos los datos del backend a nuestro formato local
     citas.value = res.data.map((c: any) => {
-      const fechaCita = new Date(c.fechaHora); 
+      const f = new Date(c.fecha);
       return {
         id: c.id,
-        dia: fechaCita.getDate(),
-        mes: fechaCita.getMonth(),
-        anio: fechaCita.getFullYear(),
-        horaDisplay: fechaCita.toLocaleTimeString('es-MX', { hour: '2-digit', minute: '2-digit', hour12: true }),
-        horaRaw: `${String(fechaCita.getHours()).padStart(2, '0')}:${String(fechaCita.getMinutes()).padStart(2, '0')}`,
-        paciente: `${c.nombre} ${c.apellidoPaterno}`,
-        nombre: c.nombre,
-        apellidoPaterno: c.apellidoPaterno,
-        apellidoMaterno: c.apellidoMaterno,
-        motivo: c.motivo,
-        ecu: c.ecu
+        // Usamos UTC para evitar que la zona horaria nos cambie el día
+        dia: f.getUTCDate(),
+        mes: f.getUTCMonth(),
+        anio: f.getUTCFullYear(),
+        hora: c.hora,
+        pacienteId: c.paciente?.id,
+        paciente: `${c.paciente?.nombre} ${c.paciente?.apellidoPaterno}`
       };
     });
   } catch (error) {
-    console.error("Error al cargar citas de la BD:", error);
+    console.error("Error al cargar citas:", error);
   }
 };
 
-onMounted(() => { cargarCitas(); });
-watch(fecha, () => { cargarCitas(); });
+// 🔥 EJECUTAR AL CARGAR LA PÁGINA
+onMounted(() => {
+  cargarCitas();
+});
 
-// --- LÓGICA VISUAL ---
+// 🔥 OBSERVAR CAMBIOS DE MES PARA REFRESCAR (Opcional si filtras por mes)
+watch(fecha, () => {
+  cargarCitas();
+});
+
+// --- LÓGICA VISUAL DEL CALENDARIO ---
 const anioActual = computed(() => fecha.value.getFullYear());
 const mesActualNumero = computed(() => fecha.value.getMonth());
 const mesNombre = computed(() => fecha.value.toLocaleString('es-MX', { month: 'long' }).toUpperCase());
@@ -305,87 +288,67 @@ const tieneCita = (dia: number | null) => {
   return citas.value.some(c => c.dia === dia && c.mes === mesActualNumero.value && c.anio === anioActual.value);
 };
 
-// --- CONTROL DEL MODAL Y ACCIONES ---
-const abrirModal = () => { 
-  form.value = { id: null, ecu: '', nombre: '', apellidoPaterno: '', apellidoMaterno: '', hora: '', motivo: '' };
+const abrirModal = () => { modalAbierta.value = true; };
+const cerrarModal = () => { 
+  modalAbierta.value = false; 
+  form.value = { ecu: '', pacienteId: null, nombre: '', apellidoPaterno: '', apellidoMaterno: '', hora: '' };
   mensajeBusqueda.value = '';
-  modalAbierta.value = true; 
 };
 
-const cerrarModal = () => { modalAbierta.value = false; };
-
-const prepararEdicion = (cita: Cita) => {
-  form.value = {
-    id: cita.id,
-    ecu: cita.ecu.toString(),
-    nombre: cita.nombre,
-    apellidoPaterno: cita.apellidoPaterno,
-    apellidoMaterno: cita.apellidoMaterno,
-    hora: cita.horaRaw,
-    motivo: cita.motivo
-  };
-  mensajeBusqueda.value = '✓ Modo Edición';
-  mensajeClase.value = 'text-primary';
-  modalAbierta.value = true;
-};
-
-const eliminarCita = async (id: number) => {
-  const result = await Swal.fire({
-    title: '¿Eliminar cita?',
-    text: "Esta acción no se puede deshacer",
-    icon: 'warning',
-    showCancelButton: true,
-    confirmButtonColor: '#d33',
-    cancelButtonColor: '#3085d6',
-    confirmButtonText: 'Sí, eliminar',
-    cancelButtonText: 'Cancelar'
-  });
-
-  if (result.isConfirmed) {
-    try {
-      await axios.delete(`services/pacientesms/api/citas/${id}`);
-      await cargarCitas();
-      Swal.fire('Eliminada', 'La cita ha sido cancelada.', 'success');
-    } catch (error) {
-      Swal.fire('Error', 'No se pudo eliminar la cita', 'error');
-    }
-  }
-};
-
-const guardandoCita = ref(false); 
+// --- GUARDAR CITA ---
+const guardandoCita = ref(false); // Estado para deshabilitar el botón mientras se guarda
 
 const guardarCita = async () => {
-  if(!form.value.hora || !form.value.nombre || !form.value.motivo) return;
+  // 1. Validaciones de Frontend (Primera capa de robustez)
+  if(!form.value.hora || !form.value.pacienteId) {
+    alert("Datos incompletos. Asegúrese de haber seleccionado un paciente y una hora.");
+    return;
+  }
+
   guardandoCita.value = true;
 
   try {
-    const [horas, minutos] = form.value.hora.split(':');
-    const fechaArmada = new Date(anioActual.value, mesActualNumero.value, diaSeleccionado.value, Number(horas), Number(minutos));
-    
-    const citaPayload = {
-      id: form.value.id, // Si es nuevo será null
-      ecu: Number(form.value.ecu),
-      nombre: form.value.nombre,
-      apellidoPaterno: form.value.apellidoPaterno,
-      apellidoMaterno: form.value.apellidoMaterno,
-      fechaHora: fechaArmada.toISOString(), 
-      motivo: form.value.motivo
+    // 2. Preparar fecha para PostgreSQL (YYYY-MM-DD)
+    const mesF = (mesActualNumero.value + 1).toString().padStart(2, '0');
+    const diaF = diaSeleccionado.value.toString().padStart(2, '0');
+    const fechaISO = `${anioActual.value}-${mesF}-${diaF}`;
+
+    // 3. Construir el Payload Robusto
+    // Enviamos el objeto 'paciente' solo con su ID para crear la relación en Postgres
+    const citaParaEnviar = {
+      fecha: fechaISO,
+      hora: form.value.hora,
+      paciente: {
+        id: form.value.pacienteId 
+      }
     };
 
-    if (form.value.id) {
-      await axios.put(`services/pacientesms/api/citas/${form.value.id}`, citaPayload);
-    } else {
-      await axios.post(`services/pacientesms/api/citas`, citaPayload);
+    // 4. Petición HTTP POST al Microservicio
+    const res = await axios.post(`services/citasms/api/citas`, citaParaEnviar);
+
+    // 5. Verificación de Respuesta
+    if (res.status === 201 || res.status === 200) {
+      // Si el servidor guardó con éxito, refrescamos la lista local
+      await cargarCitas(); // Función que trae las citas actualizadas de Postgres
+      cerrarModal();
+      alert("Cita registrada exitosamente en el sistema.");
     }
 
-    await cargarCitas(); 
-    cerrarModal();
-    Swal.fire({ title: '¡Listo!', text: 'Cita guardada exitosamente', icon: 'success', confirmButtonColor: '#5c1830', timer: 1500 });
   } catch (error: any) {
-    Swal.fire({ title: 'Error', text: 'No se pudo guardar la cita.', icon: 'error' });
+    // Manejo de errores robusto
+    console.error("Error en la persistencia:", error);
+    
+    if (error.response?.status === 400) {
+      alert("Error: Datos inválidos. Revise que el horario sea correcto.");
+    } else if (error.response?.status === 404) {
+      alert("Error: El servidor de citas no responde (404).");
+    } else {
+      alert("No se pudo conectar con la base de datos de PostgreSQL.");
+    }
   } finally {
     guardandoCita.value = false;
   }
+
 };
 </script>
 

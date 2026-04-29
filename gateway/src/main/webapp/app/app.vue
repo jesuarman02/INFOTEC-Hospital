@@ -6,15 +6,13 @@
       <jhi-navbar></jhi-navbar>
     </div>
 
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
 
-      <!-- 🔥 Si NO es calendario -->
-      <div v-if="$route.name !== 'Calendario'" class="card jh-card">
+     <router-view v-if="['Calendario', 'InterfazPacientes'].includes(String($route.name))"></router-view>
+
+      <div v-else class="card jh-card m-3">
         <router-view></router-view>
       </div>
-
-      <!-- 🔥 Si es calendario -->
-      <router-view v-else></router-view>
 
       <b-modal id="login-page" hide-footer lazy hide-header-close>
         <template #modal-title>
@@ -30,4 +28,4 @@
 </template>
 
 <script lang="ts" src="./app.component.ts"></script>
-<style src="../../webapp/content/css/login.css"></style>
+<style src="../../webapp/content/css/login.css"></style>  

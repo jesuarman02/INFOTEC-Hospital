@@ -1,105 +1,119 @@
-/* 1. RESETEO DEL BODY */
-/* Bloqueamos el scroll global para que la app se sienta nativa, no como una página web */
-body {
-  overflow-y: auto;
-  overflow-x: hidden;
+/* ========================================= */
+/* 1. RESETEO Y CANDADO ANTI-SCROLL          */
+/* ========================================= */
+html,
+body,
+#app {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
   background-color: #f4f6f9;
-  margin: 0 !important;
+
+  /* 🔥 EL CANDADO DEFINITIVO 🔥 */
+  max-width: 100vw;
+  overflow-x: hidden !important;
+  box-sizing: border-box;
 }
 
-/* 2. CONTENEDOR PRINCIPAL */
+/* Todos los elementos deben respetar sus bordes y paddings */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* ========================================= */
+/* 2. ELIMINAR LA PRISIÓN DE JHIPSTER        */
+/* ========================================= */
+.jh-card {
+  border: none !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background-color: transparent !important;
+}
+
+/* ========================================= */
+/* 3. ESTRUCTURA PRINCIPAL UNIFICADA         */
+/* ========================================= */
 .interface-container {
   display: flex;
-  height: 100vh;
   width: 100%;
-  /*overflow: hidden;
-    /* Nada sale de este contenedor */
+  min-height: calc(100vh - 70px);
+  background-color: #f4f6f9;
+  overflow-x: hidden;
+  /* 🔥 ADIÓS AL HACK DE 100VW Y MÁRGENES NEGATIVOS 🔥 */
 }
 
-/* 3. PANEL IZQUIERDO (Sidebar + Búsqueda) */
-/* 3. PANEL IZQUIERDO (Sidebar guinda + Búsqueda blanca) */
-.left-panel-glass {
-  display: flex;
-  flex-direction: row;
-  height: 100%;
-}
-
-
-.search-section {
-  width: 320px;
-  /* Le damos su propio ancho para que no desaparezca */
-  flex-shrink: 0;
-  /* Evita que el contenedor lo comprima */
-  padding: 2.5rem 1.5rem;
-  display: flex;
-  flex-direction: column;
-}
-
-.status-text {
-  margin-top: 2rem;
-  color: #9ca3af;
-  font-size: 0.85rem;
-  text-align: center;
-  font-weight: 500;
-}
-
-.work-area {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-/* 4. PANEL DERECHO - Cambia hidden por auto */
+/* 🔥 PANEL DERECHO (Área de trabajo) 🔥 */
 .right-panel-workspace {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  /* Aseguramos que ocupe el alto de la pantalla */
-  overflow-y: auto;
-  /* PERMITE EL SCROLL AQUÍ */
-  background-color: #f4f6f9;
-  /* Color de fondo consistente */
+  justify-content: flex-start;
+  /* Inicia el contenido desde arriba SIEMPRE */
+
+  /* Protege el espacio del sidebar flotante (reemplaza tu padding-left por margin para evitar bugs) */
+  margin-left: 100px;
+  min-height: calc(100vh - 70px);
 }
 
-/* Ajusta el área de trabajo */
-.work-area {
+/* ========================================= */
+/* 4. BUSCADOR Y ÁREA DE TRABAJO             */
+/* ========================================= */
+.search-section-centered {
   display: flex;
   flex-direction: column;
-  /* Quitamos el height: 100% para que pueda crecer hacia abajo */
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+
+  /* Empuja el buscador al centro cuando está solo */
+  flex-grow: 1;
+  min-height: calc(100vh - 150px);
   padding: 2rem;
-  gap: 2rem;
-  /* Reducimos el gap de 10rem a algo más sensato */
 }
 
-/* Quita el height: 100% de aquí para que la tabla empuje el contenedor */
+.work-area {
+  width: 100%;
+  height: auto;
+  flex-grow: 1;
+  padding: 2rem;
+  /* Le da aire a la interfaz por los lados y por arriba */
+}
+
+/* ========================================= */
+/* 5. CUADRÍCULA DE PACIENTES                */
+/* ========================================= */
 .paciente-data-preview {
   display: grid !important;
-  /* Aquí está la magia: Columna 1 = 350px fijos. Columna 2 = El resto del espacio disponible */
+  /* Columna izquierda = 350px fijos. Columna derecha = El resto */
   grid-template-columns: 350px minmax(0, 1fr) !important;
   gap: 2rem !important;
-  /* Espacio entre las dos columnas */
   align-items: start !important;
-  /* Para que no se estiren a lo alto */
   width: 100% !important;
 }
 
-/* Quitamos los márgenes por defecto para evitar problemas */
 .columna-izquierda,
 .columna-derecha {
   width: 100%;
   max-width: 100%;
+  overflow-x: hidden;
+  /* Evita que tablas largas rompan la columna */
 }
 
-/* Asegúrate de que la tabla tenga visibilidad */
+/* ========================================= */
+/* 6. TARJETAS Y TABLAS                      */
+/* ========================================= */
 .table-scroll-section {
   background: white;
   border-radius: 12px;
   padding: 1.5rem;
   margin-top: 1rem;
   min-height: 200px;
-  /* Un mínimo para que siempre se vea algo */
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03);
+  overflow-x: auto;
+  /* Si la tabla es muy ancha, solo scrollea la tabla, no la página */
 }
 
 .dashboard-card {
@@ -110,80 +124,31 @@ body {
   height: 100%;
 }
 
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
-  /*overflow: hidden;*/
-}
-
-/* 🔥 CONTENEDOR GENERAL */
-.interface-container {
-  display: flex;
-  height: 100vh;
-  overflow-x: hidden;
-  overflow-y: auto;
-}
-
-/* 🔥 SIDEBAR */
-.left-panel-glass {
-  width: 320px;
-  min-width: 260px;
-  transition: all 0.3s ease;
-}
-
-/* 🔥 ÁREA PRINCIPAL */
-.right-panel-workspace {
-  flex: 1;
-  overflow-y: visible;
-  padding: 15px;
-}
-
-/* 🔥 CONTENIDO PACIENTE */
-.paciente-data-preview {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-/* 🔥 TABLET */
+/* ========================================= */
+/* 📱 DISEÑO RESPONSIVO (Tablets y Celulares)*/
+/* ========================================= */
 @media (max-width: 1024px) {
-  .left-panel-glass {
-    width: 250px;
-  }
-}
-
-/* 🔥 MOBILE */
-@media (max-width: 768px) {
-
-  .interface-container {
-    flex-direction: column;
-  }
-
-  /* SIDEBAR ARRIBA */
-  .left-panel-glass {
-    width: 100%;
-    height: auto;
-  }
-
-  /* MAIN ABAJO */
   .right-panel-workspace {
-    width: 100%;
-    padding: 10px;
+    margin-left: 0;
+    /* Quitamos el espacio lateral */
+    padding-top: 20px;
+    padding-bottom: 90px;
+    /* Dejamos espacio abajo para el sidebar móvil */
+    justify-content: flex-start;
   }
 
-  /* SCROLL MEJOR */
-  .search-section {
-    max-height: 300px;
-    overflow-y: auto;
+  .search-section-centered {
+    min-height: auto;
+    /* En celular no forzamos el alto completo */
+    margin-top: 2rem;
+    padding: 1rem;
   }
-}
 
-/* 🔥 EXTRA PEQUEÑO */
-@media (max-width: 1024px) {
   .paciente-data-preview {
-    /* En pantallas chicas, volvemos a 1 sola columna */
     grid-template-columns: 1fr !important;
+  }
+
+  .work-area {
+    padding: 1rem;
   }
 }
