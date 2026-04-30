@@ -8,7 +8,7 @@
 
     <div class="container-fluid p-0">
 
-     <router-view v-if="['Calendario', 'InterfazPacientes'].includes(String($route.name))"></router-view>
+     <router-view v-if="['Calendario', 'InterfazPacientes','Asignaciones'].includes(String($route.name))"></router-view>
 
       <div v-else class="card jh-card m-3">
         <router-view></router-view>

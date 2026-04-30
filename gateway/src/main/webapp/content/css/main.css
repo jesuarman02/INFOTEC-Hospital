@@ -43,6 +43,9 @@ body,
   background-color: #f4f6f9;
   overflow-x: hidden;
   /* 🔥 ADIÓS AL HACK DE 100VW Y MÁRGENES NEGATIVOS 🔥 */
+  top: 20px !important;
+  /* Ajusta este valor */
+  height: calc(100vh - 115px) !important;
 }
 
 /* 🔥 PANEL DERECHO (Área de trabajo) 🔥 */
