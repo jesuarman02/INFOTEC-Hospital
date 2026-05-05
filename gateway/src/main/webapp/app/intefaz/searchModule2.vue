@@ -384,9 +384,35 @@ const simularGuardadoPaciente = (pacienteRegistrado: any) => {
 const simularGuardadoDireccion = () => { progreso.value.direccion = true; avanzarSiWizard(); }
 const simularGuardadoSocio = () => { progreso.value.socio = true; avanzarSiWizard(); }
 const simularGuardadoHistorial = () => { progreso.value.historial = true; avanzarSiWizard(); }
-// 🔥 FUNCIÓN PARA MARCAR SIGNOS VITALES COMO COMPLETADOS 🔥
-const simularGuardadoSignos = () => { progreso.value.signos = true; avanzarSiWizard(); }
+const simularGuardadoSignos = () => { 
+  progreso.value.signos = true; 
+  avanzarSiWizard(); 
 
+  // Si estamos en el flujo de "Nuevo Paciente", mostramos la alerta final
+  if (estadoVista.value === 'nuevo') {
+    Swal.fire({
+      title: '¡Registro Completado!',
+      text: 'Has finalizado todos los pasos del paciente. ¿Deseas regresar a la pantalla de inicio?',
+      icon: 'success',
+      showCancelButton: true,
+      confirmButtonColor: '#5c1830',
+      cancelButtonColor: '#64748b',
+      confirmButtonText: 'Sí, regresar al inicio',
+      cancelButtonText: 'No, revisar datos',
+      reverseButtons: true // Pone el botón principal a la derecha
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Limpiamos las variables y regresamos a la pantalla "¿QUÉ DESEAS HACER?"
+        estadoVista.value = 'inicio';
+        pacienteActual.value = null;
+        pasoWizard.value = 1;
+        Object.keys(progreso.value).forEach(k => progreso.value[k] = false);
+      }
+      // Si dice "No", el modal se cierra y el usuario se queda en la vista del Wizard 
+      // para poder navegar hacia atrás y editar los modales anteriores.
+    });
+  }
+};
 const esExtranjero = ref(false);
 const curp = ref('');
 const nombre = ref('');

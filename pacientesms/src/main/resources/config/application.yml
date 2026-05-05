@@ -1,39 +1,18 @@
 # ===================================================================
 # Spring Boot configuration.
-#
-# This configuration will be overridden by the Spring profile you use,
-# for example application-dev.yml if you use the "dev" profile.
-#
-# More information on profiles: https://www.jhipster.tech/profiles/
-# More information on configuration properties: https://www.jhipster.tech/common-application-properties/
-# ===================================================================
-
-# ===================================================================
-# Standard Spring Boot properties.
-# Full reference is available at:
-# http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 
 ---
-# Conditionally disable springdoc on missing api-docs profile
 spring:
   config:
     activate:
       on-profile: '!api-docs'
+
 springdoc:
   api-docs:
     enabled: false
+
 ---
-reactive:
-  feign:
-    circuit:
-      breaker:
-        enabled: true
-  # client:
-  #   config:
-  #     default:
-  #       connectTimeout: 5000
-  #       readTimeout: 5000
 management:
   endpoints:
     web:
@@ -51,6 +30,7 @@ management:
           - prometheus
           - threaddump
           - liquibase
+
   endpoint:
     health:
       show-details: when_authorized
@@ -62,24 +42,30 @@ management:
           include: livenessState
         readiness:
           include: readinessState
+
     jhimetrics:
       enabled: true
+
   info:
     git:
       mode: full
     env:
       enabled: true
+
   health:
     mail:
-      enabled: false # When using the MailService, configure an SMTP server and set this to true
+      enabled: false
+
   prometheus:
     metrics:
       export:
         enabled: true
         step: 60
+
   observations:
     key-values:
       application: ${spring.application.name}
+
   metrics:
     enable:
       http: true
@@ -102,6 +88,7 @@ management:
 spring:
   application:
     name: pacientesms
+
   cloud:
     consul:
       discovery:
@@ -111,32 +98,34 @@ spring:
       config:
         watch:
           enabled: false
+
   profiles:
-    # The commented value for `active` can be replaced with valid Spring profiles to load.
-    # Otherwise, it will be filled in by maven when building the JAR file
-    # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
     active: '@spring.profiles.active@'
     group:
       dev:
         - dev
         - api-docs
-        # Uncomment to activate TLS for the dev profile
-        #- tls
+
   jmx:
     enabled: false
+
   messages:
     basename: i18n/messages
+
   main:
     allow-bean-definition-overriding: true
+
   webflux:
     problemdetails:
       enabled: true
+
   security:
     oauth2:
       resourceserver:
         jwt:
           authority-prefix: ''
           authorities-claim-name: auth
+
   task:
     execution:
       thread-name-prefix: pacientesms-task-
@@ -148,11 +137,13 @@ spring:
       thread-name-prefix: pacientesms-scheduling-
       pool:
         size: 2
+
   thymeleaf:
     mode: HTML
+
   output:
     ansi:
-      console-available: true
+      enabled: always
 
 server:
   servlet:
@@ -163,50 +154,50 @@ server:
 springdoc:
   show-actuator: true
 
-# Properties to be exposed on the /info management endpoint
 info:
-  # Comma separated list of profiles that will trigger the ribbon to show
   display-ribbon-on-profiles: 'dev'
 
 # ===================================================================
-# JHipster specific properties
-#
-# Full reference is available at: https://www.jhipster.tech/common-application-properties/
+# JHipster properties
 # ===================================================================
 
 jhipster:
   clientApp:
     name: 'pacientesmsApp'
-  # By default CORS is disabled. Uncomment to enable.
-  # cors:
-  #   allowed-origins: "http://localhost:8100,http://localhost:9000"
-  #   allowed-methods: "*"
-  #   allowed-headers: "*"
-  #   exposed-headers: "Authorization,Link,X-Total-Count,X-${jhipster.clientApp.name}-alert,X-${jhipster.clientApp.name}-error,X-${jhipster.clientApp.name}-params"
-  #   allow-credentials: true
-  #   max-age: 1800
+
   mail:
     from: pacientesms@localhost
+
   api-docs:
     default-include-pattern: /api/**
     management-include-pattern: /management/**
     title: Pacientesms API
     description: Pacientesms API documentation
     version: 0.0.1
-    terms-of-service-url:
-    contact-name:
-    contact-url:
-    contact-email:
-    license: unlicensed
-    license-url:
-  security:
+
 # ===================================================================
-# Application specific properties
-# Add your own application properties here, see the ApplicationProperties class
-# to have type-safe configuration, like in the JHipsterProperties above
-#
-# More documentation is available at:
-# https://www.jhipster.tech/common-application-properties/
+# LOGGING
 # ===================================================================
 
-# application:
+logging:
+  level:
+    ROOT: INFO
+    mx:
+      infotec:
+        pacientesms: INFO
+    io:
+      r2dbc:
+        postgresql:
+          PARAM: INFO
+          QUERY: INFO
+    org:
+      springframework:
+        data:
+          r2dbc: INFO
+        r2dbc: INFO
+      hibernate:
+        SQL: ERROR
+        type:
+          descriptor:
+            sql:
+              BasicBinder: ERROR

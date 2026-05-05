@@ -167,7 +167,6 @@ export default defineComponent({
 
     // 🔥 LOGICA DE BORRADOR LOCALSTORAGE 🔥
     watch([historialMedico, formHabitos, listaEnfermedades, listaCirugias, listaMedicamentos, listaFamiliares, listaPatologicos], () => {
-      // Solo guardamos borrador si estamos viendo el cuestionario, si hay paciente y si NO estamos editando uno ya existente (id == null)
       if (mostrarCuestionario.value && pacienteEncontrado.value && !historialMedico.value.id) {
         const draft = { hm: historialMedico.value, hab: formHabitos.value, enf: listaEnfermedades.value, cir: listaCirugias.value, med: listaMedicamentos.value, fam: listaFamiliares.value, pat: listaPatologicos.value };
         localStorage.setItem(`historial_draft_${pacienteEncontrado.value.ecu}`, JSON.stringify(draft));
@@ -180,7 +179,7 @@ export default defineComponent({
         Swal.fire({
           title: 'Borrador encontrado',
           text: "¿Deseas recuperar el historial que estabas llenando?",
-          icon: 'info', showCancelButton: true, confirmButtonColor: '#611232', cancelButtonColor: '#888',
+          icon: 'info', showCancelButton: true, confirmButtonColor: '#5c1830', cancelButtonColor: '#888',
           confirmButtonText: 'Sí, recuperar', cancelButtonText: 'Empezar de cero'
         }).then((result) => {
           if (result.isConfirmed) {
@@ -199,8 +198,7 @@ export default defineComponent({
       }
     };
 
-
-    // 🔥 LA MAGIA: VIGILANTE QUE CONECTA EL MODAL CON EL DASHBOARD 🔥
+    // 🔥 VIGILANTE QUE CONECTA EL MODAL CON EL DASHBOARD 🔥
     watch(() => props.visible, async (newVal) => {
       if (newVal) {
         if (props.pacientePreCargado) {
@@ -211,11 +209,11 @@ export default defineComponent({
             const historialExistente = res.data.find((hm: any) => hm.pacienteId === props.pacientePreCargado.id);
             if (historialExistente) {
               cargarHistorial(historialExistente);
-              mostrarCuestionario.value = true; // Si existe, mostramos el cuestionario directo
+              mostrarCuestionario.value = true; 
               seccionAbierta.value = 1;
             } else {
               historialMedico.value = initHistorial();
-              iniciarCuestionario(); // Si es nuevo, revisamos si hay borrador
+              iniciarCuestionario(); 
             }
           } catch (error) {
             console.error("Error al buscar el historial", error);
@@ -224,7 +222,6 @@ export default defineComponent({
           }
         }
       } else {
-        // Al cerrar, limpiar todo a su estado original
         resetModal();
       }
     });
@@ -239,11 +236,12 @@ export default defineComponent({
         if (encontrado) {
           pacienteEncontrado.value = encontrado;
           Swal.fire({ icon: 'success', title: 'Paciente Encontrado', showConfirmButton: false, timer: 2000 });
+          iniciarCuestionario(); // Iniciamos tras buscarlo manualmente
         } else {
-          Swal.fire({ icon: 'error', title: 'No encontrado', text: 'No existe un paciente con ese ECU.', confirmButtonColor: '#611232' });
+          Swal.fire({ icon: 'error', title: 'No encontrado', text: 'No existe un paciente con ese ECU.', confirmButtonColor: '#5c1830' });
         }
       } catch (error: any) {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al buscar.', confirmButtonColor: '#611232' });
+        Swal.fire({ icon: 'error', title: 'Error', text: 'Error al buscar.', confirmButtonColor: '#5c1830' });
       } finally {
         isSearchingEcu.value = false;
       }
@@ -269,7 +267,7 @@ export default defineComponent({
       if (mostrarCuestionario.value) {
         Swal.fire({
           title: '¿Pausar estudio?', text: "Tu progreso se guardará como borrador.", icon: 'warning',
-          showCancelButton: true, confirmButtonColor: '#888', cancelButtonColor: '#611232', 
+          showCancelButton: true, confirmButtonColor: '#888', cancelButtonColor: '#5c1830', 
           confirmButtonText: 'Sí, salir', cancelButtonText: 'Continuar editando'
         }).then((result) => {
           if (result.isConfirmed) {
@@ -292,6 +290,7 @@ export default defineComponent({
           const sinObservaciones = !hm.observacionesGenerales || hm.observacionesGenerales.trim() === '';
           const listasEnDefault = hm.tieneAlergias === false && hm.padeceCronicas === 'NO' && hm.haTenidoCirugias === 'NO' && hm.tomaMedicamentos === 'NO' && hm.tieneFamiliares === 'NO' && hm.tienePatologicos === 'NO';
           if (sinBiometricos && sinObservaciones && listasEnDefault) return 'VACIO';
+          
           const biometricosListos = !!hm.altura && !!hm.peso;
           const alergiasOk = hm.tieneAlergias === false || (hm.tieneAlergias === true && !!hm.sustanciaAlergia);
           const cronicasOk = hm.padeceCronicas !== 'SI' || (hm.padeceCronicas === 'SI' && listaEnfermedades.value.length > 0);
@@ -299,16 +298,19 @@ export default defineComponent({
           const medicamentosOk = hm.tomaMedicamentos !== 'SI' || (hm.tomaMedicamentos === 'SI' && listaMedicamentos.value.length > 0);
           const familiaresOk = hm.tieneFamiliares !== 'SI' || (hm.tieneFamiliares === 'SI' && listaFamiliares.value.length > 0);
           const patologicosOk = hm.tienePatologicos !== 'SI' || (hm.tienePatologicos === 'SI' && listaPatologicos.value.length > 0);
+          
           if (biometricosListos && alergiasOk && cronicasOk && cirugiasOk && medicamentosOk && familiaresOk && patologicosOk) return 'COMPLETO';
           return 'INCOMPLETO';
         };
 
         const payload: any = { id: hm.id, observacionesGenerales: hm.observacionesGenerales || '', estado: determinarEstado() };
         payload.datosBiometricosSanguineos = JSON.stringify({ altura: hm.altura, peso: hm.peso, imc: hm.imc, grupoSanguineo: hm.grupoSanguineo, factorRh: hm.factorRh });
+        
         let detallesAlergia: any[] = [];
         if (hm.tieneAlergias === true) {
           detallesAlergia = [{ tipoAlergia: hm.tipoAlergia, sustanciaAlergia: hm.sustanciaAlergia, reaccionesAlergia: hm.reaccionesAlergia, gravedadAlergia: hm.gravedadAlergia, tratamientoAlergia: hm.tratamientoAlergia, ultimoEpisodioAlergia: hm.ultimoEpisodioAlergia }];
         }
+        
         payload.alergias = toJson(hm.tieneAlergias, detallesAlergia);
         payload.enfermedadesCronicas = toJson(hm.padeceCronicas, listaEnfermedades.value);
         payload.cirugiasPrevias = toJson(hm.haTenidoCirugias, listaCirugias.value);
@@ -320,12 +322,14 @@ export default defineComponent({
         if (pacienteEncontrado.value) {
             payload.pacienteId = pacienteEncontrado.value.id; payload.pacienteEcu = pacienteEncontrado.value.ecu;
             payload.pacienteNombre = pacienteEncontrado.value.nombre; payload.pacienteApellidoPaterno = pacienteEncontrado.value.apellidoPaterno;
+        } else if (hm.pacienteId) {
+            payload.pacienteId = hm.pacienteId; payload.pacienteEcu = hm.pacienteEcu;
+            payload.pacienteNombre = hm.pacienteNombre; payload.pacienteApellidoPaterno = hm.pacienteApellidoPaterno;
         }
 
         if (payload.id) await historialMedicoService().update(payload);
         else await historialMedicoService().create(payload);
 
-        // Limpiar el borrador si el guardado fue exitoso
         localStorage.removeItem(`historial_draft_${pacienteEncontrado.value?.ecu}`);
 
         Swal.fire({ icon: 'success', title: '¡Guardado Exitoso!', text: `Historial guardado como ${payload.estado}`, showConfirmButton: false, timer: 2000 });
@@ -333,7 +337,7 @@ export default defineComponent({
         resetModal();
         emit('update:visible', false);
       } catch (error: any) {
-        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar el historial.', confirmButtonColor: '#611232' });
+        Swal.fire({ icon: 'error', title: 'Error', text: 'No se pudo guardar el historial.', confirmButtonColor: '#5c1830' });
       } finally {
         isSaving.value = false;
       }
